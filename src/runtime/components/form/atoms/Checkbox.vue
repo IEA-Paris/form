@@ -12,27 +12,27 @@
     :true-value="args.trueValue"
     :false-value="args.falseValue"
     :color="args.color"
-  ></v-checkbox>
+  />
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useFormStore } from '#imports'
+import { computed, onMounted } from "vue"
+import { useFormStore } from "#imports"
 
 const props = defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({})
+    default: () => ({}),
   },
   level: {
     type: Array,
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const formStore = useFormStore()
@@ -40,9 +40,9 @@ const formStore = useFormStore()
 const val = computed({
   get() {
     return formStore.getKey({
-      key: props.args.key, 
-      level: props.level,  
-      store: formStore[props.category]?.form?.values
+      key: props.args.key,
+      level: props.level,
+      store: formStore[props.category]?.form?.values,
     })
   },
   set(value) {
@@ -50,23 +50,23 @@ const val = computed({
       key: props.args.key,
       value,
       category: props.category,
-      level: props.level
+      level: props.level,
     })
-  }
+  },
 })
 
 const rules = computed(() => {
   const ruleArray = []
-  
+
   if (props.args.required) {
     ruleArray.push((value) => {
       if (value !== true && value !== props.args.trueValue) {
-        return 'This field is required'
+        return "This field is required"
       }
       return true
     })
   }
-  
+
   return ruleArray
 })
 
@@ -75,5 +75,4 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

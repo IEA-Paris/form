@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-form v-model="valid" ref="formRef">
+        <v-form ref="formRef" v-model="valid">
           <div id="container">
             <template v-for="(input, key, index) in form" :key="key">
               <FormRecursiveFormblock
@@ -14,8 +14,8 @@
               />
             </template>
           </div>
-          
-          <div class="d-flex justify-end mt-4" v-if="showActions">
+
+          <div v-if="showActions" class="d-flex justify-end mt-4">
             <v-btn
               :disabled="!valid || saving"
               :loading="saving"
@@ -23,7 +23,7 @@
               prepend-icon="mdi-content-save"
               @click.stop="save"
             >
-              {{ saveText || 'Save' }}
+              {{ saveText || "Save" }}
             </v-btn>
           </div>
         </v-form>
@@ -33,25 +33,25 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
-import { useFormStore } from '#imports'
+import { computed, ref, onMounted } from "vue"
+import { useFormStore } from "#imports"
 
 const props = defineProps({
   category: {
     type: String,
-    required: true
+    required: true,
   },
   showActions: {
     type: Boolean,
-    default: true
+    default: true,
   },
   saveText: {
     type: String,
-    default: 'Save'
-  }
+    default: "Save",
+  },
 })
 
-const emit = defineEmits(['save', 'validate'])
+const emit = defineEmits(["save", "validate"])
 
 const formStore = useFormStore()
 const valid = ref(false)
@@ -67,9 +67,9 @@ const save = async () => {
     saving.value = true
     try {
       const result = await formStore.save(props.category)
-      emit('save', result)
+      emit("save", result)
     } catch (error) {
-      console.error('Error saving form:', error)
+      console.error("Error saving form:", error)
     } finally {
       saving.value = false
     }
@@ -79,7 +79,7 @@ const save = async () => {
 const validate = async () => {
   if (formRef.value) {
     const result = await formRef.value.validate()
-    emit('validate', result)
+    emit("validate", result)
     return result
   }
   return { valid: false }
@@ -90,7 +90,7 @@ defineExpose({
   validate,
   save,
   reset: () => formRef.value?.reset(),
-  resetValidation: () => formRef.value?.resetValidation()
+  resetValidation: () => formRef.value?.resetValidation(),
 })
 
 onMounted(() => {

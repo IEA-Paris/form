@@ -1,8 +1,8 @@
 {
-  "name": "@apex/nuxt-form-module",
+  "name": "@paris-ias/form",
   "version": "1.0.0",
   "description": "A comprehensive Nuxt form module with components, composables, stores and GraphQL mutations",
-  "repository": "git+https://github.com/yourusername/nuxt-form-module.git",
+  "repository": "git+https://github.com/IEA-Paris/form.git",
   "license": "MIT",
   "type": "module",
   "exports": {

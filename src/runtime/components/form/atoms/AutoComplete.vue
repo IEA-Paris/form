@@ -21,47 +21,47 @@
     :loading="loading"
     :no-filter="args.noFilter"
     @update:search="onSearchUpdate"
-  ></v-autocomplete>
+  />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-import { useFormStore } from '#imports'
+import { computed, onMounted, ref } from "vue"
+import { useFormStore } from "#imports"
 
 const props = defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({})
+    default: () => ({}),
   },
   level: {
     type: Array,
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
+    required: true,
   },
   items: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   searchCallback: {
     type: Function,
-    default: null
-  }
+    default: null,
+  },
 })
 
 const formStore = useFormStore()
-const search = ref('')
+const search = ref("")
 const loading = ref(false)
 
 const val = computed({
   get() {
     return formStore.getKey({
-      key: props.args.key, 
-      level: props.level,  
-      store: formStore[props.category]?.form?.values
+      key: props.args.key,
+      level: props.level,
+      store: formStore[props.category]?.form?.values,
     })
   },
   set(value) {
@@ -69,9 +69,9 @@ const val = computed({
       key: props.args.key,
       value,
       category: props.category,
-      level: props.level
+      level: props.level,
     })
-  }
+  },
 })
 
 const computedItems = computed(() => {
@@ -83,30 +83,33 @@ const computedItems = computed(() => {
 
 const rules = computed(() => {
   const ruleArray = []
-  
+
   if (props.args.required) {
     ruleArray.push((value) => {
-      if (value === undefined || value === null || 
-          (Array.isArray(value) && value.length === 0) ||
-          value === '') {
-        return 'This field is required'
+      if (
+        value === undefined ||
+        value === null ||
+        (Array.isArray(value) && value.length === 0) ||
+        value === ""
+      ) {
+        return "This field is required"
       }
       return true
     })
   }
-  
+
   return ruleArray
 })
 
 const onSearchUpdate = async (searchValue) => {
   search.value = searchValue
-  
+
   if (props.searchCallback && searchValue) {
     loading.value = true
     try {
       await props.searchCallback(searchValue)
     } catch (error) {
-      console.error('Search callback error:', error)
+      console.error("Search callback error:", error)
     } finally {
       loading.value = false
     }
@@ -118,5 +121,4 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

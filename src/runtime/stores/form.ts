@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import type { InputParams, ModuleType, searchResults } from '../types'
+import type { InputParams, ModuleType, searchResults } from "../types"
 
 export const useFormStore = defineStore("formStore", {
   state: (): Record<
@@ -22,10 +22,10 @@ export const useFormStore = defineStore("formStore", {
         form: {
           schema,
           values: { ...initialValues },
-          _defaults: JSON.stringify(initialValues)
+          _defaults: JSON.stringify(initialValues),
         },
-        source: 'local',
-        loading: false
+        source: "local",
+        loading: false,
       }
     },
 
@@ -57,7 +57,7 @@ export const useFormStore = defineStore("formStore", {
     },
 
     setScrolled() {
-      if (process.client) {
+      if (import.meta.client) {
         this.scrolled = window.scrollY > 0
       }
     },
@@ -107,7 +107,9 @@ export const useFormStore = defineStore("formStore", {
         value: ${value}
         category: ${category}
         level: ${level}
-        store: ${Array.isArray(store) ? store.length : Object.keys(store).length}`)
+        store: ${
+          Array.isArray(store) ? store.length : Object.keys(store).length
+        }`)
 
       if (level.length === 1) {
         // Guard against undefined keys
@@ -226,6 +228,6 @@ export const useFormStore = defineStore("formStore", {
       } catch (error) {
         console.log("error: ", error)
       }
-    }
+    },
   },
 })

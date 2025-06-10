@@ -1,4 +1,4 @@
-import type { FormValidationRule } from '../types'
+import type { FormValidationRule } from "../types"
 
 // Built-in regex patterns
 const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
@@ -26,14 +26,19 @@ export const useFormValidation = () => {
     )
   }
 
-  const alphaRules = (value: string): boolean => !value || alphaRegex.test(value)
-  
-  const minRules = (min: number) => (value: string): boolean => {
-    return !value || value.length >= min
-  }
-  
-  const maxRules = (max: number) => (value: string): boolean => 
-    !value || value.length <= max
+  const alphaRules = (value: string): boolean =>
+    !value || alphaRegex.test(value)
+
+  const minRules =
+    (min: number) =>
+    (value: string): boolean => {
+      return !value || value.length >= min
+    }
+
+  const maxRules =
+    (max: number) =>
+    (value: string): boolean =>
+      !value || value.length <= max
 
   const urlRules = (value: string): boolean =>
     !value || (value.length > 0 && urlRegex.test(value))
@@ -47,14 +52,11 @@ export const useFormValidation = () => {
   const colorRules = (value: string): boolean =>
     !value || colorRegex.test(value)
 
-  const rorRules = (value: string): boolean =>
-    !value || rorRegex.test(value)
+  const rorRules = (value: string): boolean => !value || rorRegex.test(value)
 
-  const doiRules = (value: string): boolean =>
-    !value || doiRegex.test(value)
+  const doiRules = (value: string): boolean => !value || doiRegex.test(value)
 
-  const dateRules = (value: string): boolean =>
-    !value || dateRegex.test(value)
+  const dateRules = (value: string): boolean => !value || dateRegex.test(value)
 
   const orcidRules = (value: string): boolean =>
     !value || orcidRegex.test(value)
@@ -65,21 +67,21 @@ export const useFormValidation = () => {
   const computeInputVisibility = (visibilityRules: any, form: any): boolean => {
     if (!visibilityRules?.default) return true
     let result = !!visibilityRules.default
-    
+
     if (visibilityRules?.switchIf?.length > 0) {
       visibilityRules?.switchIf?.forEach((rule: any) => {
         // TODO: implement complex visibility rules
         result = rule
       })
     }
-    
+
     return result
   }
 
   const generateInputRules = (input: any): FormValidationRule[] => {
     if (!input?.rules) return []
     const rules: FormValidationRule[] = []
-    
+
     if (Object.keys(input?.rules)?.length > 0) {
       Object.keys(input?.rules).forEach((rule) => {
         switch (rule) {
@@ -160,7 +162,7 @@ export const useFormValidation = () => {
         }
       })
     }
-    
+
     return rules
   }
 
@@ -179,6 +181,6 @@ export const useFormValidation = () => {
     orcidRules,
     digitRules,
     computeInputVisibility,
-    generateInputRules
+    generateInputRules,
   }
 }

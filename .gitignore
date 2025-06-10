@@ -80,7 +80,7 @@ dist
 .idea
 
 # Playground
-playground/
+# playground/
 
 # Generated types
 *.d.ts

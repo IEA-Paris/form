@@ -3,21 +3,23 @@
     <!-- Regular Field Form Block / primitive -->
     <template v-if="!input.items">
       <component
-        v-if="computeInputVisibility(input)"
         :is="getComponentName(input.type)"
+        v-if="computeInputVisibility(input)"
         :args="{ ...input, key: lastLevelItem }"
         :level="level"
         :category="category"
         :disabled="saving"
       />
     </template>
-    
+
     <!-- Collection Form Block (Array) -->
     <template v-else-if="isArray(input.items)">
       <div class="collection-container">
         <h4 v-if="input.label">{{ input.label }}</h4>
-        <p v-if="input.description" class="text-caption mb-2">{{ input.description }}</p>
-        
+        <p v-if="input.description" class="text-caption mb-2">
+          {{ input.description }}
+        </p>
+
         <div v-if="items && items.length > 0">
           <v-card
             v-for="(item, index) in items"
@@ -35,7 +37,7 @@
                 @click="deleteItem(index)"
               />
             </div>
-            
+
             <FormRecursiveFormblock
               v-for="(field, fieldIndex) in input.items"
               :key="`field-${index}-${fieldIndex}`"
@@ -46,25 +48,27 @@
             />
           </v-card>
         </div>
-        
+
         <v-btn
           prepend-icon="mdi-plus"
           color="primary"
           variant="outlined"
-          @click="addItem"
           class="mt-2"
+          @click="addItem"
         >
-          {{ input.addText || 'Add Item' }}
+          {{ input.addText || "Add Item" }}
         </v-btn>
       </div>
     </template>
-    
+
     <!-- Object Form Block -->
     <template v-else>
       <div class="object-container">
         <h4 v-if="input.label">{{ input.label }}</h4>
-        <p v-if="input.description" class="text-caption mb-2">{{ input.description }}</p>
-        
+        <p v-if="input.description" class="text-caption mb-2">
+          {{ input.description }}
+        </p>
+
         <v-card class="pa-3" variant="outlined">
           <FormRecursiveFormblock
             v-for="(field, key) in input.items"
@@ -77,36 +81,36 @@
         </v-card>
       </div>
     </template>
-    
+
     <slot />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useFormStore } from '#imports'
+import { computed, onMounted } from "vue"
+import { useFormStore } from "#imports"
 
 const props = defineProps({
   input: {
     type: Object,
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
+    required: true,
   },
   level: {
     type: Array,
-    required: true
+    required: true,
   },
   saving: {
     type: Boolean,
-    default: false
+    default: false,
   },
   rootIndex: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 })
 
 const formStore = useFormStore()
@@ -119,7 +123,7 @@ const items = computed(() => {
   return formStore.getKey({
     key: lastLevelItem.value,
     level: props.level,
-    store: formStore[props.category]?.form?.values
+    store: formStore[props.category]?.form?.values,
   })
 })
 
@@ -138,23 +142,23 @@ const computeInputVisibility = (input) => {
 
 const getComponentName = (type) => {
   const componentMap = {
-    'TextField': 'FormTextField',
-    'TextArea': 'FormTextArea', 
-    'Select': 'FormSelect',
-    'Checkbox': 'FormCheckbox',
-    'BooleanSwitch': 'FormBooleanSwitch',
-    'FileInput': 'FormFileInput',
-    'AutoComplete': 'FormAutoComplete'
+    TextField: "FormTextField",
+    TextArea: "FormTextArea",
+    Select: "FormSelect",
+    Checkbox: "FormCheckbox",
+    BooleanSwitch: "FormBooleanSwitch",
+    FileInput: "FormFileInput",
+    AutoComplete: "FormAutoComplete",
   }
-  
-  return componentMap[type] || 'FormTextField'
+
+  return componentMap[type] || "FormTextField"
 }
 
 const addItem = () => {
   formStore.addFormItem({
     key: lastLevelItem.value,
     category: props.category,
-    level: props.level
+    level: props.level,
   })
 }
 
@@ -162,7 +166,7 @@ const deleteItem = (index) => {
   formStore.deleteFormItem({
     key: lastLevelItem.value,
     category: props.category,
-    level: [...props.level, index]
+    level: [...props.level, index],
   })
 }
 
@@ -170,7 +174,7 @@ onMounted(() => {
   console.log("RecursiveFormblock mounted:", {
     input: props.input,
     level: props.level,
-    category: props.category
+    category: props.category,
   })
 })
 </script>
@@ -181,7 +185,7 @@ onMounted(() => {
   .object-container {
     margin-bottom: 16px;
   }
-  
+
   .v-card {
     border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
   }

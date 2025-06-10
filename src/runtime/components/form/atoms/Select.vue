@@ -17,31 +17,31 @@
     :item-title="args.itemTitle || 'title'"
     :item-value="args.itemValue || 'value'"
     :return-object="args.returnObject"
-  ></v-select>
+  />
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useFormStore } from '#imports'
+import { computed, onMounted } from "vue"
+import { useFormStore } from "#imports"
 
 const props = defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({})
+    default: () => ({}),
   },
   level: {
     type: Array,
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
+    required: true,
   },
   items: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 })
 
 const formStore = useFormStore()
@@ -49,9 +49,9 @@ const formStore = useFormStore()
 const val = computed({
   get() {
     return formStore.getKey({
-      key: props.args.key, 
-      level: props.level,  
-      store: formStore[props.category]?.form?.values
+      key: props.args.key,
+      level: props.level,
+      store: formStore[props.category]?.form?.values,
     })
   },
   set(value) {
@@ -59,9 +59,9 @@ const val = computed({
       key: props.args.key,
       value,
       category: props.category,
-      level: props.level
+      level: props.level,
     })
-  }
+  },
 })
 
 const computedItems = computed(() => {
@@ -73,18 +73,21 @@ const computedItems = computed(() => {
 
 const rules = computed(() => {
   const ruleArray = []
-  
+
   if (props.args.required) {
     ruleArray.push((value) => {
-      if (value === undefined || value === null || 
-          (Array.isArray(value) && value.length === 0) ||
-          value === '') {
-        return 'This field is required'
+      if (
+        value === undefined ||
+        value === null ||
+        (Array.isArray(value) && value.length === 0) ||
+        value === ""
+      ) {
+        return "This field is required"
       }
       return true
     })
   }
-  
+
   return ruleArray
 })
 
@@ -93,5 +96,4 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
