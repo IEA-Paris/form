@@ -1,0 +1,107 @@
+<template>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-form v-model="valid" ref="formRef">
+          <div id="container">
+            <template v-for="(input, key, index) in form" :key="key">
+              <FormRecursiveFormblock
+                :input="input"
+                :category="category"
+                :level="[key]"
+                :saving="saving"
+                :root-index="index"
+              />
+            </template>
+          </div>
+          
+          <div class="d-flex justify-end mt-4" v-if="showActions">
+            <v-btn
+              :disabled="!valid || saving"
+              :loading="saving"
+              color="success"
+              prepend-icon="mdi-content-save"
+              @click.stop="save"
+            >
+              {{ saveText || 'Save' }}
+            </v-btn>
+          </div>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script setup>
+import { computed, ref, onMounted } from 'vue'
+import { useFormStore } from '#imports'
+
+const props = defineProps({
+  category: {
+    type: String,
+    required: true
+  },
+  showActions: {
+    type: Boolean,
+    default: true
+  },
+  saveText: {
+    type: String,
+    default: 'Save'
+  }
+})
+
+const emit = defineEmits(['save', 'validate'])
+
+const formStore = useFormStore()
+const valid = ref(false)
+const saving = ref(false)
+const formRef = ref(null)
+
+const form = computed(() => {
+  return formStore[props.category]?.form?.schema || {}
+})
+
+const save = async () => {
+  if (valid.value) {
+    saving.value = true
+    try {
+      const result = await formStore.save(props.category)
+      emit('save', result)
+    } catch (error) {
+      console.error('Error saving form:', error)
+    } finally {
+      saving.value = false
+    }
+  }
+}
+
+const validate = async () => {
+  if (formRef.value) {
+    const result = await formRef.value.validate()
+    emit('validate', result)
+    return result
+  }
+  return { valid: false }
+}
+
+// Expose methods for parent components
+defineExpose({
+  validate,
+  save,
+  reset: () => formRef.value?.reset(),
+  resetValidation: () => formRef.value?.resetValidation()
+})
+
+onMounted(() => {
+  console.log("Form mounted with category:", props.category)
+})
+</script>
+
+<style lang="scss" scoped>
+#container {
+  .v-input {
+    margin-bottom: 16px;
+  }
+}
+</style>
