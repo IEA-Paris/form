@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.16.2",
-    "pinia": "^2.1.7",
     "vue": "^3.5.13"
   },
   "peerDependencies": {
@@ -40,15 +39,25 @@
     "@nuxt/devtools": "^1.4.2",
     "@nuxt/eslint-config": "^0.5.7",
     "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/image": "1.10.0",
     "@nuxt/schema": "^3.16.2",
     "@nuxt/test-utils": "^3.17.2",
+    "@nuxtjs/apollo": "^5.0.0-alpha.14",
+    "@pinia/nuxt": "^0.5.4",
+    "@types/node": "latest",
+    "@nuxtjs/mdc": "0.16.1",
+    "pinia": "^3.0.1",
+    "@nuxtjs/i18n": "^9.5.2",
+    "@paris-ias/data": "^1.8.5",
+    "graphql-tag": "^2.12.6",
     "changelogen": "^0.5.7",
+    "sass": "^1.78.0",
     "eslint": "^9.0.0",
+    "vite-plugin-graphql-loader": "^4.0.4",
     "nuxt": "^3.16.2",
+    "vitest": "^3.1.1",
     "typescript": "^5.6.3",
-    "vitest": "^2.1.8",
-    "vue-tsc": "^2.1.10",
-    "@paris-ias/data": "^1.8.5"
+    "vue-tsc": "^2.1.10"
   },
   "publishConfig": {
     "access": "public"

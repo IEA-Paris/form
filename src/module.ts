@@ -4,27 +4,9 @@ import {
   createResolver,
   addComponentsDir,
   addImportsDir,
-  installModule,
 } from "@nuxt/kit"
 
 // Module options TypeScript interface definition
-export interface ModuleOptions {
-  /**
-   * Enable GraphQL mutations
-   * @default true
-   */
-  enableGraphQL?: boolean
-  /**
-   * Enable Pinia store
-   * @default true
-   */
-  enableStore?: boolean
-  /**
-   * Component prefix
-   * @default 'Form'
-   */
-  componentPrefix?: string
-}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -35,16 +17,13 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   // Default configuration options of the Nuxt module
-  defaults: {
-    enableGraphQL: true,
-    enableStore: true,
-    componentPrefix: "Form",
-  },
+  defaults: {},
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     addPlugin(resolver.resolve("./runtime/plugin"))
+    addPlugin(resolver.resolve("./runtime/plugins/vuetify"))
 
     // Auto-import components with prefix
     await addComponentsDir({
@@ -55,28 +34,61 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Auto-import composables
     addImportsDir(resolver.resolve("./runtime/composables"))
+    // Add graphQL queries
+    addImportsDir(resolver.resolve("./runtime/graphql"))
 
-    // Install Pinia if store is enabled
-    if (options.enableStore) {
-      await installModule("@pinia/nuxt")
-
-      // Add store to imports
-      nuxt.hook("nitro:config", async (nitroConfig) => {
-        nitroConfig.alias = nitroConfig.alias || {}
-        nitroConfig.alias["#form-store"] = resolver.resolve("./runtime/stores")
+    // Serve the public directory
+    nuxt.hook("nitro:config", async (nitroConfig) => {
+      nitroConfig.publicAssets ||= []
+      nitroConfig.publicAssets.push({
+        dir: resolver.resolve("./runtime/public"),
+        maxAge: 60 * 60 * 24 * 365, // 1 year
       })
+    })
+    // Add translations
+
+    nuxt.hook("i18n:registerModule", (register) => {
+      register({
+        // langDir path needs to be resolved
+        langDir: resolver.resolve("./runtime/translations"),
+        locales: [
+          {
+            code: "en",
+            file: "en.json",
+          },
+          {
+            code: "fr",
+            file: "fr.json",
+          },
+        ],
+      })
+    })
+    nuxt.options.runtimeConfig.public.list = options
+
+    // Add i18n configuration
+    nuxt.options.i18n = {
+      ...nuxt.options.i18n,
+      langDir: resolver.resolve("./runtime/translations"),
     }
 
-    // Add GraphQL support if enabled
-    if (options.enableGraphQL) {
-      // Register GraphQL files directory
-      nuxt.hook("nitro:config", async (nitroConfig) => {
-        nitroConfig.alias = nitroConfig.alias || {}
-        nitroConfig.alias["#form-graphql"] =
-          resolver.resolve("./runtime/graphql")
-      })
+    // Add store to imports
+    nuxt.hook("nitro:config", async (nitroConfig) => {
+      nitroConfig.alias = nitroConfig.alias || {}
+      nitroConfig.alias["#form-store"] = resolver.resolve("./runtime/stores")
+    })
+    nuxt.options.apollo = {
+      ...nuxt.options.apollo,
     }
-
+    // Register GraphQL files directory
+    nuxt.hook("nitro:config", async (nitroConfig) => {
+      nitroConfig.alias = nitroConfig.alias || {}
+      nitroConfig.alias["#form-graphql"] = resolver.resolve("./runtime/graphql")
+    })
+    // Add Vuetify configuration
+    nuxt.options.build.transpile = [
+      ...(nuxt.options.build.transpile || []),
+      "vuetify",
+    ]
     // Add runtime directory to transpile
     nuxt.options.build = nuxt.options.build || {}
     nuxt.options.build.transpile = nuxt.options.build.transpile || []

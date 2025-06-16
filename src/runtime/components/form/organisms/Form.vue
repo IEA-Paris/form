@@ -34,7 +34,7 @@
 
 <script setup>
 import { computed, ref, onMounted } from "vue"
-import { useFormStore } from "#imports"
+import { useFormStore } from "../../../stores/form"
 
 const props = defineProps({
   category: {

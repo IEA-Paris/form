@@ -16,19 +16,20 @@ export const useFormStore = defineStore("formStore", {
   },
 
   actions: {
-    // Initialize a form with schema and initial values
-    initializeForm(category: string, schema: any, initialValues: any = {}) {
-      this[category] = {
-        form: {
-          schema,
-          values: { ...initialValues },
-          _defaults: JSON.stringify(initialValues),
-        },
-        source: "local",
-        loading: false,
+    addModule(type: string, module: ModuleType) {
+      if (!type || !module) {
+        console.warn("addModule: type or module is undefined")
+        return
       }
+      // Check if the module already exists
+      if (this[type]) {
+        console.warn(`Module ${type} already exists, skipping addition`)
+        return
+      }
+      // Add the module to the store
+      this[type] = module
+      console.log(`Module ${type} added to the store`)
     },
-
     save(type: string): boolean | undefined {
       try {
         // save the related form from the store to the target

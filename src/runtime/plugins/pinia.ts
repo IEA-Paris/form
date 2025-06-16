@@ -1,8 +1,8 @@
 import type { AppConfig } from "nuxt/schema"
-import { createDynamicStore } from "../stores/factory"
 import { useFormStore } from "../stores/form"
 import { defineNuxtPlugin, useAppConfig } from "#app"
 export default defineNuxtPlugin(async (nuxtApp) => {
+  console.log("Pinia plugin for form module initialized")
   const appConfig = useAppConfig() as AppConfig & {
     form: {
       modules: string[]
@@ -64,10 +64,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   // Initialize empty stores object
-  const forms = {}
   const schemas = {}
-  console.log("INITIALIZING STORES")
+  console.log("INITIALIZING STORES", appConfig.form.modules)
   // Preload all required modules
+  const FormStore = useFormStore()
   await Promise.all(
     appConfig.form.modules.map(async (type) => {
       try {
@@ -76,16 +76,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         ]()
         const model = (await imports.model).default
 
-        forms[type] = model.form._defaults
-
+        FormStore.addModule(type, model.form._defaults)
         schemas[type] = model.form.schema
+        console.log(`Initializing store for ${type} with schema`)
       } catch (error) {
         console.error(`Failed to initialize ${type} store:`, error)
       }
     })
   )
-  const FormStore = useFormStore()
   // Provide synchronous access to stores and queries
   nuxtApp.provide("FormStore", FormStore)
-  nuxtApp.provide("schemas", schemas.form.schema)
+  nuxtApp.provide("schemas", schemas)
 })
