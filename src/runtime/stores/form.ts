@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import type { InputParams, ModuleType, searchResults } from "../types"
+import { useNuxtApp } from "#imports"
 
 export const useFormStore = defineStore("formStore", {
   state: (): Record<
@@ -16,19 +17,26 @@ export const useFormStore = defineStore("formStore", {
   },
 
   actions: {
-    addModule(type: string, module: ModuleType) {
-      if (!type || !module) {
-        console.warn("addModule: type or module is undefined")
-        return
+    addModule(type: string, module: object) {
+      console.log("type: ", type)
+      console.log("$forms: ", useNuxtApp())
+      try {
+        if (!type) {
+          console.warn("addModule: type or module is undefined")
+          return
+        }
+        // Check if the module already exists
+        if (this[type]) {
+          console.warn(`Module ${type} already exists, skipping addition`)
+          return
+        }
+        // Add the module to the store
+        this[type] = module
+        console.log("this[type]: ", this[type])
+        console.log(`Module ${type} added to the store`)
+      } catch (error) {
+        console.error("Error in addModule: ", error)
       }
-      // Check if the module already exists
-      if (this[type]) {
-        console.warn(`Module ${type} already exists, skipping addition`)
-        return
-      }
-      // Add the module to the store
-      this[type] = module
-      console.log(`Module ${type} added to the store`)
     },
     save(type: string): boolean | undefined {
       try {

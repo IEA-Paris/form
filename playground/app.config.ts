@@ -1,4 +1,4 @@
-import staticConfiguration from "./static.config";
+import staticConfiguration from "./static.config"
 
 export default defineAppConfig({
   ...staticConfiguration,
@@ -22,8 +22,26 @@ export default defineAppConfig({
       "affiliations",
       "files",
       "mailing",
-      "tags",
-      "users",
+      "tags" /* 
+      "users", */,
     ],
   },
-});
+  form: {
+    modules: [
+      "events",
+      "news",
+      "people",
+      "projects",
+      "fellowships",
+      "publications",
+      "actions",
+      "disciplines",
+      "apps",
+      "affiliations",
+      "files",
+      "mailing",
+      "tags" /* 
+      "users", */,
+    ],
+  },
+})

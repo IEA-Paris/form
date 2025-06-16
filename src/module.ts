@@ -7,6 +7,9 @@ import {
 } from "@nuxt/kit"
 
 // Module options TypeScript interface definition
+interface ModuleOptions {
+  [key: string]: unknown
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -22,13 +25,11 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url)
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve("./runtime/plugin"))
+    addPlugin(resolver.resolve("./runtime/plugins/pinia"))
     addPlugin(resolver.resolve("./runtime/plugins/vuetify"))
-
-    // Auto-import components with prefix
-    await addComponentsDir({
+    // Add components
+    addComponentsDir({
       path: resolver.resolve("./runtime/components"),
-      prefix: options.componentPrefix,
       global: true,
     })
 
@@ -63,7 +64,13 @@ export default defineNuxtModule<ModuleOptions>({
         ],
       })
     })
-    nuxt.options.runtimeConfig.public.list = options
+
+    // Add form configuration to app config
+    nuxt.options.appConfig = nuxt.options.appConfig || {}
+    nuxt.options.appConfig.form = {
+      modules: nuxt.options.form?.modules || [],
+      ...options,
+    }
 
     // Add i18n configuration
     nuxt.options.i18n = {

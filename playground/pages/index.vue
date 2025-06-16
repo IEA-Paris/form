@@ -1,5 +1,5 @@
 <template>
   Main index content
-  <!--   <FormOrganismsForm category="people" /> -->
+  <FormOrganismsForm category="people" />
 </template>
 <script setup></script>

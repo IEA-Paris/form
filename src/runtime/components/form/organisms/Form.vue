@@ -5,7 +5,7 @@
         <v-form ref="formRef" v-model="valid">
           <div id="container">
             <template v-for="(input, key, index) in form" :key="key">
-              <FormRecursiveFormblock
+              <FormOrganismsRecursiveFormblock
                 :input="input"
                 :category="category"
                 :level="[key]"
@@ -35,7 +35,10 @@
 <script setup>
 import { computed, ref, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
-
+import { useNuxtApp } from "#app"
+const { $forms } = useNuxtApp()
+console.log("$forms: ", $forms)
+console.log("useNuxtApp(): ", useNuxtApp())
 const props = defineProps({
   category: {
     type: String,
@@ -95,6 +98,11 @@ defineExpose({
 
 onMounted(() => {
   console.log("Form mounted with category:", props.category)
+  console.log("FORM STORE:", formStore)
+  if (!formStore[props.category]) {
+    console.log("Adding module to form store:", props.category)
+    formStore.addModule(props.category, $forms[props.category])
+  }
 })
 </script>
 

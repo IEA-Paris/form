@@ -88,7 +88,7 @@
 
 <script setup>
 import { computed, onMounted } from "vue"
-import { useFormStore } from "#imports"
+import { useFormStore } from "../../../stores/form"
 
 const props = defineProps({
   input: {

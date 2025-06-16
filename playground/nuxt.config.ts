@@ -1,6 +1,14 @@
 import config from "./static.config"
 export default defineNuxtConfig({
-  modules: ["../src/module"],
+  modules: [
+    "../src/module",
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "@nuxtjs/i18n",
+    "@nuxtjs/apollo",
+    "@pinia/nuxt",
+    "@nuxtjs/mdc",
+  ],
   ssr: true,
   form: {
     modules: [
@@ -17,17 +25,9 @@ export default defineNuxtConfig({
       "mailing",
       "tags",
       "apps",
-      "users",
+      /*       "users", */
     ],
   },
-  modules: [
-    "@nuxt/eslint",
-    "@nuxt/image",
-    "@nuxtjs/i18n",
-    "@nuxtjs/apollo",
-    "@pinia/nuxt",
-    "@nuxtjs/mdc",
-  ],
   build: {
     transpile: ["vuetify", "@paris-ias/list"],
   },
