@@ -38,7 +38,7 @@
               />
             </div>
 
-            <FormRecursiveFormblock
+            <FormOrganismsRecursiveFormblock
               v-for="(field, fieldIndex) in input.items"
               :key="`field-${index}-${fieldIndex}`"
               :input="field"
@@ -70,7 +70,7 @@
         </p>
 
         <v-card class="pa-3" variant="outlined">
-          <FormRecursiveFormblock
+          <FormOrganismsRecursiveFormblock
             v-for="(field, key) in input.items"
             :key="`object-${key}`"
             :input="field"
@@ -142,13 +142,13 @@ const computeInputVisibility = (input) => {
 
 const getComponentName = (type) => {
   const componentMap = {
-    TextField: "FormTextField",
-    TextArea: "FormTextArea",
-    Select: "FormSelect",
-    Checkbox: "FormCheckbox",
-    BooleanSwitch: "FormBooleanSwitch",
-    FileInput: "FormFileInput",
-    AutoComplete: "FormAutoComplete",
+    TextField: "FormAtomsTextField",
+    TextArea: "FormAtomsTextArea",
+    Select: "FormAtomsSelect",
+    Checkbox: "FormAtomsCheckbox",
+    BooleanSwitch: "FormAtomsBooleanSwitch",
+    FileInput: "FormAtomsFileInput",
+    AutoComplete: "FormAtomsAutoComplete",
   }
 
   return componentMap[type] || "FormTextField"

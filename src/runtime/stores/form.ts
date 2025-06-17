@@ -19,7 +19,7 @@ export const useFormStore = defineStore("formStore", {
   actions: {
     addModule(type: string, module: object) {
       console.log("type: ", type)
-      console.log("$forms: ", useNuxtApp())
+      console.log("$forms: ", module)
       try {
         if (!type) {
           console.warn("addModule: type or module is undefined")

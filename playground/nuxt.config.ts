@@ -10,24 +10,7 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
   ],
   ssr: true,
-  form: {
-    modules: [
-      "events",
-      "news",
-      "people",
-      "projects",
-      "fellowships",
-      "publications",
-      "actions",
-      "affiliations",
-      "disciplines",
-      "files",
-      "mailing",
-      "tags",
-      "apps",
-      /*       "users", */
-    ],
-  },
+
   build: {
     transpile: ["vuetify", "@paris-ias/list"],
   },

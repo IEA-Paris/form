@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { useFormStore } from "~/modules/form/src/runtime/stores/form"
+import { useFormStore } from "../../src/runtime/stores/form"
 
 const formStore = useFormStore()
 const { $forms, $schemas } = useNuxtApp()

@@ -9,22 +9,7 @@ export default defineAppConfig({
     default: "en",
   },
   list: {
-    modules: [
-      "events",
-      "news",
-      "people",
-      "projects",
-      "fellowships",
-      "publications",
-      "actions",
-      "disciplines",
-      "apps",
-      "affiliations",
-      "files",
-      "mailing",
-      "tags" /* 
-      "users", */,
-    ],
+    modules: ["events", "news", "people", "projects", "fellowships"],
   },
   form: {
     modules: [
@@ -33,15 +18,15 @@ export default defineAppConfig({
       "people",
       "projects",
       "fellowships",
-      "publications",
-      "actions",
+      /*  "publications",
+   "actions",
       "disciplines",
       "apps",
       "affiliations",
       "files",
       "mailing",
-      "tags" /* 
-      "users", */,
+      "tags"
+      "users", */
     ],
   },
 })

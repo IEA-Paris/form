@@ -36,9 +36,7 @@
 import { computed, ref, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
-const { $forms } = useNuxtApp()
-console.log("$forms: ", $forms)
-console.log("useNuxtApp(): ", useNuxtApp())
+const { $schemas, $forms } = useNuxtApp()
 const props = defineProps({
   category: {
     type: String,
@@ -55,15 +53,11 @@ const props = defineProps({
 })
 
 const emit = defineEmits(["save", "validate"])
-
+const form = computed(() => $schemas?.[props.category] || {})
 const formStore = useFormStore()
 const valid = ref(false)
 const saving = ref(false)
 const formRef = ref(null)
-
-const form = computed(() => {
-  return formStore[props.category]?.form?.schema || {}
-})
 
 const save = async () => {
   if (valid.value) {
@@ -97,7 +91,7 @@ defineExpose({
 })
 
 onMounted(() => {
-  console.log("Form mounted with category:", props.category)
+  console.log("Form mounted with category:", $forms[props.category])
   console.log("FORM STORE:", formStore)
   if (!formStore[props.category]) {
     console.log("Adding module to form store:", props.category)

@@ -105,10 +105,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const formStore = useFormStore()
   console.log("Loading modules into formStore:", appConfig.form.modules)
 
-  for (const type of appConfig.form.modules) {
-    formStore.addModule(type)
-  }
-
   // Provide synchronous access to stores and queries
   nuxtApp.provide("forms", forms)
   console.log("forms: ", forms)
