@@ -69,6 +69,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const forms: Record<string, any> = {}
   console.log("INITIALIZING STORES", appConfig.form.modules)
   // Preload all required modules
+  const formStore = useFormStore()
   await Promise.all(
     appConfig.form.modules.map(async (type) => {
       try {
@@ -81,7 +82,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         if (model && model._defaults) {
           forms[type] = model._defaults
           schemas[type] = model.schema
-          console.log(`Successfully initialized store for ${type} `)
         } else {
           console.warn(
             `Module ${type} does not have expected structure:`,
@@ -94,14 +94,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     })
   )
 
-  // Load the forms into the formStore
-  const formStore = useFormStore()
-  formStore.$patch({
-    loading: false,
-    scrolled: false,
-    ...forms, // Spread the forms into the store
+  // Initialize the form modules in the store
+  console.log("Loading modules into formStore:", Object.keys(forms))
+
+  // Add each module to the form store
+  Object.keys(forms).forEach((type) => {
+    console.log(`Adding ${type} to form store`)
+    formStore.$patch({ [type]: forms[type] })
   })
-  console.log("Loading modules into formStore:", appConfig.form.modules)
 
   // Provide synchronous access to stores and queries
   nuxtApp.provide("forms", forms)

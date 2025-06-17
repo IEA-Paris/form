@@ -1,12 +1,23 @@
 import { defineStore } from "pinia"
 import type { InputParams, ModuleType, searchResults } from "../types"
-import { useNuxtApp } from "#imports"
+
+// Define a more flexible state interface that allows dynamic modules
+interface FormStoreState {
+  scrolled: boolean
+  loading: boolean
+  // This index signature allows for dynamic module properties
+  // The type is a union of all possible value types
+  [key: string]:
+    | boolean
+    | number
+    | string
+    | ModuleType
+    | searchResults
+    | Record<string, unknown>
+}
 
 export const useFormStore = defineStore("formStore", {
-  state: (): Record<
-    string,
-    boolean | number | string | ModuleType | searchResults
-  > => ({
+  state: (): FormStoreState => ({
     scrolled: false, // Remove process.browser check for SSR compatibility
     loading: false,
   }),
@@ -17,27 +28,38 @@ export const useFormStore = defineStore("formStore", {
   },
 
   actions: {
-    addModule(type: string, module: object) {
-      console.log("type: ", type)
-      console.log("$forms: ", module)
-      try {
-        if (!type) {
-          console.warn("addModule: type or module is undefined")
-          return
-        }
-        // Check if the module already exists
-        if (this[type]) {
-          console.warn(`Module ${type} already exists, skipping addition`)
-          return
-        }
-        // Add the module to the store
-        this[type] = module
+    /*  addModule(type: string, module: Record<string, unknown>) {
+      if (!type) {
+        console.warn("addModule: type or module is undefined")
+        return
+      }
+      // Check if the module already exists
+      if (this[type]) {
         console.log("this[type]: ", this[type])
+        console.warn(`Module ${type} already exists, skipping addition`)
+        return
+      }
+
+      try {
+        this.$patch((state: FormStoreState) => {
+          // Add the module to the state using the provided type as the key
+          state[type] = module
+        })
+
+        // If that doesn't work (rarely happens), try direct property assignment
+        if (!this[type]) {
+          this.$state[type] = module
+        }
+
+        // Debug verification - check if the module was added correctly
+        console.log("Verifying module addition:")
+        console.log("Direct access:", this[type])
+        console.log("State access:", this.$state[type])
         console.log(`Module ${type} added to the store`)
       } catch (error) {
-        console.error("Error in addModule: ", error)
+        console.error("Error adding module to store:", error)
       }
-    },
+    }, */
     save(type: string): boolean | undefined {
       try {
         // save the related form from the store to the target
@@ -70,8 +92,16 @@ export const useFormStore = defineStore("formStore", {
         this.scrolled = window.scrollY > 0
       }
     },
-
+    // This is an recursive function to get a key from the store.
+    // It uses an array "level" to navigate through the store's nested structure.
+    // if level is 1 length, and is not an integer, we have a primitive and return it
+    // if level is 1 length, and is an integer, we have an array and return it
+    // if level is > 1 length, we have an object and we need to recurse into it
+    // The current store context 'at the depth matching the level' is passed as 'store'
+    // and the next level is passed as 'level.slice(1)'.
     getKey({ key, level, store }: InputParams): any {
+      console.log("key: ", key)
+      console.log("level: ", level)
       if (!level || !Array.isArray(level) || level.length === 0) {
         return undefined
       }

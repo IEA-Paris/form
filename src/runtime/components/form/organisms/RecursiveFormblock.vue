@@ -1,7 +1,7 @@
 <template>
   <div class="recursive-form-block">
     <!-- Regular Field Form Block / primitive -->
-    <template v-if="!input.items">
+    <template v-if="input.type === 'PRIMITIVE'">
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
@@ -13,7 +13,7 @@
     </template>
 
     <!-- Collection Form Block (Array) -->
-    <template v-else-if="isArray(input.items)">
+    <template v-else-if="input.type === 'ARRAY'">
       <div class="collection-container">
         <h4 v-if="input.label">{{ input.label }}</h4>
         <p v-if="input.description" class="text-caption mb-2">
@@ -62,7 +62,7 @@
     </template>
 
     <!-- Object Form Block -->
-    <template v-else>
+    <template v-else-if="input.type === 'OBJECT'">
       <div class="object-container">
         <h4 v-if="input.label">{{ input.label }}</h4>
         <p v-if="input.description" class="text-caption mb-2">
@@ -81,15 +81,25 @@
         </v-card>
       </div>
     </template>
-
-    <slot />
+    <template v-else-if="input.type === 'TEMPLATE'">
+      <v-card class="pa-3" variant="outlined">
+        <FormOrganismsRecursiveFormblock
+          v-for="(field, key) in input.items"
+          :key="`object-${key}`"
+          :input="field"
+          :category="category"
+          :level="[...level, key]"
+          :saving="saving"
+        />
+      </v-card>
+      <slot />
+    </template>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
-
 const props = defineProps({
   input: {
     type: Object,

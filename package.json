@@ -1,65 +1,65 @@
 {
-  "name": "@paris-ias/form",
-  "version": "1.0.0",
-  "description": "A comprehensive Nuxt form module with components, composables, stores and GraphQL mutations",
-  "repository": "git+https://github.com/IEA-Paris/form.git",
-  "license": "MIT",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
-    }
-  },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "prepack": "nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
-    "lint": "eslint .",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
-  },
   "dependencies": {
     "@nuxt/kit": "^3.16.2",
     "vue": "^3.5.13"
   },
-  "peerDependencies": {
-    "vuetify": "^3.0.0"
-  },
+  "description": "A comprehensive Nuxt form module with components, composables, stores and GraphQL mutations",
   "devDependencies": {
     "@nuxt/devtools": "^1.4.2",
     "@nuxt/eslint-config": "^0.5.7",
-    "@nuxt/module-builder": "^0.8.4",
     "@nuxt/image": "1.10.0",
+    "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "^3.16.2",
     "@nuxt/test-utils": "^3.17.2",
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
+    "@nuxtjs/i18n": "^9.5.2",
+    "@nuxtjs/mdc": "0.16.1",
+    "@paris-ias/data": "^1.8.9",
     "@pinia/nuxt": "^0.5.4",
     "@types/node": "latest",
-    "@nuxtjs/mdc": "0.16.1",
-    "pinia": "^3.0.1",
-    "@nuxtjs/i18n": "^9.5.2",
-    "@paris-ias/data": "^1.8.5",
-    "graphql-tag": "^2.12.6",
     "changelogen": "^0.5.7",
-    "sass": "^1.78.0",
     "eslint": "^9.0.0",
-    "vite-plugin-graphql-loader": "^4.0.4",
+    "graphql-tag": "^2.12.6",
     "nuxt": "^3.16.2",
-    "vitest": "^3.1.1",
+    "pinia": "^3.0.1",
+    "sass": "^1.78.0",
     "typescript": "^5.6.3",
+    "vite-plugin-graphql-loader": "^4.0.4",
+    "vitest": "^3.1.1",
     "vue-tsc": "^2.1.10"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs",
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "main": "./dist/module.cjs",
+  "name": "@paris-ias/form",
+  "peerDependencies": {
+    "vuetify": "^3.0.0"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "repository": "git+https://github.com/IEA-Paris/form.git",
+  "scripts": {
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "lint": "eslint .",
+    "prepack": "nuxt-module-build build",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "test": "vitest run",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
+    "test:watch": "vitest watch"
+  },
+  "type": "module",
+  "types": "./dist/types.d.ts",
+  "version": "1.0.0"
 }

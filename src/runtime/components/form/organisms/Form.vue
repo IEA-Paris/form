@@ -58,7 +58,10 @@ const formStore = useFormStore()
 const valid = ref(false)
 const saving = ref(false)
 const formRef = ref(null)
-
+/* if (!formStore[props.category]) {
+  console.log("Adding module to form store:", props.category)
+  formStore.addModule(props.category, $forms[props.category])
+} */
 const save = async () => {
   if (valid.value) {
     saving.value = true
@@ -90,14 +93,7 @@ defineExpose({
   resetValidation: () => formRef.value?.resetValidation(),
 })
 
-onMounted(() => {
-  console.log("Form mounted with category:", $forms[props.category])
-  console.log("FORM STORE:", formStore)
-  if (!formStore[props.category]) {
-    console.log("Adding module to form store:", props.category)
-    formStore.addModule(props.category, $forms[props.category])
-  }
-})
+onMounted(() => {})
 </script>
 
 <style lang="scss" scoped>

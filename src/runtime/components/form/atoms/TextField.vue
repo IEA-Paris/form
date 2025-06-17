@@ -37,6 +37,9 @@ const props = defineProps({
 })
 
 const formStore = useFormStore()
+console.log("formStore: ", formStore)
+console.log("formStore[props.category]: ", formStore[props.category])
+console.log("props.category: ", props.category)
 
 const val = computed({
   get() {
