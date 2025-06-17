@@ -3,7 +3,7 @@
     <!-- Regular Field Form Block / primitive -->
     <template v-if="!input.items">
       <component
-        :is="getComponentName(input.type)"
+        :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
         :args="{ ...input, key: lastLevelItem }"
         :level="level"
@@ -123,7 +123,7 @@ const items = computed(() => {
   return formStore.getKey({
     key: lastLevelItem.value,
     level: props.level,
-    store: formStore[props.category]?.form?.values,
+    store: formStore[props.category],
   })
 })
 
@@ -140,7 +140,7 @@ const computeInputVisibility = (input) => {
   return true
 }
 
-const getComponentName = (type) => {
+const getComponentName = (name) => {
   const componentMap = {
     TextField: "FormAtomsTextField",
     TextArea: "FormAtomsTextArea",
@@ -150,8 +150,12 @@ const getComponentName = (type) => {
     FileInput: "FormAtomsFileInput",
     AutoComplete: "FormAtomsAutoComplete",
   }
-
-  return componentMap[type] || "FormTextField"
+  if (!componentMap[name]) {
+    console.log(
+      `Component for type "${name}" not found, defaulting to FormTextField`
+    )
+  }
+  return componentMap[name] || "FormTextField"
 }
 
 const addItem = () => {
@@ -171,11 +175,11 @@ const deleteItem = (index) => {
 }
 
 onMounted(() => {
-  console.log("RecursiveFormblock mounted:", {
+  /*   console.log("RecursiveFormblock mounted:", {
     input: props.input,
     level: props.level,
     category: props.category,
-  })
+  }) */
 })
 </script>
 

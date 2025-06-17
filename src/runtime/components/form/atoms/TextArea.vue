@@ -20,7 +20,7 @@
 
 <script setup>
 import { computed, onMounted } from "vue"
-import { useFormStore } from "#imports"
+import { useFormStore } from "../../../stores/form"
 
 const props = defineProps({
   args: {
@@ -45,7 +45,7 @@ const val = computed({
     return formStore.getKey({
       key: props.args.key,
       level: props.level,
-      store: formStore[props.category]?.form?.values,
+      store: formStore[props.category],
     })
   },
   set(value) {

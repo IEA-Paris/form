@@ -26,8 +26,9 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue"
-import { useFormStore } from "#imports"
-
+import { useFormStore } from "../../../stores/form"
+import { useNuxtApp } from "#app"
+const { $form } = useNuxtApp()
 const props = defineProps({
   args: {
     type: Object,
@@ -61,7 +62,7 @@ const val = computed({
     return formStore.getKey({
       key: props.args.key,
       level: props.level,
-      store: formStore[props.category]?.form?.values,
+      store: formStore[props.category],
     })
   },
   set(value) {
