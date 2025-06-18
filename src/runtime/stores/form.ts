@@ -99,36 +99,32 @@ export const useFormStore = defineStore("formStore", {
     // if level is > 1 length, we have an object and we need to recurse into it
     // The current store context 'at the depth matching the level' is passed as 'store'
     // and the next level is passed as 'level.slice(1)'.
+
     getKey({ key, level, store }: InputParams): any {
-      console.log("key: ", key)
-      console.log("level: ", level)
-      if (!level || !Array.isArray(level) || level.length === 0) {
+      if (!level || !Array.isArray(level) || level.length === 0 || !store) {
         return undefined
       }
 
-      const isArray = typeof level[0] === "number"
+      const currentKey = level[0]
+      const isArray = typeof currentKey === "number"
+
       if (level.length === 1) {
-        // Guard against undefined keys
-        if (store[level[0]] === undefined) store[level[0]] = ""
-        return isArray ? store.at(level[0]) : store[level[0]]
+        if (!store || store[currentKey] === undefined) {
+          return undefined
+        }
+        return isArray ? store.at(currentKey) : store[currentKey]
       }
 
-      if (level.length > 1) {
-        // Guard against undefined keys
-        if (store[level[0]] === undefined) {
-          if (isArray) {
-            store[level[0]] = []
-          } else {
-            // If the key is not a number, it is an object
-            store[level[0]] = {}
-          }
-        }
-        return this.getKey({
-          key,
-          level: level.slice(1),
-          store: isArray ? store.at(level[0]) : store[level[0]],
-        })
+      //
+      if (store[currentKey] === undefined) {
+        return undefined
       }
+
+      return this.getKey({
+        key,
+        level: level.slice(1),
+        store: isArray ? store.at(currentKey) : store[currentKey],
+      })
     },
 
     updateForm({ key, value, category, level, store }: InputParams): any {
