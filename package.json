@@ -6,6 +6,7 @@
   "description": "A comprehensive Nuxt form module with components, composables, stores and GraphQL mutations",
   "devDependencies": {
     "@nuxt/devtools": "^1.4.2",
+    "@nuxt/eslint": "^1.4.1",
     "@nuxt/eslint-config": "^0.5.7",
     "@nuxt/image": "1.10.0",
     "@nuxt/module-builder": "^0.8.4",
@@ -14,7 +15,7 @@
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
     "@nuxtjs/i18n": "^9.5.2",
     "@nuxtjs/mdc": "0.16.1",
-    "@paris-ias/data": "^1.8.9",
+    "@paris-ias/data": "^1.8.10",
     "@pinia/nuxt": "^0.5.4",
     "@types/node": "latest",
     "changelogen": "^0.5.7",

@@ -13,8 +13,8 @@ export default {
   splash_title: "Paris Institute for Advanced Study",
   recaptcha: "6Lc_xuUUAAAAALwowUq0cC0wFtFnZ2NCi3UH4i1j", // TODO: rm -> fetch from GPG secrets / SSM
   graphqlEndpoint:
-    "https://svrk22xx3zforcytbifrudb4k4.appsync-api.eu-west-2.amazonaws.com/graphql",
-  graphqlApiKey: "da2-2g3v2byhujc6xbv6ranaxb37wu",
+    "https://zqmgkoccmvcp7lpgdezhoduibu.appsync-api.eu-west-2.amazonaws.com/graphql",
+  graphqlApiKey: "da2-uqxvozuovfduvn4vn2d7qe63xa",
   keywords: "open source, open science, science, vuejs, nuxt, vuetify, vuex",
   logo: {
     light: "/logo.png",

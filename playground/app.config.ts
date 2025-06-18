@@ -15,18 +15,18 @@ export default defineAppConfig({
     modules: [
       "events",
       "news",
-      "people",
+      // "people",
       "projects",
       "fellowships",
-      /*  "publications",
-   "actions",
+      // "publications",
+      "actions",
       "disciplines",
       "apps",
       "affiliations",
       "files",
       "mailing",
-      "tags"
-      "users", */
+      "tags",
+      "users",
     ],
   },
 })
