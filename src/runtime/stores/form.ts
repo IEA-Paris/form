@@ -128,15 +128,6 @@ export const useFormStore = defineStore("formStore", {
     },
 
     updateForm({ key, value, category, level, store }: InputParams): any {
-      if (!category || !key) return
-
-      level = level ?? [
-        (this[category as string] as ModuleType)?.form?.values[key],
-      ]
-      store = store ?? (this[category as string] as ModuleType).form?.values
-
-      if (!level || !Array.isArray(level) || !store) return
-
       console.log(`updateForm
         key: ${key}
         value: ${value}
@@ -145,6 +136,14 @@ export const useFormStore = defineStore("formStore", {
         store: ${
           Array.isArray(store) ? store.length : Object.keys(store).length
         }`)
+      if (!category || !key) return
+
+      level = level ?? [
+        (this[category as string] as ModuleType)?.form?.values[key],
+      ]
+      store = store ?? (this[category as string] as ModuleType).form?.values
+
+      if (!level || !Array.isArray(level) || !store) return
 
       if (level.length === 1) {
         // Guard against undefined keys
