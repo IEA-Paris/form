@@ -2,24 +2,25 @@
   <v-text-field
     v-model="val"
     v-bind="$attrs"
-    :rules="rules"
     :label="args.label"
     :placeholder="args.placeholder"
     :hint="args.hint"
     :persistent-hint="!!args.hint"
-    :required="args.required"
+    :required="args.rules.required"
     :disabled="args.disabled"
     :readonly="args.readonly"
     :clearable="args.clearable"
     :counter="args.counter"
-    :type="args.type || 'text'"
+    :type="args.type"
   />
 </template>
 
 <script setup>
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
-
+/* import useFormValidation from "../../../composables/useFormValidation"
+console.log("generateInputRules: ", useFormValidation)
+ */
 const props = defineProps({
   args: {
     type: Object,
@@ -37,9 +38,6 @@ const props = defineProps({
 })
 
 const formStore = useFormStore()
-console.log("formStore: ", formStore)
-console.log("formStore[props.category]: ", formStore[props.category])
-console.log("props.category: ", props.category)
 
 const val = computed({
   get() {
@@ -61,51 +59,7 @@ const val = computed({
   },
 })
 
-const rules = computed(() => {
-  const ruleArray = []
-
-  if (props.args.required) {
-    ruleArray.push((value) => {
-      if (value === undefined || value === null || value === "") {
-        return "This field is required"
-      }
-      return true
-    })
-  }
-
-  if (props.args.minLength) {
-    ruleArray.push((value) => {
-      if (value && value.length < props.args.minLength) {
-        return `Minimum length is ${props.args.minLength}`
-      }
-      return true
-    })
-  }
-
-  if (props.args.maxLength) {
-    ruleArray.push((value) => {
-      if (value && value.length > props.args.maxLength) {
-        return `Maximum length is ${props.args.maxLength}`
-      }
-      return true
-    })
-  }
-
-  if (props.args.pattern) {
-    ruleArray.push((value) => {
-      if (value && !new RegExp(props.args.pattern).test(value)) {
-        return props.args.patternMessage || "Invalid format"
-      }
-      return true
-    })
-  }
-
-  return ruleArray
-})
-
-onMounted(() => {
-  console.log("TextField mounted with args:", props.args)
-})
+onMounted(() => {})
 </script>
 
 <style lang="scss" scoped></style>

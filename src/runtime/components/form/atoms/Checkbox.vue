@@ -2,7 +2,6 @@
   <v-checkbox
     v-model="val"
     v-bind="$attrs"
-    :rules="rules"
     :label="args.label"
     :hint="args.hint"
     :persistent-hint="!!args.hint"
@@ -18,7 +17,7 @@
 <script setup>
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
-
+// Update the import path below to the correct module where generateInputRules is exported
 const props = defineProps({
   args: {
     type: Object,
@@ -51,28 +50,12 @@ const val = computed({
       value,
       category: props.category,
       level: props.level,
+      store: formStore[props.category],
     })
   },
 })
 
-const rules = computed(() => {
-  const ruleArray = []
-
-  if (props.args.required) {
-    ruleArray.push((value) => {
-      if (value !== true && value !== props.args.trueValue) {
-        return "This field is required"
-      }
-      return true
-    })
-  }
-
-  return ruleArray
-})
-
-onMounted(() => {
-  console.log("Checkbox mounted with args:", props.args)
-})
+onMounted(() => {})
 </script>
 
 <style lang="scss" scoped></style>

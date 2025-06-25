@@ -3,7 +3,6 @@
     v-model="val"
     v-bind="$attrs"
     :items="computedItems"
-    :rules="rules"
     :label="args.label"
     :placeholder="args.placeholder"
     :hint="args.hint"

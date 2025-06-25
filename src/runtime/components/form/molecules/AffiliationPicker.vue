@@ -1,4 +1,4 @@
-<template>DOC PICKER</template>
+<template>AFFILIATION PICKER</template>
 <script setup lang="ts">
 // import { useDisplay } from "vuetify"
 // const { smAndUp } = useDisplay()

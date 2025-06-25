@@ -128,14 +128,6 @@ export const useFormStore = defineStore("formStore", {
     },
 
     updateForm({ key, value, category, level, store }: InputParams): any {
-      console.log(`updateForm
-        key: ${key}
-        value: ${value}
-        category: ${category}
-        level: ${level}
-        store: ${
-          Array.isArray(store) ? store.length : Object.keys(store).length
-        }`)
       if (!category || !key) return
 
       level = level ?? [

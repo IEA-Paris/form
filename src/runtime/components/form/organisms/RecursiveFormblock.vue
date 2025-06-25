@@ -15,7 +15,7 @@
     <!-- Collection Form Block (Array) -->
     <template v-else-if="input.type === 'ARRAY'">
       <div class="collection-container">
-        <h4 v-if="input.label">{{ input.label }}</h4>
+        <h4 v-if="input.label">A-{{ input.label }}</h4>
         <p v-if="input.description" class="text-caption mb-2">
           {{ input.description }}
         </p>
@@ -28,7 +28,7 @@
             variant="outlined"
           >
             <div class="d-flex justify-between align-center mb-2">
-              <h5>{{ input.itemTitle || `Item ${index + 1}` }}</h5>
+              <h5>{{ $t(input.label) || `Item ${index + 1}` }}</h5>
               <v-btn
                 icon="mdi-delete"
                 size="small"
@@ -64,7 +64,7 @@
     <!-- Object Form Block -->
     <template v-else-if="input.type === 'OBJECT'">
       <div class="object-container">
-        <h4 v-if="input.label">{{ input.label }}</h4>
+        <h4 v-if="input.label">O-{{ $t(input.label) }}</h4>
         <p v-if="input.description" class="text-caption mb-2">
           {{ input.description }}
         </p>
@@ -82,7 +82,8 @@
       </div>
     </template>
     <template v-else-if="input.type === 'TEMPLATE'">
-      <v-card class="pa-3" variant="outlined">
+      <v-card class="ml-3 pa-3" variant="outlined">
+        <h4 v-if="input.label">T-{{ $t(input.label) }}</h4>
         <FormOrganismsRecursiveFormblock
           v-for="(field, key) in input.items"
           :key="`object-${key}`"
@@ -93,6 +94,26 @@
         />
       </v-card>
       <slot />
+    </template>
+    <!-- Document Form Block -->
+    <template v-else-if="input.type === 'DOCUMENT'">
+      <div class="document-container">
+        <h4 v-if="input.label">D-{{ $t(input.label) }}</h4>
+        <p v-if="input.description" class="text-caption mb-2">
+          {{ input.description }}
+        </p>
+
+        <v-card class="pa-3" variant="outlined">
+          <component
+            :is="getComponentName(input.component)"
+            v-if="computeInputVisibility(input)"
+            :args="{ ...input, key: lastLevelItem }"
+            :level="level"
+            :category="category"
+            :disabled="saving"
+          />
+        </v-card>
+      </div>
     </template>
   </div>
 </template>
@@ -159,6 +180,13 @@ const getComponentName = (name) => {
     BooleanSwitch: "FormAtomsBooleanSwitch",
     FileInput: "FormAtomsFileInput",
     AutoComplete: "FormAtomsAutoComplete",
+    ColorPicker: "FormAtomsColorPicker",
+    DatePicker: "FormAtomsDatePicker",
+    DateTimePicker: "FormAtomsDateTimePicker",
+    TimePicker: "FormAtomsTimePicker",
+    AffiliationPicker: "FormMoleculesAffiliationPicker",
+    ImagePicker: "FormMoleculesImagePicker",
+    DocumentPicker: "FormMoleculesDocumentPicker",
   }
   if (!componentMap[name]) {
     console.log(
@@ -183,13 +211,9 @@ const deleteItem = (index) => {
     level: [...props.level, index],
   })
 }
-
+console.log("RecursiveFormblock props:", props)
 onMounted(() => {
-  /*   console.log("RecursiveFormblock mounted:", {
-    input: props.input,
-    level: props.level,
-    category: props.category,
-  }) */
+  console.log("RecursiveFormblock mounted:", props.type)
 })
 </script>
 
