@@ -78,5 +78,8 @@
   "mendel": "Mendeley",
   "idRef": "IdRef",
   "blueSky": "BlueSky",
-  "x": "X"
+  "x": "X",
+  "affiliation-picker": "AFFILIATION PICKER",
+  "doc-picker": "DOC PICKER",
+  "image-picker": "IMAGE PICKER"
 }

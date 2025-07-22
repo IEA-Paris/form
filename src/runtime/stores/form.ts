@@ -218,12 +218,14 @@ export const useFormStore = defineStore("formStore", {
           (this[category as string] as ModuleType).form?.values[key],
         ]
         store = store ?? (this[category as string] as ModuleType).form?.values
-        const defaultForm = (this[category as string] as ModuleType).form
+
+        // Need to take item 0 of default array to add a new item with default values
+        /*         const defaultForm = (this[category as string] as ModuleType).form
           ?._defaults as string
 
         if (!defaults && defaultForm) {
           defaults = JSON.parse(defaultForm)
-        }
+        } */
 
         if (!level || !Array.isArray(level) || !store) return
 
@@ -254,6 +256,21 @@ export const useFormStore = defineStore("formStore", {
       } catch (error) {
         console.log("error: ", error)
       }
+    },
+    getSuggestedPicks(
+      category: string,
+      type: string
+    ): Array<{ label: string; value: string }> {
+      const module = this[category] as ModuleType
+      if (!module || !module.form || !module.form.schema) return []
+
+      const schema = module.form.schema[type]
+      if (!schema || !schema.suggestedPicks) return []
+
+      return schema.suggestedPicks.map((pick: any) => ({
+        label: pick.label,
+        value: pick.value,
+      }))
     },
   },
 })

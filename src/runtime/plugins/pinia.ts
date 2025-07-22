@@ -79,7 +79,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         const model = (await imports.model).default
 
         // Check if the model has the expected structure
-        if (model && model._defaults) {
+        if (model && model._defaults && model.schema) {
           forms[type] = model._defaults
           schemas[type] = model.schema
         } else {

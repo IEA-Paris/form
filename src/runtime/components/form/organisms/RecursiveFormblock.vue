@@ -20,9 +20,15 @@
           {{ input.description }}
         </p>
 
-        <div v-if="items && items.length > 0">
+        <div
+          v-if="
+            input.items &&
+            Object.keys(input.items).length &&
+            Object.keys(input.items).length > 0
+          "
+        >
           <v-card
-            v-for="(item, index) in items"
+            v-for="(item, index) in Object.keys(input.items)"
             :key="`collection-${level.join('-')}-${index}`"
             class="mb-3 pa-3"
             variant="outlined"
@@ -80,20 +86,6 @@
           />
         </v-card>
       </div>
-    </template>
-    <template v-else-if="input.type === 'TEMPLATE'">
-      <v-card class="ml-3 pa-3" variant="outlined">
-        <h4 v-if="input.label">T-{{ $t(input.label) }}</h4>
-        <FormOrganismsRecursiveFormblock
-          v-for="(field, key) in input.items"
-          :key="`object-${key}`"
-          :input="field"
-          :category="category"
-          :level="[...level, key]"
-          :saving="saving"
-        />
-      </v-card>
-      <slot />
     </template>
     <!-- Document Form Block -->
     <template v-else-if="input.type === 'DOCUMENT'">
@@ -187,6 +179,9 @@ const getComponentName = (name) => {
     AffiliationPicker: "FormMoleculesAffiliationPicker",
     ImagePicker: "FormMoleculesImagePicker",
     DocumentPicker: "FormMoleculesDocumentPicker",
+    ObjectContainerPanel: "FormMoleculesObjectContainerPanel",
+    CollectionContainerPanel: "FormMoleculesCollectionContainerPanel",
+    ObjectKeyPairContainer: "FormMoleculesObjectKeyPairContainer",
   }
   if (!componentMap[name]) {
     console.log(
