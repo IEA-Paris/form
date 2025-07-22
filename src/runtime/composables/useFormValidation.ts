@@ -11,7 +11,7 @@ const doiRegex = /^10\.\d{4,}\/[-._;()\/:a-zA-Z0-9]+$/
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/
 const orcidRegex = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/
 
-export const useFormValidation = () => {
+export default (input) => {
   const { $i18n } = useNuxtApp()
   const t = $i18n?.t || ((key: string, params?: any[]) => key)
 
@@ -78,109 +78,89 @@ export const useFormValidation = () => {
     return result
   }
 
-  const generateInputRules = (input: any): FormValidationRule[] => {
-    if (!input?.rules) return []
-    const rules: FormValidationRule[] = []
+  if (!input?.rules) return []
+  const rules: FormValidationRule[] = []
 
-    if (Object.keys(input?.rules)?.length > 0) {
-      Object.keys(input?.rules).forEach((rule) => {
-        switch (rule) {
-          case "required":
-            rules.push((value) => {
-              return requiredRules(value) || t("rules.required")
-            })
-            break
-          case "min":
-            rules.push((value) => {
-              return (
-                !!minRules(input.rules[rule])(value) ||
-                t("rules.at-least-0-characters", [input.rules[rule]])
-              )
-            })
-            break
-          case "max":
-            rules.push((value) => {
-              return (
-                !!maxRules(input.rules[rule])(value) ||
-                t("rules.max-0-characters", [input.rules[rule]])
-              )
-            })
-            break
-          case "email":
-            rules.push((value) => {
-              return !!emailRules(value) || t("rules.invalid-e-mail")
-            })
-            break
-          case "url":
-            rules.push((value) => {
-              return !!urlRules(value) || t("rules.invalid-url")
-            })
-            break
-          case "alpha":
-            rules.push((value) => {
-              return (
-                !!alphaRules(value) ||
-                t("rules.numbers-and-special-characters-not-allowed")
-              )
-            })
-            break
-          case "yt":
-            rules.push((value) => {
-              return !!ytRules(value) || t("rules.invalid-youtube-url")
-            })
-            break
-          case "color":
-            rules.push((value) => {
-              return !!colorRules(value) || t("rules.invalid-color-code")
-            })
-            break
-          case "ror":
-            rules.push((value) => {
-              return !!rorRules(value) || t("rules.invalid-ror-code")
-            })
-            break
-          case "DOI":
-            rules.push((value) => {
-              return !!doiRules(value) || t("rules.invalid-doi-code")
-            })
-            break
-          case "date":
-            rules.push((value) => {
-              return !!dateRules(value) || t("rules.invalid-date")
-            })
-            break
-          case "digit":
-            rules.push((value) => {
-              return digitRules(value) || t("rules.only-digits-allowed")
-            })
-            break
-          case "orcid":
-            rules.push((value) => {
-              return !!orcidRules(value) || t("rules.invalid-orcid")
-            })
-            break
-        }
-      })
-    }
-
-    return rules
+  if (Object.keys(input?.rules)?.length > 0) {
+    Object.keys(input?.rules).forEach((rule) => {
+      switch (rule) {
+        case "required":
+          rules.push((value) => {
+            return requiredRules(value) || t("rules.required")
+          })
+          break
+        case "min":
+          rules.push((value) => {
+            return (
+              !!minRules(input.rules[rule])(value) ||
+              t("rules.at-least-0-characters", [input.rules[rule]])
+            )
+          })
+          break
+        case "max":
+          rules.push((value) => {
+            return (
+              !!maxRules(input.rules[rule])(value) ||
+              t("rules.max-0-characters", [input.rules[rule]])
+            )
+          })
+          break
+        case "email":
+          rules.push((value) => {
+            return !!emailRules(value) || t("rules.invalid-e-mail")
+          })
+          break
+        case "url":
+          rules.push((value) => {
+            return !!urlRules(value) || t("rules.invalid-url")
+          })
+          break
+        case "alpha":
+          rules.push((value) => {
+            return (
+              !!alphaRules(value) ||
+              t("rules.numbers-and-special-characters-not-allowed")
+            )
+          })
+          break
+        case "yt":
+          rules.push((value) => {
+            return !!ytRules(value) || t("rules.invalid-youtube-url")
+          })
+          break
+        case "color":
+          rules.push((value) => {
+            return !!colorRules(value) || t("rules.invalid-color-code")
+          })
+          break
+        case "ror":
+          rules.push((value) => {
+            return !!rorRules(value) || t("rules.invalid-ror-code")
+          })
+          break
+        case "DOI":
+          rules.push((value) => {
+            return !!doiRules(value) || t("rules.invalid-doi-code")
+          })
+          break
+        case "date":
+          rules.push((value) => {
+            return !!dateRules(value) || t("rules.invalid-date")
+          })
+          break
+        case "digit":
+          rules.push((value) => {
+            return digitRules(value) || t("rules.only-digits-allowed")
+          })
+          break
+        case "orcid":
+          rules.push((value) => {
+            return !!orcidRules(value) || t("rules.invalid-orcid")
+          })
+          break
+      }
+    })
   }
 
-  return {
-    requiredRules,
-    alphaRules,
-    minRules,
-    maxRules,
-    urlRules,
-    emailRules,
-    ytRules,
-    colorRules,
-    rorRules,
-    doiRules,
-    dateRules,
-    orcidRules,
-    digitRules,
-    computeInputVisibility,
-    generateInputRules,
-  }
+  return rules
 }

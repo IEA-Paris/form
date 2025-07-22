@@ -6,7 +6,7 @@
     :placeholder="args.placeholder"
     :hint="args.hint"
     :persistent-hint="!!args.hint"
-    :required="args.rules.required"
+    :required="(args.rules && args.rules.required) || false"
     :disabled="args.disabled"
     :readonly="args.readonly"
     :clearable="args.clearable"
@@ -48,7 +48,6 @@ const val = computed({
     })
   },
   set(value) {
-    console.log("value: ", value)
     formStore.updateForm({
       key: props.args.key,
       value,

@@ -81,5 +81,18 @@
   "x": "X",
   "affiliation-picker": "AFFILIATION PICKER",
   "doc-picker": "DOC PICKER",
-  "image-picker": "IMAGE PICKER"
+  "image-picker": "IMAGE PICKER",
+  "select-a-social-media": "Select a social media",
+  "rules": {
+    "invalid-url": "Invalid URL",
+    "invalid-email": "Invalid email address",
+    "invalid-phone": "Invalid phone number",
+    "invalid-date": "Invalid date format",
+    "invalid-time": "Invalid time format",
+    "invalid-datetime": "Invalid date and time format",
+    "invalid-color": "Invalid color code",
+    "invalid-ror": "Invalid ROR identifier syntax",
+    "invalid-doi": "Invalid DOI",
+    "invalid-orcid": "Invalid ORCID number"
+  }
 }

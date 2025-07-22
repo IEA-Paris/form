@@ -15,7 +15,7 @@
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
     "@nuxtjs/i18n": "^9.5.2",
     "@nuxtjs/mdc": "0.16.1",
-    "@paris-ias/data": "1.8.33",
+    "@paris-ias/data": "1.8.36",
     "@pinia/nuxt": "^0.5.4",
     "@types/node": "latest",
     "changelogen": "^0.5.7",

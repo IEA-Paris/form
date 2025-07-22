@@ -6,8 +6,8 @@
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
         :args="{ ...input, key: lastLevelItem }"
-        :level="level"
-        :category="category"
+        :level
+        :category
         :disabled="saving"
       />
     </template>
@@ -48,9 +48,9 @@
               v-for="(field, fieldIndex) in input.items"
               :key="`field-${index}-${fieldIndex}`"
               :input="field"
-              :category="category"
+              :category
               :level="[...level, index, field.key]"
-              :saving="saving"
+              :saving
             />
           </v-card>
         </div>
@@ -75,16 +75,14 @@
           {{ input.description }}
         </p>
 
-        <v-card class="pa-3" variant="outlined">
-          <FormOrganismsRecursiveFormblock
-            v-for="(field, key) in input.items"
-            :key="`object-${key}`"
-            :input="field"
-            :category="category"
-            :level="[...level, key]"
-            :saving="saving"
-          />
-        </v-card>
+        <component
+          :is="getComponentName(input.component)"
+          v-if="computeInputVisibility(input)"
+          :args="{ ...input, key: lastLevelItem }"
+          :level
+          :category
+          :disabled="saving"
+        />
       </div>
     </template>
     <!-- Document Form Block -->
@@ -100,8 +98,8 @@
             :is="getComponentName(input.component)"
             v-if="computeInputVisibility(input)"
             :args="{ ...input, key: lastLevelItem }"
-            :level="level"
-            :category="category"
+            :level
+            :category
             :disabled="saving"
           />
         </v-card>
@@ -112,6 +110,10 @@
 
 <script setup>
 import { computed, onMounted } from "vue"
+import {
+  getComponentName,
+  computeInputVisibility,
+} from "../../../composables/useFormDisplay"
 import { useFormStore } from "../../../stores/form"
 const props = defineProps({
   input: {
@@ -152,43 +154,6 @@ const items = computed(() => {
 
 const isArray = (items) => {
   return Array.isArray(items)
-}
-
-const computeInputVisibility = (input) => {
-  // Simple visibility logic - can be enhanced
-  if (input.condition) {
-    // Implement conditional visibility logic here
-    return true
-  }
-  return true
-}
-
-const getComponentName = (name) => {
-  const componentMap = {
-    TextField: "FormAtomsTextField",
-    TextArea: "FormAtomsTextArea",
-    Select: "FormAtomsSelect",
-    Checkbox: "FormAtomsCheckbox",
-    BooleanSwitch: "FormAtomsBooleanSwitch",
-    FileInput: "FormAtomsFileInput",
-    AutoComplete: "FormAtomsAutoComplete",
-    ColorPicker: "FormAtomsColorPicker",
-    DatePicker: "FormAtomsDatePicker",
-    DateTimePicker: "FormAtomsDateTimePicker",
-    TimePicker: "FormAtomsTimePicker",
-    AffiliationPicker: "FormMoleculesAffiliationPicker",
-    ImagePicker: "FormMoleculesImagePicker",
-    DocumentPicker: "FormMoleculesDocumentPicker",
-    ObjectContainerPanel: "FormMoleculesObjectContainerPanel",
-    CollectionContainerPanel: "FormMoleculesCollectionContainerPanel",
-    ObjectKeyPairContainer: "FormMoleculesObjectKeyPairContainer",
-  }
-  if (!componentMap[name]) {
-    console.log(
-      `Component for type "${name}" not found, defaulting to FormTextField`
-    )
-  }
-  return componentMap[name] || "FormTextField"
 }
 
 const addItem = () => {

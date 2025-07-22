@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
   ],
   ssr: true,
-
+  css: ["@mdi/font/css/materialdesignicons.min.css"],
   build: {
     transpile: ["vuetify", "@paris-ias/list"],
   },
