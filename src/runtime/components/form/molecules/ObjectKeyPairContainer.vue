@@ -68,7 +68,7 @@ const props = defineProps({
   },
 })
 const selected = ref([])
-const selector = ref(null)
+const selector = ref()
 const val = computed({
   get() {
     return formStore.getKey({

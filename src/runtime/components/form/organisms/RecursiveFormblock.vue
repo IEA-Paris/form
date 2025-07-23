@@ -20,15 +20,9 @@
           {{ input.description }}
         </p>
 
-        <div
-          v-if="
-            input.items &&
-            Object.keys(input.items).length &&
-            Object.keys(input.items).length > 0
-          "
-        >
+        <div v-if="input.items && input.items.length && input.items.length > 0">
           <v-card
-            v-for="(item, index) in Object.keys(input.items)"
+            v-for="(item, index) in input.items"
             :key="`collection-${level.join('-')}-${index}`"
             class="mb-3 pa-3"
             variant="outlined"
@@ -38,8 +32,7 @@
               <v-btn
                 icon="mdi-delete"
                 size="small"
-                color="error"
-                variant="text"
+                variant="outlined"
                 @click="deleteItem(index)"
               />
             </div>
@@ -172,9 +165,7 @@ const deleteItem = (index) => {
   })
 }
 console.log("RecursiveFormblock props:", props)
-onMounted(() => {
-  console.log("RecursiveFormblock mounted:", props.type)
-})
+onMounted(() => {})
 </script>
 
 <style lang="scss" scoped>

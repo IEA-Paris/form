@@ -29,8 +29,8 @@ export const getComponentName = (name) => {
   }
   if (!componentMap[name]) {
     console.log(
-      `Component for type "${name}" not found, defaulting to FormTextField`
+      `Component for type "${name}" not found, defaulting to FormAtomsTextField`
     )
   }
-  return componentMap[name] || "FormTextField"
+  return componentMap[name] || "FormAtomsTextField"
 }
