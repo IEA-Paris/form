@@ -5,6 +5,9 @@
         <v-form ref="formRef" v-model="valid">
           <div id="container">
             <template v-for="(input, key, index) in form" :key="key">
+              <!-- {{ input }}
+              {{ key }}
+              {{ index }} -->
               <FormOrganismsRecursiveFormblock
                 :input="input"
                 :category="category"
@@ -94,6 +97,8 @@ defineExpose({
 })
 
 onMounted(() => {})
+
+console.log("PARENTFORM:", form.value)
 </script>
 
 <style lang="scss" scoped>

@@ -2,6 +2,7 @@
   <div class="recursive-form-block">
     <!-- Regular Field Form Block / primitive -->
     <template v-if="input.type === 'PRIMITIVE'">
+      <!-- {{ "JE SUIS PRIMITIVE" }} -->
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
@@ -21,6 +22,8 @@
         </p>
 
         <div v-if="input.items && input.items.length && input.items.length > 0">
+          <!-- {{ "EXIST" }} -->
+
           <v-card
             v-for="(item, index) in input.items"
             :key="`collection-${level.join('-')}-${index}`"
@@ -28,6 +31,7 @@
             variant="outlined"
           >
             <div class="d-flex justify-between align-center mb-2">
+              <!-- {{ `TTOT-${item.label}` }} -->
               <h5>{{ $t(input.label) || `Item ${index + 1}` }}</h5>
               <v-btn
                 icon="mdi-delete"
@@ -36,15 +40,31 @@
                 @click="deleteItem(index)"
               />
             </div>
+            <!-- {{ input.items }} -->
+            <template
+              v-for="(obj, objIndex) in input.items"
+              :key="`obj-${objIndex}`"
+            >
+              <!-- {{ obj }}
+              {{ objIndex }} -->
 
-            <FormOrganismsRecursiveFormblock
-              v-for="(field, fieldIndex) in input.items"
-              :key="`field-${index}-${fieldIndex}`"
-              :input="field"
-              :category
-              :level="[...level, index, field.key]"
-              :saving
-            />
+              <div
+                v-for="(field, key, fieldIndex) in obj"
+                :key="`field-${objIndex}-${fieldIndex}-${key}`"
+                }}
+              >
+                <!-- {{ field }}
+                {{ key }}
+                {{ index }} -->
+                <FormOrganismsRecursiveFormblock
+                  :input="field"
+                  :category
+                  :level="[key]"
+                  :saving
+                  :root-index="fieldIndex"
+                />
+              </div>
+            </template>
           </v-card>
         </div>
 
