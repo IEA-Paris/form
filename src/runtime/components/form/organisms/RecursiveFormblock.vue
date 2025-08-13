@@ -59,7 +59,7 @@
                 <FormOrganismsRecursiveFormblock
                   :input="field"
                   :category
-                  :level="[key]"
+                  :level="[...level, key]"
                   :saving
                   :root-index="fieldIndex"
                 />
