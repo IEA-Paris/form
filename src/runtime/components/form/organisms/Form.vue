@@ -97,8 +97,6 @@ defineExpose({
 })
 
 onMounted(() => {})
-
-console.log("PARENTFORM:", form.value)
 </script>
 
 <style lang="scss" scoped>

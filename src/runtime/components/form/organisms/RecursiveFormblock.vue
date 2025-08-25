@@ -6,8 +6,8 @@
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
         :args="{ ...input, key: lastLevelItem }"
-        :level="level"
-        :category="category"
+        :level
+        :category
         :disabled="saving"
       />
     </template>
@@ -21,33 +21,28 @@
         </p>
 
         <v-card
-          v-for="(row, idx) in collectionValue"
-          :key="`col-${level.join('-')}-${idx}`"
+          v-for="(item, index) in input.items"
+          :key="`col-${level.join('-')}-${index}`"
           class="mb-3 pa-3"
           variant="outlined"
         >
-          <div class="d-flex justify-between align-center mb-2">
-            <h5>{{ $t(input.label) || `Item ${idx + 1}` }}</h5>
+          {{ item }}
+          <!--          <div class="d-flex justify-between align-center mb-2">
+            <h5>{{ $t(item.label) || `Item ${index + 1}` }}</h5>
             <v-btn
               icon="mdi-delete"
               size="small"
               variant="outlined"
-              @click="deleteItem(idx)"
+              @click="deleteItem(index)"
             />
-          </div>
-
-          <template
-            v-for="(fieldSchema, fieldKey, fIndex) in itemFieldsSchema"
-            :key="`field-${idx}-${String(fieldKey)}`"
-          >
-            <FormOrganismsRecursiveFormblock
-              :input="fieldSchema"
-              :category="category"
-              :level="itemBaseLevel(idx, fieldKey)"
-              :saving="saving"
-              :root-index="fIndex"
-            />
-          </template>
+          </div> -->
+          <!--         <FormOrganismsRecursiveFormblock
+            :input="item"
+            :category
+            :level="[...props.level, index]"
+            :saving
+            :root-index="index"
+          /> -->
         </v-card>
 
         <v-btn
@@ -75,8 +70,8 @@
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
         :args="{ ...input, key: lastLevelItem }"
-        :level="level"
-        :category="category"
+        :level
+        :category
         :disabled="saving"
       />
     </template>
@@ -93,8 +88,8 @@
             :is="getComponentName(input.component)"
             v-if="computeInputVisibility(input)"
             :args="{ ...input, key: lastLevelItem }"
-            :level="level"
-            :category="category"
+            :level
+            :category
             :disabled="saving"
           />
         </v-card>
@@ -122,13 +117,6 @@ const props = defineProps({
 const formStore = useFormStore()
 
 const lastLevelItem = computed(() => props.level[props.level.length - 1])
-
-const collectionValue = computed(() => {
-  const module = formStore[props.category]
-  const rootValues = module?.form?._defaults || {}
-  const base = formStore.getKey({ level: props.level, store: rootValues })
-  return Array.isArray(base) ? base : []
-})
 
 const wrapperKey = computed(() => {
   const it = props.input?.items
@@ -189,13 +177,6 @@ const itemTemplate = computed(() => {
 
   return k ? { [k]: core } : core
 })
-
-const itemBaseLevel = (idx, fieldKey) => {
-  const k = wrapperKey.value
-  return k
-    ? [...props.level, idx, k, fieldKey]
-    : [...props.level, idx, fieldKey]
-}
 
 const addItem = () => {
   formStore.addFormItem({

@@ -11,8 +11,7 @@ export interface ModuleType {
   source?: string
   loading?: boolean
   form?: {
-    schema: Record<string, any>
-    _defaults?: string
+    [key: string]: any
   }
 }
 

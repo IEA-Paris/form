@@ -219,6 +219,7 @@ export const useFormStore = defineStore("formStore", {
         console.log("error: ", error)
       }
     },
+
     getSuggestedPicks(category: string, type: string) {
       const module = this[category] as ModuleType
       if (!module?.form?.schema) return []

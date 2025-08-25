@@ -31,8 +31,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       model: import("@paris-ias/data/dist/form/action.js"),
     }),
 
-    affiliations: () => ({
-      model: import("@paris-ias/data/dist/form/affiliations.js"),
+    affiliation: () => ({
+      model: import("@paris-ias/data/dist/form/affiliation.js"),
     }),
     disciplines: () => ({
       model: import("@paris-ias/data/dist/form/disciplines.js"),
@@ -66,6 +66,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   await Promise.all(
     appConfig.form.modules.map(async (type) => {
       try {
+        console.log("type: ", type)
         const imports = moduleImports[type as keyof typeof moduleImports]()
         const model = (await imports.model).default
 
@@ -77,10 +78,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
             [type]: {
               source: "md",
               loading: false,
-              form: {
-                schema: model.schema,
-                _defaults: model._defaults,
-              },
+              form: model._defaults,
             },
           })
         } else {
