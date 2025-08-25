@@ -2791,12 +2791,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@paris-ias/data@npm:1.8.36":
-  version: 1.8.36
-  resolution: "@paris-ias/data@npm:1.8.36"
+"@paris-ias/data@npm:1.8.38":
+  version: 1.8.38
+  resolution: "@paris-ias/data@npm:1.8.38"
   dependencies:
     ts-node: "npm:^10.9.2"
-  checksum: 10c0/67623f582df757bcc02d55da73b1ab12d398596e6265a23541605e575e096d9cdcb73f61b80c8f96e58b520b9bf92b02010e5d58c986757e9eb106df59baaeca
+  checksum: 10c0/8d1b580b6fd1a3cc4e889f858eab432265975572f1918f4abaaab56eeaf725f1a6edbb01523d5c456046af5257c899a9c3f930fe4044c2c0da8bab2a8f87230d
   languageName: node
   linkType: hard
 
@@ -2815,7 +2815,7 @@ __metadata:
     "@nuxtjs/apollo": "npm:^5.0.0-alpha.14"
     "@nuxtjs/i18n": "npm:^9.5.2"
     "@nuxtjs/mdc": "npm:0.16.1"
-    "@paris-ias/data": "npm:1.8.36"
+    "@paris-ias/data": "npm:1.8.38"
     "@pinia/nuxt": "npm:^0.5.4"
     "@types/node": "npm:latest"
     changelogen: "npm:^0.5.7"

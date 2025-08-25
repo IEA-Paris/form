@@ -117,8 +117,8 @@ export const useFormStore = defineStore("formStore", {
       if (!category || !key) return
 
       const module = this[category as string] as ModuleType
-      level = level ?? [module?.form?.values?.[key]]
-      store = store ?? module?.form?.values
+      level = level ?? [module?.form?._defaults?.[key]]
+      store = store ?? module?.form?._defaults
 
       if (!level || !Array.isArray(level) || !store) return
 
@@ -151,8 +151,8 @@ export const useFormStore = defineStore("formStore", {
       if (!category || !key) return
 
       const module = this[category as string] as ModuleType
-      level = level ?? [module?.form?.values?.[key]]
-      store = store ?? module?.form?.values
+      level = level ?? [module?.form?._defaults?.[key]]
+      store = store ?? module?.form?._defaults
 
       if (!level || !Array.isArray(level) || !store) return
 
@@ -181,7 +181,7 @@ export const useFormStore = defineStore("formStore", {
         if (!category || !key) return
 
         const module = this[category as string] as ModuleType
-        store = store ?? module?.form?.values
+        store = store ?? module?.form?._defaults
         level = level ?? [key]
 
         if (!level || !Array.isArray(level) || !store) return
