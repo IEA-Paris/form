@@ -78,7 +78,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
               source: "md",
               loading: false,
               form: {
-                values,
                 schema: model.schema,
                 _defaults: model._defaults,
               },

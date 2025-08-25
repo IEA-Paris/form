@@ -125,7 +125,7 @@ const lastLevelItem = computed(() => props.level[props.level.length - 1])
 
 const collectionValue = computed(() => {
   const module = formStore[props.category]
-  const rootValues = module?.form?.values
+  const rootValues = module?.form?._defaults || {}
   const base = formStore.getKey({ level: props.level, store: rootValues })
   return Array.isArray(base) ? base : []
 })
