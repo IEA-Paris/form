@@ -13,7 +13,6 @@
 const props = defineProps({
   args: {
     type: Object,
-    required: true,
     default: () => {
       return {}
     },
@@ -21,6 +20,18 @@ const props = defineProps({
   level: {
     type: Array,
     required: false,
+    default: () => {
+      return []
+    },
+  },
+  category: {
+    type: String,
+    default: "",
+  },
+  saving: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 })
 </script>

@@ -39,7 +39,7 @@
 import { computed, ref, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
-const { $schemas, $forms } = useNuxtApp()
+const { $schemas } = useNuxtApp()
 const props = defineProps({
   category: {
     type: String,
@@ -95,8 +95,6 @@ defineExpose({
   reset: () => formRef.value?.reset(),
   resetValidation: () => formRef.value?.resetValidation(),
 })
-
-onMounted(() => {})
 </script>
 
 <style lang="scss" scoped>

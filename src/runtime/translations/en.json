@@ -94,5 +94,15 @@
     "invalid-ror": "Invalid ROR identifier syntax",
     "invalid-doi": "Invalid DOI",
     "invalid-orcid": "Invalid ORCID number"
-  }
+  },
+  "experiences": "Career",
+  "disciplines": "Disciplines",
+  "video": "Video",
+  "related": "Related items",
+  "consent": "User Consent",
+  "groups": "Autorizations",
+  "add-a-media": "Add a media channel",
+  "researchgate": "ResearchGate",
+  "mendeley": "Mendeley",
+  "bluesky": "BlueSky"
 }

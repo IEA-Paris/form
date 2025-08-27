@@ -66,7 +66,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   await Promise.all(
     appConfig.form.modules.map(async (type) => {
       try {
-        console.log("type: ", type)
         const imports = moduleImports[type as keyof typeof moduleImports]()
         const model = (await imports.model).default
 

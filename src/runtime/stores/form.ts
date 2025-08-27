@@ -114,22 +114,35 @@ export const useFormStore = defineStore("formStore", {
       })
     },
     updateForm({ key, value, category, level, store }: InputParams): any {
-      if (!category || !key) return
+      console.log("store: ", store)
+      console.log("level: ", level)
+      console.log("value: ", value)
+      console.log("key: ", key)
+      if (!category || !key) {
+        console.warn("updateForm: category or key is undefined")
+        return
+      }
 
       const module = this[category as string] as ModuleType
       level = level ?? [module?.form?._defaults?.[key]]
       store = store ?? module?.form?._defaults
 
-      if (!level || !Array.isArray(level) || !store) return
+      if (!level || !Array.isArray(level) || !store) {
+        console.warn("updateForm: level or store is undefined")
+        return
+      }
 
       if (level.length === 1) {
         if (store[level[0]] === undefined) store[level[0]] = ""
+        console.log("updateForm: primitive value detected")
         store[level[0]] = value
         return
       }
 
       const isArrayIndex = typeof level[0] === "number"
+      console.log("store[level[0]]: ", store[level[0]])
       if (store[level[0]] === undefined) {
+        console.log("No default version of ", key)
         store[level[0]] = isArrayIndex ? [] : {}
       }
 

@@ -26,8 +26,8 @@
       variant="outlined"
       :label="$t('add-a-media')"
       :items="
-        val
-          ? Object.keys(val).filter((key) => {
+        args.items
+          ? Object.keys(args.items).filter((key) => {
               if (selected.includes(key)) {
                 return false
               }
@@ -53,14 +53,13 @@ const formStore = useFormStore()
 const props = defineProps({
   args: {
     type: Object,
-    required: true,
     default: () => {
       return {}
     },
   },
   level: {
     type: Array,
-    required: false,
+    default: () => [],
   },
   category: {
     type: String,
@@ -69,15 +68,7 @@ const props = defineProps({
 })
 const selected = ref([])
 const selector = ref()
-const val = computed({
-  get() {
-    return formStore.getKey({
-      key: props.args.key,
-      level: props.level,
-      store: formStore[props.category],
-    })
-  },
-})
+
 const updateSelected = (item) => {
   console.log("Updating selected: ", item)
   selector.value = null
