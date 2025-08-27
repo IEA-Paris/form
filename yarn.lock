@@ -11002,6 +11002,11 @@ vue@^3.4, vue@^3.5.13, vue@^3.5.17, vue@^3.5.18:
     "@vue/server-renderer" "3.5.20"
     "@vue/shared" "3.5.20"
 
+vuetify@^3.9.6:
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.9.6.tgz#a4e68c3a77185d9fa0026418ef2df5ea1e519104"
+  integrity sha512-jNs2yLYiM50kE16gBu58xmnh9t/MOvgnYcNvmLNps6TLq9rPvjTNFm2k2jWfe69hGg0gQf+MFXXDkf65fxi9gg==
+
 web-namespaces@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/web-namespaces/-/web-namespaces-2.0.1.tgz#1010ff7c650eccb2592cebeeaf9a1b253fd40692"

@@ -29,26 +29,23 @@ const formStore = useFormStore()
 const props = defineProps({
   args: {
     type: Object,
-    required: true,
     default: () => {
       return {}
     },
   },
   level: {
     type: Array,
-    required: false,
+    default: () => [],
   },
   // type of the document picker, e.g. "event", "image", etc.
   type: {
     type: String,
-    required: true,
     default: "document",
   },
   // category the document related to,
   // e.g. for events related to a people, events is type, people is category
   category: {
     type: String,
-    required: true,
     default: "document",
   },
 })

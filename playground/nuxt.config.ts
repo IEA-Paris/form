@@ -49,7 +49,10 @@ export default defineNuxtConfig({
     },
   },
 
-  /*   css: ["@mdi/font/css/materialdesignicons.min.css"], */
+  css: [
+    "vuetify/lib/styles/main.sass",
+    "@mdi/font/css/materialdesignicons.min.css",
+  ],
   build: {
     transpile: ["vuetify", "@paris-ias/list"],
   },

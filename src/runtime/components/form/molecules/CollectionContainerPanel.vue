@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :key="`col-${level.join('-')}-${index}`"
+    :key="`col-${level.join('-')}-${lastLevelItem}`"
     class="mb-3 pa-3"
     variant="outlined"
   >
@@ -21,7 +21,6 @@
           :level="[...level, index, key]"
           :disabled="saving"
           :saving
-          :root-index="index"
         /> </template></template
   ></v-card>
   <v-btn
@@ -68,10 +67,6 @@ const props = defineProps({
   saving: {
     type: Boolean,
     default: false,
-  },
-  rootIndex: {
-    type: Number,
-    default: null,
   },
   category: { type: String, required: true },
 })

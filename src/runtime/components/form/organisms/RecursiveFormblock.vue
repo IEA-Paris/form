@@ -66,7 +66,6 @@ const props = defineProps({
   category: { type: String, required: true },
   level: { type: Array, required: true },
   saving: { type: Boolean, default: false },
-  rootIndex: { type: Number, default: 0 },
 })
 
 const lastLevelItem = computed(() => props.level[props.level.length - 1])
