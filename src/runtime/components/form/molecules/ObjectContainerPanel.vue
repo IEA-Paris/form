@@ -1,15 +1,20 @@
 <template>
-  <v-card>
-    {{ level }}
-
-    <slot />
-  </v-card>
+  <template v-for="key in Object.keys(args.items)" :key="key">
+    <component
+      :is="getComponentName(args.items[key].component)"
+      v-if="computeInputVisibility(args.items[key])"
+      :args="{ ...args.items[key], key }"
+      :level="[...level, key]"
+      :category="category"
+      :disabled="saving"
+    />
+  </template>
 </template>
 <script setup>
-// import { useDisplay } from "vuetify"
-// const { smAndUp } = useDisplay()
-// const localePath = useLocalePath()
-
+import {
+  getComponentName,
+  computeInputVisibility,
+} from "../../../composables/useFormDisplay"
 const props = defineProps({
   args: {
     type: Object,

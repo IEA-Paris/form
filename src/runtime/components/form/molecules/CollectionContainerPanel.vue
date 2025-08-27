@@ -1,21 +1,29 @@
 <template>
-  {{ args }}
   <v-card
-    v-for="(item, index) in args.items"
     :key="`col-${level.join('-')}-${index}`"
     class="mb-3 pa-3"
     variant="outlined"
   >
-    <component
-      :is="getComponentName(item.component)"
-      v-if="computeInputVisibility(item)"
-      :key="index"
-      :args="{ ...item, key: lastLevelItem }"
-      :level
-      :category
-      :disabled="saving"
-    />
-  </v-card>
+    <v-card-title v-if="args.label">
+      {{ $t(args.label) }}
+    </v-card-title>
+    <v-card-text v-if="args.description" class="text-caption mb-2">
+      {{ args.description }}
+    </v-card-text>
+    <!-- start by iterating on the actual items in the array -->
+    <template v-for="(item, index) in val" :key="index">
+      <!-- then use the schema to render the proper component for each item -->
+      <template v-for="(key, keyIndex) in Object.keys(args.items)" :key="index">
+        <component
+          :is="getComponentName(args.items[key].component)"
+          :category
+          :args="{ ...args.items[key], index }"
+          :level="[...level, index, key]"
+          :disabled="saving"
+          :saving
+          :root-index="index"
+        /> </template></template
+  ></v-card>
   <v-btn
     icon="mdi-delete"
     size="small"
@@ -37,6 +45,10 @@
 // const { smAndUp } = useDisplay()
 // const localePath = useLocalePath()
 import { useFormStore } from "../../../stores/form"
+import {
+  getComponentName,
+  computeInputVisibility,
+} from "../../../composables/useFormDisplay"
 const formStore = useFormStore()
 const props = defineProps({
   args: {
@@ -44,6 +56,10 @@ const props = defineProps({
     default: () => {
       return {}
     },
+  },
+  category: {
+    type: String,
+    required: true,
   },
   level: {
     type: Array,
@@ -76,5 +92,11 @@ const deleteItem = (index) => {
     level: [...props.level, index],
   })
 }
+const val = computed(() => {
+  return formStore.getKey({
+    level: props.level,
+    store: formStore[props.category],
+  })
+})
 </script>
 <style lang="scss"></style>

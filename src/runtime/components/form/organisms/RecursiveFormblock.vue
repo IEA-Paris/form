@@ -15,10 +15,6 @@
     <!-- ARRAY -->
     <template v-else-if="input.type === 'ARRAY'">
       <div class="collection-container">
-        <h4 v-if="input.label">{{ $t(input.label) }}</h4>
-        <p v-if="input.description" class="text-caption mb-2">
-          {{ input.description }}
-        </p>
         <component
           :is="getComponentName(input.component)"
           v-if="computeInputVisibility(input)"
@@ -32,17 +28,11 @@
 
     <!-- OBJECT -->
     <template v-else-if="input.type === 'OBJECT'">
-      <div class="object-container">
-        <h4 v-if="input.label">{{ $t(input.label) }}</h4>
-        <p v-if="input.description" class="text-caption mb-2">
-          {{ input.description }}
-        </p>
-      </div>
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
         :args="{ ...input, key: lastLevelItem }"
-        :level
+        :level="[...level, lastLevelItem]"
         :category
         :disabled="saving"
       />
@@ -50,24 +40,16 @@
 
     <!-- DOCUMENT -->
     <template v-else-if="input.type === 'DOCUMENT'">
-      <div class="document-container">
-        <h4 v-if="input.label">{{ $t(input.label) }}</h4>
-        <p v-if="input.description" class="text-caption mb-2">
-          {{ input.description }}
-        </p>
-        PICKER
-        <v-card class="pa-3" variant="outlined">
-          <component
-            :is="getComponentName(input.component)"
-            v-if="computeInputVisibility(input)"
-            :args="{ ...input, key: lastLevelItem }"
-            :level
-            :category
-            :type="input.type"
-            :disabled="saving"
-          />
-        </v-card>
-      </div>
+      PICKER
+      <component
+        :is="getComponentName(input.component)"
+        v-if="computeInputVisibility(input)"
+        :args="{ ...input, key: lastLevelItem }"
+        :level
+        :category
+        :type="input.type"
+        :disabled="saving"
+      />
     </template>
   </div>
 </template>

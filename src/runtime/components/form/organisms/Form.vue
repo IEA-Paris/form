@@ -9,10 +9,10 @@
               {{ key }}
               {{ index }} -->
               <FormOrganismsRecursiveFormblock
-                :input="input"
-                :category="category"
+                :input
+                :category
                 :level="[key]"
-                :saving="saving"
+                :saving
                 :root-index="index"
               />
             </template>

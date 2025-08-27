@@ -74,11 +74,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           forms[type] = model._defaults
 
           formStore.$patch({
-            [type]: {
-              source: "md",
-              loading: false,
-              form: model._defaults,
-            },
+            [type]: model._defaults,
           })
         } else {
           console.warn(`Module ${type} has no 'schema'`, model)

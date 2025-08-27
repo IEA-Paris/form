@@ -7,7 +7,8 @@ export const computeInputVisibility = (input) => {
   return true
 }
 
-export const getComponentName = (name) => {
+export const getComponentName = (name: string) => {
+  console.log("name: ", name)
   const componentMap = {
     TextField: "FormAtomsTextField",
     TextArea: "FormAtomsTextArea",
