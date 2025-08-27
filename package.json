@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@nuxt/kit": "^3.16.2",
     "vue": "^3.5.13"
   },
@@ -15,7 +16,7 @@
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
     "@nuxtjs/i18n": "^9.5.2",
     "@nuxtjs/mdc": "0.16.1",
-    "@paris-ias/data": "1.8.36",
+    "@paris-ias/data": "1.8.46",
     "@pinia/nuxt": "^0.5.4",
     "@types/node": "latest",
     "changelogen": "^0.5.7",
@@ -62,5 +63,5 @@
   },
   "type": "module",
   "types": "./dist/types.d.ts",
-  "version": "1.0.3"
+  "version": "1.0.4"
 }

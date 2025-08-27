@@ -8,9 +8,6 @@ export default defineAppConfig({
     locales: ["en", "fr"],
     default: "en",
   },
-  list: {
-    modules: ["events", "news", "people", "projects", "fellowships"],
-  },
   form: {
     modules: [
       "events",
@@ -22,7 +19,7 @@ export default defineAppConfig({
       "actions",
       "disciplines",
       "apps",
-      "affiliations",
+      "affiliation",
       "files",
       "mailing",
       "tags",

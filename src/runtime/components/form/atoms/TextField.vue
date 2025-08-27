@@ -48,6 +48,7 @@ const val = computed({
     })
   },
   set(value) {
+    console.log("props.level: ", props.level)
     formStore.updateForm({
       key: props.args.key,
       value,

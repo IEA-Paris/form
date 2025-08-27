@@ -1,4 +1,4 @@
-<template>{{ $t("affiliation-picker") }}</template>
+<template>AFFILIATION PICKERS</template>
 <script setup lang="ts">
 // import { useDisplay } from "vuetify"
 // const { smAndUp } = useDisplay()
