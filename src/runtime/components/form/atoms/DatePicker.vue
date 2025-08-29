@@ -1,32 +1,45 @@
 <template>
-  <div>
-    DAZ
+  <v-menu
+    v-model="menu"
+    :close-on-content-click="false"
+    transition="scale-transition"
+    offset-y
+    min-width="auto"
+  >
+    <template #activator="{ props: menuProps }">
+      <v-text-field
+        v-model="formattedDate"
+        v-bind="{ ...menuProps, ...$attrs }"
+        :label="args.label"
+        :placeholder="args.placeholder"
+        :hint="args.hint"
+        :persistent-hint="!!args.hint"
+        :required="(args.rules && args.rules.required) || false"
+        :disabled="args.disabled"
+        :readonly="true"
+        :clearable="args.clearable"
+        :counter="args.counter"
+        prepend-inner-icon="mdi-calendar"
+        @click:clear="clearDate"
+      />
+    </template>
     <v-date-picker
       v-model="val"
-      v-bind="$attrs"
-      :label="args.label"
-      :placeholder="args.placeholder"
-      :hint="args.hint"
-      :persistent-hint="!!args.hint"
-      :required="(args.rules && args.rules.required) || false"
       :disabled="args.disabled"
-      :readonly="args.readonly"
-      :clearable="args.clearable"
-      :counter="args.counter"
-      :type="args.type"
+      header-color="primary"
+      show-adjacent-months
+      @update:model-value="onDateSelect"
     />
-  </div>
+  </v-menu>
 </template>
 <script setup>
-import { computed, onMounted } from "vue"
+import { computed, ref } from "vue"
 import { useFormStore } from "../../../stores/form"
-/* import useFormValidation from "../../../composables/useFormValidation"
-console.log("generateInputRules: ", useFormValidation)
- */
+
 const props = defineProps({
   args: {
     type: Object,
-    required: true,
+    required: false,
     default: () => ({}),
   },
   level: {
@@ -40,6 +53,7 @@ const props = defineProps({
 })
 
 const formStore = useFormStore()
+const menu = ref(false)
 
 const val = computed({
   get() {
@@ -61,6 +75,29 @@ const val = computed({
   },
 })
 
-onMounted(() => {})
+// Format the date for display in the text field
+const formattedDate = computed(() => {
+  if (!val.value) return ""
+
+  // Handle different date formats
+  const date = new Date(val.value)
+  if (isNaN(date.getTime())) return val.value
+
+  // Format as YYYY-MM-DD or use locale format
+  return date.toLocaleDateString()
+})
+
+// Handle date selection from picker
+const onDateSelect = (selectedDate) => {
+  if (selectedDate) {
+    val.value = selectedDate
+    menu.value = false
+  }
+}
+
+// Clear the date
+const clearDate = () => {
+  val.value = null
+}
 </script>
 <style lang="scss"></style>

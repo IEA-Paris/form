@@ -10,10 +10,13 @@
     <v-card-text v-if="args.description" class="text-caption mb-2">
       {{ args.description }}
     </v-card-text>
-    <!-- start by iterating on the actual items in the array -->
+    <!-- start by iterating on the actual items in the array (cf pinia store)-->
     <template v-for="(item, index) in val" :key="index">
       <!-- then use the schema to render the proper component for each item -->
-      <template v-for="(key, keyIndex) in Object.keys(args.items)" :key="index">
+      <template
+        v-for="(key, keyIndex) in Object.keys(args.items)"
+        :key="keyIndex"
+      >
         <component
           :is="getComponentName(args.items[key].component)"
           :category
@@ -21,14 +24,10 @@
           :level="[...level, index, key]"
           :disabled="saving"
           :saving
-        /> </template></template
+        />
+      </template> </template
   ></v-card>
-  <v-btn
-    icon="mdi-delete"
-    size="small"
-    variant="outlined"
-    @click="deleteItem(fieldIndex)"
-  />
+
   <v-btn
     prepend-icon="mdi-plus"
     color="primary"
