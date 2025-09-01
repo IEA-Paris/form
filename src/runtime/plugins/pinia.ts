@@ -60,6 +60,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   const schemas: Record<string, any> = {}
   const forms: Record<string, any> = {}
+  const defaults: Record<string, any> = {}
 
   const formStore = useFormStore()
 
@@ -72,7 +73,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         if (model && model.schema) {
           schemas[type] = model.schema
           forms[type] = model._defaults
-
+          defaults[type] = model._defaults
           formStore.$patch({
             [type]: model._defaults,
           })

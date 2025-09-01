@@ -6,7 +6,6 @@
       :args="{ ...args.items[key], key }"
       :level="[...level, key]"
       :category="category"
-      :disabled="saving"
     />
   </template>
 </template>

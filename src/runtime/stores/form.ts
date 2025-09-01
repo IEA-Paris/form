@@ -155,27 +155,20 @@ export const useFormStore = defineStore("formStore", {
       })
     },
 
-    deleteFormItem({
-      key,
-      category,
-      level = null,
-      store = null,
-    }: InputParams): any {
-      if (!category || !key) return
-
-      const module = this[category as string] as ModuleType
-      level = level ?? [module?.form?._defaults?.[key]]
-      store = store ?? module?.form?._defaults
+    deleteFormItem({ category, level = null, store = null }: InputParams): any {
+      if (!category) return
+      console.log("Delete item  in level: ", level, " of category: ", category)
+      const module = store ?? (this[category as string] as ModuleType)
+      level = level ?? []
 
       if (!level || !Array.isArray(level) || !store) return
 
       if (level.length === 1 && Array.isArray(store)) {
         const index = level[0] as number
         const newStore = store.filter((_: any, i: number) => i !== index)
-        store.splice(0, store.length, ...newStore)
+        store.splice(index, 1, ...newStore)
       } else if (level.length > 1) {
         return this.deleteFormItem({
-          key,
           level: level.slice(1),
           category,
           store: store[level[0]],
@@ -188,28 +181,28 @@ export const useFormStore = defineStore("formStore", {
       category,
       level = null,
       store = null,
-      defaults = null,
     }: InputParams): any {
       try {
+        const { $forms } = useNuxtApp()
         if (!category || !key) return
-
+        console.log(
+          "category, key, level, store, defaults: ",
+          category,
+          key,
+          level,
+          store
+        )
         const module = this[category as string] as ModuleType
-        store = store ?? module?.form?._defaults
+        /* console.log("module: ", $defaults) */
+        store = store ?? module
         level = level ?? [key]
-
         if (!level || !Array.isArray(level) || !store) return
 
         // Arriver jusqu'au conteneur qui possède le tableau cible (dernier segment de level)
         if (level.length === 1) {
           const targetKey = level[0] as string
           if (!Array.isArray(store[targetKey])) store[targetKey] = []
-
-          const clone = (obj: any) =>
-            typeof structuredClone === "function"
-              ? structuredClone(obj)
-              : JSON.parse(JSON.stringify(obj))
-
-          const newItem = defaults ? clone(defaults) : {}
+          const newItem = this.getKey({ level, store: $forms[category] })
           ;(store[targetKey] as any[]).push(newItem)
           return
         }
@@ -226,7 +219,6 @@ export const useFormStore = defineStore("formStore", {
           category,
           level: level.slice(1),
           store: store[head],
-          defaults,
         })
       } catch (error) {
         console.log("error: ", error)

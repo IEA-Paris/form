@@ -8,7 +8,6 @@
         :args="{ ...input, key: lastLevelItem }"
         :level
         :category
-        :disabled="saving"
       />
     </template>
 
@@ -21,7 +20,6 @@
           :args="{ ...input, key: lastLevelItem }"
           :level
           :category
-          :disabled="saving"
         />
       </div>
     </template>
@@ -34,7 +32,6 @@
         :args="{ ...input, key: lastLevelItem }"
         :level="[...level, lastLevelItem]"
         :category
-        :disabled="saving"
       />
     </template>
 
@@ -48,7 +45,6 @@
         :level
         :category
         :type="input.type"
-        :disabled="saving"
       />
     </template>
   </div>

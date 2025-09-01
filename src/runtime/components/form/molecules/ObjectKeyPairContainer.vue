@@ -1,5 +1,38 @@
 <template>
   <div>
+    <div class="text-h6 d-flex align-center justify-space-between">
+      <template v-if="args.label">
+        {{ $t(args.label, 2) }}
+      </template>
+      <v-btn
+        prepend-icon="mdi-plus"
+        color="primary"
+        variant="outlined"
+        class="mt-2"
+        @click="addItem"
+      >
+        {{ (args && args.addText) || "Add Item" }}
+      </v-btn>
+    </div>
+
+    <v-select
+      v-model="selector"
+      variant="outlined"
+      :label="$t('add-a-media')"
+      :items="
+        args.items
+          ? Object.keys(args.items).filter((key) => {
+              if (selected.includes(key)) {
+                return false
+              }
+              return { title: $t(key), value: key }
+            })
+          : []
+      "
+      hide-details
+      class="key-pair-item mt-6"
+      @update:model-value="updateSelected($event)"
+    />
     <div v-for="item in selected" :key="item" class="key-pair-container">
       <template v-if="args.items[item]">
         <component
@@ -21,24 +54,6 @@
         >
       </template>
     </div>
-    <v-select
-      v-model="selector"
-      variant="outlined"
-      :label="$t('add-a-media')"
-      :items="
-        args.items
-          ? Object.keys(args.items).filter((key) => {
-              if (selected.includes(key)) {
-                return false
-              }
-              return { title: $t(key), value: key }
-            })
-          : []
-      "
-      hide-details
-      class="key-pair-item"
-      @update:model-value="updateSelected($event)"
-    />
   </div>
 </template>
 <script setup>

@@ -4,14 +4,38 @@
     class="mb-3 pa-3"
     variant="outlined"
   >
-    <v-card-title v-if="args.label">
-      {{ $t(args.label) }}
-    </v-card-title>
-    <v-card-text v-if="args.description" class="text-caption mb-2">
+    <div class="text-h6 d-flex align-center justify-space-between">
+      <template v-if="args.label">
+        {{ $t(args.label, 2) }}
+      </template>
+      <v-btn
+        prepend-icon="mdi-plus"
+        color="primary"
+        variant="outlined"
+        class="mt-2"
+        @click="addItem"
+      >
+        {{ (args && args.addText) || "Add Item" }}
+      </v-btn>
+    </div>
+    <div v-if="args.description" class="text-h4 mb-2">
       {{ args.description }}
-    </v-card-text>
+    </div>
     <!-- start by iterating on the actual items in the array (cf pinia store)-->
     <template v-for="(item, index) in val" :key="index">
+      <v-divider class="my-2" />
+      <div
+        v-if="val.length > 1"
+        class="text-overline d-flex align-center justify-space-between"
+      >
+        {{ $t(args.label, 1) + " " + (index + 1) }}
+        <v-btn
+          icon="mdi-delete"
+          variant="outlined"
+          class="mt-2"
+          @click="deleteItem(index)"
+        />
+      </div>
       <!-- then use the schema to render the proper component for each item -->
       <template
         v-for="(key, keyIndex) in Object.keys(args.items)"
@@ -22,21 +46,10 @@
           :category
           :args="{ ...args.items[key], index }"
           :level="[...level, index, key]"
-          :disabled="saving"
           :saving
         />
       </template> </template
   ></v-card>
-
-  <v-btn
-    prepend-icon="mdi-plus"
-    color="primary"
-    variant="outlined"
-    class="mt-2"
-    @click="addItem"
-  >
-    {{ (args && args.addText) || "Add Item" }}
-  </v-btn>
 </template>
 <script setup>
 // import { useDisplay } from "vuetify"
@@ -78,10 +91,8 @@ const addItem = () => {
     level: props.level,
   })
 }
-
 const deleteItem = (index) => {
   formStore.deleteFormItem({
-    key: lastLevelItem.value,
     category: props.category,
     level: [...props.level, index],
   })
