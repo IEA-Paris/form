@@ -84,6 +84,7 @@
   "image-picker": "IMAGE PICKER",
   "select-a-social-media": "Select a social media",
   "rules": {
+    "required": "This field is required",
     "invalid-url": "Invalid URL",
     "invalid-email": "Invalid email address",
     "invalid-phone": "Invalid phone number",
@@ -93,7 +94,8 @@
     "invalid-color": "Invalid color code",
     "invalid-ror": "Invalid ROR identifier syntax",
     "invalid-doi": "Invalid DOI",
-    "invalid-orcid": "Invalid ORCID number"
+    "invalid-orcid": "Invalid ORCID number",
+    "at-least-0-characters": "At least {0} characters"
   },
   "experiences": "Career",
   "disciplines": "Disciplines",

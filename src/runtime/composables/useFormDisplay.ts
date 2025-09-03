@@ -24,6 +24,7 @@ export const getComponentName = (name: string) => {
     ImagePicker: "FormMoleculesImagePicker",
     DocumentPicker: "FormMoleculesDocumentPicker",
     ObjectContainerPanel: "FormMoleculesObjectContainerPanel",
+    ObjectCollapsiblePanel: "FormMoleculesObjectCollapsiblePanel",
     CollectionContainerPanel: "FormMoleculesCollectionContainerPanel",
     ObjectKeyPairContainer: "FormMoleculesObjectKeyPairContainer",
   }

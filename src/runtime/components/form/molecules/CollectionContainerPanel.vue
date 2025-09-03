@@ -86,7 +86,6 @@ const lastLevelItem = computed(() => props.level[props.level.length - 1])
 
 const addItem = () => {
   formStore.addFormItem({
-    key: lastLevelItem.value,
     category: props.category,
     level: props.level,
   })

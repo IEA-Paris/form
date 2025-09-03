@@ -113,12 +113,12 @@ export const useFormStore = defineStore("formStore", {
         store: isArrayIndex ? store.at(currentKey) : store[currentKey],
       })
     },
-    updateForm({  value, category, level, store }: InputParams): any {
+    updateForm({ value, category, level, store }: InputParams): any {
       console.log("store: ", store)
       console.log("level: ", level)
       console.log("value: ", value)
-        const { $forms } = useNuxtApp()
-        const form = $forms  as Record<string, any> 
+      const { $forms } = useNuxtApp()
+      const form = $forms as Record<string, any>
       if (!category) {
         console.warn("updateForm: category is undefined")
         return
@@ -154,7 +154,14 @@ export const useFormStore = defineStore("formStore", {
     },
 
     deleteFormItem({ category, level = null, store = null }: InputParams): any {
-      console.log("Delete item  in level: ", level, " of category: ", category, " with store: ", store)
+      console.log(
+        "Delete item  in level: ",
+        level,
+        " of category: ",
+        category,
+        " with store: ",
+        store
+      )
 
       if (!category) {
         console.log("deleteForm: category is undefined")
@@ -172,10 +179,9 @@ export const useFormStore = defineStore("formStore", {
 
       if (level.length === 1 && Array.isArray(store)) {
         const index = level[0] as number
-        console.log('store: ', store);
+        console.log("store: ", store)
         store.splice(index, 1)
-        console.log('store: ', store);
-
+        console.log("store: ", store)
       } else if (level.length > 1) {
         return this.deleteFormItem({
           level: level.slice(1),
@@ -186,49 +192,44 @@ export const useFormStore = defineStore("formStore", {
     },
 
     addFormItem({
-      key,
       category,
       level = null,
       store = null,
-      newItem = null
+      newItem = null,
     }: InputParams): any {
       try {
         const { $forms } = useNuxtApp()
         // first, we get the new item structure from the defaults (iso with schema and actual store)
-        if(!newItem){
-          const forms = $forms as Record<string, any>;
-          newItem = structuredClone(this.getKey({ level: [...level, 0], store: forms[category as string] }))
+        if (!newItem) {
+          const forms = $forms as Record<string, any>
+          newItem = structuredClone(
+            this.getKey({
+              level: [...level, 0],
+              store: forms[category as string],
+            })
+          )
         }
-        if (!category || !key) return
-        console.log(
-          "category, key, level, store, defaults: ",
-          category,
-          key,
-          level,
-          store,
-          newItem
-        )
-        const module = this[category as string] as ModuleType
+        if (!category) return
+
         /* console.log("module: ", $defaults) */
-        store = store ?? module
-        level = level ?? [key]
+        store = store ?? (this[category as string] as ModuleType)
+        level = level ?? []
         if (!level || !Array.isArray(level) || !store) return
 
         // Arriver jusqu'au conteneur qui possède le tableau cible (dernier segment de level)
         if (level.length === 1) {
           const targetKey = level[0] as string
           if (!Array.isArray(store[targetKey])) store[targetKey] = []
-          console.log('newItem: ', newItem);
+          console.log("newItem: ", newItem)
           ;(store[targetKey] as any[]).push(newItem)
           return
         }
 
         return this.addFormItem({
-          key,
           category,
           level: level.slice(1),
           store: store[level[0]],
-          newItem
+          newItem,
         })
       } catch (error) {
         console.log("error: ", error)

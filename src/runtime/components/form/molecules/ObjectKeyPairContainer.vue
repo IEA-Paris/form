@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-form>
     <div class="text-h6 d-flex align-center justify-space-between">
       <template v-if="args.label">
         {{ $t(args.label, 2) }}
@@ -54,7 +54,7 @@
         >
       </template>
     </div>
-  </div>
+  </v-form>
 </template>
 <script setup>
 import { useFormStore } from "../../../stores/form"

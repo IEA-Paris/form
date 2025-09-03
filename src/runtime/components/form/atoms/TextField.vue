@@ -2,7 +2,6 @@
   <v-text-field
     v-model="val"
     v-bind="$attrs"
-    :label="args.label"
     :placeholder="args.placeholder"
     :hint="args.hint"
     :persistent-hint="!!args.hint"
@@ -12,7 +11,21 @@
     :clearable="args.clearable"
     :counter="args.counter"
     :type="args.type"
-  />
+  >
+    <template #label>
+      <span>{{ $t(args.label) }}</span>
+      <sup
+        ><v-icon
+          v-if="args.rules && args.rules.required"
+          color="red"
+          size="small"
+          class="ml-1"
+        >
+          mdi-asterisk
+        </v-icon></sup
+      >
+    </template>
+  </v-text-field>
 </template>
 
 <script setup>
