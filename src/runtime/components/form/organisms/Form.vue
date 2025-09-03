@@ -6,20 +6,18 @@
           <div :class="valid ? 'text-green' : 'text-red'">
             THE WHOLE FORM IS {{ valid ? "VALID" : "INVALID" }}
           </div>
-          <div id="container">
-            <template v-for="(input, key, index) in form" :key="key">
-              <!-- {{ input }}
+          <template v-for="(input, key, index) in form" :key="key">
+            <!-- {{ input }}
               {{ key }}
               {{ index }} -->
-              <FormOrganismsRecursiveFormblock
-                :input
-                :category
-                :level="[key]"
-                :saving
-                :root-index="index"
-              />
-            </template>
-          </div>
+            <FormOrganismsRecursiveFormblock
+              :input
+              :category
+              :level="[key]"
+              :saving
+              :root-index="index"
+            />
+          </template>
 
           <div v-if="showActions" class="d-flex justify-end mt-4">
             <v-btn

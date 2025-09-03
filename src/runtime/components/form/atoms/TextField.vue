@@ -11,6 +11,7 @@
     :clearable="args.clearable"
     :counter="args.counter"
     :type="args.type"
+    :rules="generateInputRules(args)"
   >
     <template #label>
       <span>{{ $t(args.label) }}</span>
@@ -31,9 +32,8 @@
 <script setup>
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
-/* import useFormValidation from "../../../composables/useFormValidation"
-console.log("generateInputRules: ", useFormValidation)
- */
+import generateInputRules from "../../../composables/useFormValidation"
+
 const props = defineProps({
   args: {
     type: Object,

@@ -95,7 +95,8 @@
     "invalid-ror": "Invalid ROR identifier syntax",
     "invalid-doi": "Invalid DOI",
     "invalid-orcid": "Invalid ORCID number",
-    "at-least-0-characters": "At least {0} characters"
+    "at-least-0-characters": "At least {0} characters",
+    "max-0-characters": "{0} characters max"
   },
   "experiences": "Career",
   "disciplines": "Disciplines",

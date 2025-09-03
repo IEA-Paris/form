@@ -10,16 +10,32 @@
     :disabled="args.disabled"
     :readonly="args.readonly"
     :clearable="args.clearable"
-    :counter="args.counter"
+    :counter="args.rules && args.rules.max"
     :rows="args.rows || 3"
     :auto-grow="args.autoGrow"
     :no-resize="args.noResize"
-  />
+    :rules="generateInputRules(args)"
+  >
+    <template #label>
+      <span>{{ $t(args.label) }}</span>
+      <sup
+        ><v-icon
+          v-if="args.rules && args.rules.required"
+          color="red"
+          size="small"
+          class="ml-1"
+        >
+          mdi-asterisk
+        </v-icon></sup
+      >
+    </template>
+  </v-textarea>
 </template>
 
 <script setup>
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
+import generateInputRules from "../../../composables/useFormValidation"
 
 const props = defineProps({
   args: {
