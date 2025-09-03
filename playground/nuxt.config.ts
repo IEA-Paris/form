@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/apollo",
     "@pinia/nuxt",
     "@nuxtjs/mdc",
+    "@paris-ias/list",
   ],
   sourcemap: {
     server: true,

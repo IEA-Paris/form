@@ -2386,12 +2386,21 @@
     "@parcel/watcher-win32-ia32" "2.5.1"
     "@parcel/watcher-win32-x64" "2.5.1"
 
-"@paris-ias/data@1.8.46":
-  version "1.8.46"
-  resolved "https://registry.yarnpkg.com/@paris-ias/data/-/data-1.8.46.tgz#046a44581bd526cbfc294881b2f10d4f021f897d"
-  integrity sha512-ytj2p3DuanOPVFnfPes47t9mbdOI4LaLUZqWWg7vvG59v2I5wnHr8kgP/TjhnOzSxSF/B1P9LRh7kcjMT3AXBQ==
+"@paris-ias/data@1.8.47":
+  version "1.8.47"
+  resolved "https://registry.yarnpkg.com/@paris-ias/data/-/data-1.8.47.tgz#eea782fefcef5db4c72ad5ad29d570e2bfe3ced0"
+  integrity sha512-5Jcwzra/hj7/Ngg3XBFtp9STPzd1MRAeez15yCAOMm+e8h4LM4r9iuuPASfMqakrdrM7tyG7CyGbKoeTG8n+aA==
   dependencies:
     ts-node "^10.9.2"
+
+"@paris-ias/list@^1.0.120":
+  version "1.0.120"
+  resolved "https://registry.yarnpkg.com/@paris-ias/list/-/list-1.0.120.tgz#7730658d9a34578c26d61e29ca609053c181924b"
+  integrity sha512-0hRxIAOlHnKR3QX5zff2ZRYYtLW63G9EYLKTaaKDmib0EyupjrQqDRX+PDa5PK1VefJFILWvFm+3f1nxTsQMoA==
+  dependencies:
+    "@nuxt/kit" "^3.16.2"
+    "@vue/apollo-composable" "^4.2.2"
+    vuetify "3.8.0"
 
 "@pinia/nuxt@^0.5.4":
   version "0.5.5"
@@ -11001,6 +11010,11 @@ vue@^3.4, vue@^3.5.13, vue@^3.5.17, vue@^3.5.18:
     "@vue/runtime-dom" "3.5.20"
     "@vue/server-renderer" "3.5.20"
     "@vue/shared" "3.5.20"
+
+vuetify@3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.8.0.tgz#de5473f575d83f50f1e1d6030594fc6a650c4f30"
+  integrity sha512-ROC0Xq2G/25ZyUpQMhaynMyXZBJY1WbOGlqOB810yubp8hfY8RlrOw+mzXJonOq6jylCY32muQ9xiJF1JPTLVA==
 
 vuetify@^3.9.6:
   version "3.9.6"

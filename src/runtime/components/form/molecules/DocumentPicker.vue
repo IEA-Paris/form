@@ -21,9 +21,6 @@
   </v-card>
 </template>
 <script setup lang="ts">
-// import { useDisplay } from "vuetify"
-// const { smAndUp } = useDisplay()
-// const localePath = useLocalePath()
 import { useFormStore } from "../../../stores/form"
 const formStore = useFormStore()
 const props = defineProps({
@@ -40,7 +37,7 @@ const props = defineProps({
   // type of the document picker, e.g. "event", "image", etc.
   type: {
     type: String,
-    default: "document",
+    default: "people",
   },
   // category the document related to,
   // e.g. for events related to a people, events is type, people is category

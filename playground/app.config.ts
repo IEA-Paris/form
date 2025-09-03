@@ -26,4 +26,7 @@ export default defineAppConfig({
       "users",
     ],
   },
+  list: {
+    modules: ["people", "projects", "fellowships", "publications"],
+  },
 })

@@ -4,17 +4,7 @@
       <template v-if="args.label">
         {{ $t(args.label, 2) }}
       </template>
-      <v-btn
-        prepend-icon="mdi-plus"
-        color="primary"
-        variant="outlined"
-        class="mt-2"
-        @click="addItem"
-      >
-        {{ (args && args.addText) || "Add Item" }}
-      </v-btn>
     </div>
-
     <v-select
       v-model="selector"
       variant="outlined"
