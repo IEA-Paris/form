@@ -73,9 +73,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         if (model && model.schema) {
           schemas[type] = model.schema
           forms[type] = model._defaults
-          defaults[type] = model._defaults
           formStore.$patch({
-            [type]: model._defaults,
+            [type]: structuredClone(model._defaults),
           })
         } else {
           console.warn(`Module ${type} has no 'schema'`, model)

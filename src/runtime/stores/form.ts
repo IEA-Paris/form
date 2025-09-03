@@ -113,19 +113,19 @@ export const useFormStore = defineStore("formStore", {
         store: isArrayIndex ? store.at(currentKey) : store[currentKey],
       })
     },
-    updateForm({ key, value, category, level, store }: InputParams): any {
+    updateForm({  value, category, level, store }: InputParams): any {
       console.log("store: ", store)
       console.log("level: ", level)
       console.log("value: ", value)
-      console.log("key: ", key)
-      if (!category || !key) {
-        console.warn("updateForm: category or key is undefined")
+        const { $forms } = useNuxtApp()
+        const form = $forms  as Record<string, any> 
+      if (!category) {
+        console.warn("updateForm: category is undefined")
         return
       }
 
-      const module = this[category as string] as ModuleType
-      level = level ?? [module?.form?._defaults?.[key]]
-      store = store ?? module?.form?._defaults
+      level = level ?? []
+      store = store ?? (this[category as string] as ModuleType)
 
       if (!level || !Array.isArray(level) || !store) {
         console.warn("updateForm: level or store is undefined")
@@ -142,12 +142,10 @@ export const useFormStore = defineStore("formStore", {
       const isArrayIndex = typeof level[0] === "number"
       console.log("store[level[0]]: ", store[level[0]])
       if (store[level[0]] === undefined) {
-        console.log("No default version of ", key)
         store[level[0]] = isArrayIndex ? [] : {}
       }
 
       return this.updateForm({
-        key,
         value,
         level: level.slice(1),
         category,
@@ -156,17 +154,28 @@ export const useFormStore = defineStore("formStore", {
     },
 
     deleteFormItem({ category, level = null, store = null }: InputParams): any {
-      if (!category) return
-      console.log("Delete item  in level: ", level, " of category: ", category)
-      const module = store ?? (this[category as string] as ModuleType)
-      level = level ?? []
+      console.log("Delete item  in level: ", level, " of category: ", category, " with store: ", store)
 
+      if (!category) {
+        console.log("deleteForm: category is undefined")
+        return
+      }
+
+      if (!level || !Array.isArray(level)) {
+        console.log("deleteForm: level is undefined")
+        return
+      }
+
+      level = level ?? []
+      store = store ?? (this[category as string] as ModuleType)
       if (!level || !Array.isArray(level) || !store) return
 
       if (level.length === 1 && Array.isArray(store)) {
         const index = level[0] as number
-        const newStore = store.filter((_: any, i: number) => i !== index)
-        store.splice(index, 1, ...newStore)
+        console.log('store: ', store);
+        store.splice(index, 1)
+        console.log('store: ', store);
+
       } else if (level.length > 1) {
         return this.deleteFormItem({
           level: level.slice(1),
@@ -188,7 +197,7 @@ export const useFormStore = defineStore("formStore", {
         // first, we get the new item structure from the defaults (iso with schema and actual store)
         if(!newItem){
           const forms = $forms as Record<string, any>;
-          newItem = this.getKey({ level: [...level, 0], store: forms[category as string] })
+          newItem = structuredClone(this.getKey({ level: [...level, 0], store: forms[category as string] }))
         }
         if (!category || !key) return
         console.log(
