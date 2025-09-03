@@ -14,6 +14,7 @@
         variant="outlined"
         class="mt-2"
         @click="addItem"
+        :disabled="!isCollectionValid"
       >
         {{ (args && args.addText) || "Add Item" }}
       </v-btn>
@@ -36,9 +37,9 @@
           @click="deleteItem(index)"
         />
       </div>
-      <div :class="valid ? 'text-green' : 'text-red'">
+      <div :class="isCollectionValid ? 'text-green' : 'text-red'">
         THIS COLLECTION FORM IS
-        {{ !valid.has((item) => !item) ? "VALID" : "INVALID" }}
+        {{ isCollectionValid ? "VALID" : "INVALID" }}
       </div>
       <!-- then use the schema to render the proper component for each item -->
       <template
@@ -46,9 +47,7 @@
         :key="keyIndex"
       >
         <component
-          @update:valid="
-            updateValidation($event, keyIndex) && $emit('update:valid', $event)
-          "
+          @update:valid="updateChildValidation(index, key, $event)"
           :is="getComponentName(args.items[key].component)"
           :category
           :args="{ ...args.items[key], index }"
@@ -67,6 +66,7 @@ import {
   getComponentName,
   computeInputVisibility,
 } from "../../../composables/useFormDisplay"
+import { ref, computed, watch, nextTick } from "vue"
 const formStore = useFormStore()
 const props = defineProps({
   args: {
@@ -89,7 +89,6 @@ const props = defineProps({
   },
   category: { type: String, required: true },
 })
-const valid = ref([])
 
 const addItem = () => {
   formStore.addFormItem({
@@ -98,6 +97,21 @@ const addItem = () => {
   })
 }
 const deleteItem = (index) => {
+  // Clean up validation state for the deleted item
+  delete validationState.value[index]
+
+  // Reindex remaining items
+  const newValidationState = {}
+  Object.keys(validationState.value).forEach((key) => {
+    const itemIndex = parseInt(key)
+    if (itemIndex > index) {
+      newValidationState[itemIndex - 1] = validationState.value[key]
+    } else if (itemIndex < index) {
+      newValidationState[itemIndex] = validationState.value[key]
+    }
+  })
+  validationState.value = newValidationState
+
   formStore.deleteFormItem({
     category: props.category,
     level: [...props.level, index],
@@ -109,10 +123,66 @@ const val = computed(() => {
     store: formStore[props.category],
   })
 })
-const updateValidation = (value, index) => {
-  console.log("value, index: ", value, index)
-  valid[index] = value
-  console.log("valid: ", valid.value)
+
+// Enhanced validation tracking
+const validationState = ref({})
+
+// Initialize validation state when items change
+watch(
+  val,
+  (newVal) => {
+    if (newVal && Array.isArray(newVal)) {
+      // Initialize validation state for new items
+      newVal.forEach((_, index) => {
+        if (!(index in validationState.value)) {
+          validationState.value[index] = {}
+        }
+      })
+
+      // Clean up validation state for removed items
+      Object.keys(validationState.value).forEach((key) => {
+        const index = parseInt(key)
+        if (index >= newVal.length) {
+          delete validationState.value[key]
+        }
+      })
+    }
+  },
+  { immediate: true, deep: true }
+)
+
+// Track individual child form validation
+const updateChildValidation = (itemIndex, fieldKey, isValid) => {
+  if (!validationState.value[itemIndex]) {
+    validationState.value[itemIndex] = {}
+  }
+
+  validationState.value[itemIndex][fieldKey] = isValid
+
+  // Emit the global validation state
+  nextTick(() => {
+    emit("update:valid", isCollectionValid.value)
+  })
 }
+
+// Computed property for global validation state
+const isCollectionValid = computed(() => {
+  if (!val.value || !Array.isArray(val.value) || val.value.length === 0) {
+    return true // Empty collection is considered valid
+  }
+
+  // Check if all items have validation state and all fields are valid
+  return val.value.every((_, itemIndex) => {
+    const itemValidation = validationState.value[itemIndex]
+    if (!itemValidation) return false
+
+    // Check if all fields in this item are valid
+    const fieldKeys = Object.keys(props.args.items || {})
+    return fieldKeys.every((fieldKey) => itemValidation[fieldKey] === true)
+  })
+})
+
+// Define emits
+const emit = defineEmits(["update:valid"])
 </script>
 <style lang="scss"></style>

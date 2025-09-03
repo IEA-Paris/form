@@ -5,7 +5,7 @@
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
-        :args="{ ...input, key: lastLevelItem }"
+        :args="{ ...input, key: level[level.length - 1] }"
         :level
         :category
       />
@@ -17,7 +17,7 @@
         <component
           :is="getComponentName(input.component)"
           v-if="computeInputVisibility(input)"
-          :args="{ ...input, key: lastLevelItem }"
+          :args="{ ...input, key: level[level.length - 1] }"
           :level
           :category
         />
@@ -29,8 +29,8 @@
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
-        :args="{ ...input, key: lastLevelItem }"
-        :level="[...level, lastLevelItem]"
+        :args="{ ...input, key: level[level.length - 1] }"
+        :level="[...level, level[level.length - 1]]"
         :category
       />
     </template>
@@ -41,7 +41,7 @@
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
-        :args="{ ...input, key: lastLevelItem }"
+        :args="{ ...input, key: level[level.length - 1] }"
         :level
         :category
         :type="input.type"
@@ -63,8 +63,6 @@ const props = defineProps({
   level: { type: Array, required: true },
   saving: { type: Boolean, default: false },
 })
-
-const lastLevelItem = computed(() => props.level[props.level.length - 1])
 </script>
 
 <style lang="scss" scoped>

@@ -8,8 +8,6 @@
     :required="args.required"
     :disabled="args.disabled"
     :readonly="args.readonly"
-    :true-value="args.trueValue"
-    :false-value="args.falseValue"
     :color="args.color"
   />
 </template>
