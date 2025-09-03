@@ -55,15 +55,12 @@ const formStore = useFormStore()
 const val = computed({
   get() {
     return formStore.getKey({
-      key: props.args.key,
       level: props.level,
       store: formStore[props.category],
     })
   },
   set(value) {
-    console.log("props.level: ", props.level)
-    formStore.updateForm({
-      key: props.args.key,
+    formStore.setKey({
       value,
       category: props.category,
       level: props.level,

@@ -50,7 +50,7 @@ const val = computed({
     })
   },
   set(value) {
-    formStore.updateForm({
+    formStore.setKey({
       key: props.args.key,
       value,
       category: props.category,

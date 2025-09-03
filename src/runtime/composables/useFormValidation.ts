@@ -8,7 +8,7 @@ const youtubeRegex = /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/
 const colorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
 const rorRegex = /^https:\/\/ror\.org\/[0-9a-z]+$/
 const doiRegex = /^10\.\d{4,}\/[-._;()\/:a-zA-Z0-9]+$/
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+const dateRegex = /^(\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/(\d{4}|\d{2}))$/
 const orcidRegex = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/
 
 export default (input) => {

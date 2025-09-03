@@ -1,6 +1,6 @@
 <template>
   <v-card
-    :key="`col-${level.join('-')}-${lastLevelItem}`"
+    :key="`col-${level.join('-')}-${level[level.length - 1]}`"
     class="mb-3 pa-3"
     variant="outlined"
   >
@@ -36,12 +36,19 @@
           @click="deleteItem(index)"
         />
       </div>
+      <div :class="valid ? 'text-green' : 'text-red'">
+        THIS COLLECTION FORM IS
+        {{ !valid.has((item) => !item) ? "VALID" : "INVALID" }}
+      </div>
       <!-- then use the schema to render the proper component for each item -->
       <template
         v-for="(key, keyIndex) in Object.keys(args.items)"
         :key="keyIndex"
       >
         <component
+          @update:valid="
+            updateValidation($event, keyIndex) && $emit('update:valid', $event)
+          "
           :is="getComponentName(args.items[key].component)"
           :category
           :args="{ ...args.items[key], index }"
@@ -82,7 +89,7 @@ const props = defineProps({
   },
   category: { type: String, required: true },
 })
-const lastLevelItem = computed(() => props.level[props.level.length - 1])
+const valid = ref([])
 
 const addItem = () => {
   formStore.addFormItem({
@@ -102,5 +109,10 @@ const val = computed(() => {
     store: formStore[props.category],
   })
 })
+const updateValidation = (value, index) => {
+  console.log("value, index: ", value, index)
+  valid[index] = value
+  console.log("valid: ", valid.value)
+}
 </script>
 <style lang="scss"></style>

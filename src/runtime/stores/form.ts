@@ -113,39 +113,32 @@ export const useFormStore = defineStore("formStore", {
         store: isArrayIndex ? store.at(currentKey) : store[currentKey],
       })
     },
-    updateForm({ value, category, level, store }: InputParams): any {
-      console.log("store: ", store)
-      console.log("level: ", level)
-      console.log("value: ", value)
-      const { $forms } = useNuxtApp()
-      const form = $forms as Record<string, any>
+    setKey({ value, category, level, store }: InputParams): any {
       if (!category) {
-        console.warn("updateForm: category is undefined")
+        console.warn("setKey: category is undefined")
         return
       }
 
       level = level ?? []
       store = store ?? (this[category as string] as ModuleType)
 
-      if (!level || !Array.isArray(level) || !store) {
-        console.warn("updateForm: level or store is undefined")
+      if (!level || !Array.isArray(level)) {
+        console.warn("setKey: level or store is undefined")
         return
       }
 
       if (level.length === 1) {
         if (store[level[0]] === undefined) store[level[0]] = ""
-        console.log("updateForm: primitive value detected")
         store[level[0]] = value
         return
       }
 
       const isArrayIndex = typeof level[0] === "number"
-      console.log("store[level[0]]: ", store[level[0]])
       if (store[level[0]] === undefined) {
         store[level[0]] = isArrayIndex ? [] : {}
       }
 
-      return this.updateForm({
+      return this.setKey({
         value,
         level: level.slice(1),
         category,
@@ -154,15 +147,6 @@ export const useFormStore = defineStore("formStore", {
     },
 
     deleteFormItem({ category, level = null, store = null }: InputParams): any {
-      console.log(
-        "Delete item  in level: ",
-        level,
-        " of category: ",
-        category,
-        " with store: ",
-        store
-      )
-
       if (!category) {
         console.log("deleteForm: category is undefined")
         return
@@ -179,9 +163,7 @@ export const useFormStore = defineStore("formStore", {
 
       if (level.length === 1 && Array.isArray(store)) {
         const index = level[0] as number
-        console.log("store: ", store)
         store.splice(index, 1)
-        console.log("store: ", store)
       } else if (level.length > 1) {
         return this.deleteFormItem({
           level: level.slice(1),
@@ -199,19 +181,20 @@ export const useFormStore = defineStore("formStore", {
     }: InputParams): any {
       try {
         const { $forms } = useNuxtApp()
-        // first, we get the new item structure from the defaults (iso with schema and actual store)
+        // first, we get the new item structure from the defaults
         if (!newItem) {
           const forms = $forms as Record<string, any>
+          // clone the object to avoid copy by reference
           newItem = structuredClone(
             this.getKey({
               level: [...level, 0],
+              // iso with the schema and store structure so we can use getKey in any of these
               store: forms[category as string],
             })
           )
         }
         if (!category) return
 
-        /* console.log("module: ", $defaults) */
         store = store ?? (this[category as string] as ModuleType)
         level = level ?? []
         if (!level || !Array.isArray(level) || !store) return
@@ -220,7 +203,6 @@ export const useFormStore = defineStore("formStore", {
         if (level.length === 1) {
           const targetKey = level[0] as string
           if (!Array.isArray(store[targetKey])) store[targetKey] = []
-          console.log("newItem: ", newItem)
           ;(store[targetKey] as any[]).push(newItem)
           return
         }

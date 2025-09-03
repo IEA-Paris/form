@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <div>
     <div class="text-h6 d-flex align-center justify-space-between">
       <template v-if="args.label">
         {{ $t(args.label, 2) }}
@@ -54,7 +54,7 @@
         >
       </template>
     </div>
-  </v-form>
+  </div>
 </template>
 <script setup>
 import { useFormStore } from "../../../stores/form"
@@ -93,7 +93,7 @@ const updateSelected = (item) => {
 const deleteItem = (item) => {
   console.log("Deleting item: ", item)
   selected.value = selected.value.filter((i) => i !== item)
-  formStore.updateForm({
+  formStore.setKey({
     key: props.args.key,
     value: val.value.filter((i) => i !== item),
     category: props.category,

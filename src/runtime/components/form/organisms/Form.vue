@@ -2,7 +2,10 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-form ref="formRef" v-model="valid">
+        <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
+          <div :class="valid ? 'text-green' : 'text-red'">
+            THE WHOLE FORM IS {{ valid ? "VALID" : "INVALID" }}
+          </div>
           <div id="container">
             <template v-for="(input, key, index) in form" :key="key">
               <!-- {{ input }}

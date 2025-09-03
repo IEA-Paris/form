@@ -1,17 +1,28 @@
 <template>
-  <div v-if="args.label && isArray" class="text-h6 d-flex align-center">
-    {{ $t(args.label, 2) }}
-  </div>
-  <template v-for="key in Object.keys(args.items)" :key="key">
-    <component
-      :is="getComponentName(args.items[key].component)"
-      v-if="computeInputVisibility(args.items[key])"
-      :args="{ ...args.items[key], key }"
-      :level="[...level, key]"
-      :category="category"
-      :rules="generateInputRules(args.items[key])"
-    />
-  </template>
+  <v-card>
+    <div v-if="args.label && isArray" class="text-h6 d-flex align-center">
+      {{ $t(args.label, 2) }}
+    </div>
+    <div :class="valid ? 'text-green' : 'text-red'">
+      THIS OBJECT FORM IS {{ valid ? "VALID" : "INVALID" }}
+    </div>
+    <v-form
+      v-model="valid"
+      fast-fail
+      @submit.prevent
+      @update:modelValue="$emit('update:valid', valid)"
+    >
+      <template v-for="key in Object.keys(args.items)" :key="key">
+        <component
+          :is="getComponentName(args.items[key].component)"
+          v-if="computeInputVisibility(args.items[key])"
+          :rules="generateInputRules(args.items[key])"
+          :args="{ ...args.items[key], key }"
+          :level="[...level, key]"
+          :category
+        /> </template
+    ></v-form>
+  </v-card>
 </template>
 <script setup>
 import {
@@ -46,5 +57,7 @@ const props = defineProps({
 const isArray =
   props.level.length > 1 &&
   Number.isInteger(props.level[props.level.length - 1])
+
+const valid = ref(false)
 </script>
 <style lang="scss"></style>

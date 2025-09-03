@@ -65,7 +65,7 @@ const val = computed({
   },
   set(value) {
     console.log("props.level: ", props.level)
-    formStore.updateForm({
+    formStore.setKey({
       key: props.args.key,
       value,
       category: props.category,

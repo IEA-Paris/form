@@ -92,7 +92,7 @@ const val = computed({
   },
   set(value) {
     console.log("color value: ", value)
-    formStore.updateForm({
+    formStore.setKey({
       key: props.args.key,
       value,
       category: props.category,
