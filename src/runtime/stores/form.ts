@@ -181,16 +181,23 @@ export const useFormStore = defineStore("formStore", {
       category,
       level = null,
       store = null,
+      newItem = null
     }: InputParams): any {
       try {
         const { $forms } = useNuxtApp()
+        // first, we get the new item structure from the defaults (iso with schema and actual store)
+        if(!newItem){
+          const forms = $forms as Record<string, any>;
+          newItem = this.getKey({ level: [...level, 0], store: forms[category as string] })
+        }
         if (!category || !key) return
         console.log(
           "category, key, level, store, defaults: ",
           category,
           key,
           level,
-          store
+          store,
+          newItem
         )
         const module = this[category as string] as ModuleType
         /* console.log("module: ", $defaults) */
@@ -202,23 +209,17 @@ export const useFormStore = defineStore("formStore", {
         if (level.length === 1) {
           const targetKey = level[0] as string
           if (!Array.isArray(store[targetKey])) store[targetKey] = []
-          const newItem = this.getKey({ level, store: $forms[category] })
+          console.log('newItem: ', newItem);
           ;(store[targetKey] as any[]).push(newItem)
           return
-        }
-
-        const head = level[0]
-        const isArrayIndex = typeof head === "number"
-
-        if (store[head] === undefined) {
-          store[head] = isArrayIndex ? [] : {}
         }
 
         return this.addFormItem({
           key,
           category,
           level: level.slice(1),
-          store: store[head],
+          store: store[level[0]],
+          newItem
         })
       } catch (error) {
         console.log("error: ", error)

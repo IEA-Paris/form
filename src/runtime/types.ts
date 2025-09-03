@@ -5,6 +5,7 @@ export interface InputParams {
   category?: string
   defaults?: any | null
   value?: any
+  newItem?: any | null
 }
 
 export interface ModuleType {
