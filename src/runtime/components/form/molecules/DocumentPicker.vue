@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title class="text-h6">
-      {{ $t("document-picker") }}
+      {{ $t(args.label) }}
     </v-card-title>
     <v-card-text>
       <template v-if="suggestedPicks.length > 0" />

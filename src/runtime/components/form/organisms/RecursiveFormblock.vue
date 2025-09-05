@@ -37,7 +37,6 @@
 
     <!-- DOCUMENT -->
     <template v-else-if="input.type === 'DOCUMENT'">
-      PICKER
       <component
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
