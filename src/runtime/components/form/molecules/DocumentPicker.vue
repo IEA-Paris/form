@@ -20,7 +20,7 @@
     </v-card-actions>
   </v-card>
 </template>
-<script setup lang="ts">
+<script setup>
 import { useFormStore } from "../../../stores/form"
 const formStore = useFormStore()
 const props = defineProps({

@@ -4,21 +4,13 @@
     class="mb-3 pa-3"
     variant="outlined"
   >
-    <div class="text-h6 d-flex align-center justify-space-between">
-      <template v-if="args.label">
-        {{ $t(args.label, 2) }}
-      </template>
-      <v-btn
-        prepend-icon="mdi-plus"
-        color="primary"
-        variant="outlined"
-        class="mt-2"
-        @click="addItem"
-        :disabled="!isCollectionValid"
-      >
-        {{ (args && args.addText) || "Add Item" }}
-      </v-btn>
-    </div>
+    <FormAtomsBlockTitle
+      :i18nKey="args.key"
+      :label="$t(args.label, 2)"
+      :addBtn="true"
+      :disabled="!isCollectionValid"
+      @add="addItem" />
+
     <div v-if="args.description" class="text-h4 mb-2">
       {{ args.description }}
     </div>
@@ -96,6 +88,14 @@ const addItem = () => {
     level: props.level,
   })
 }
+
+const val = computed(() => {
+  return formStore.getKey({
+    level: props.level,
+    store: formStore[props.category],
+  })
+})
+
 const deleteItem = (index) => {
   // Clean up validation state for the deleted item
   delete validationState.value[index]
@@ -117,12 +117,6 @@ const deleteItem = (index) => {
     level: [...props.level, index],
   })
 }
-const val = computed(() => {
-  return formStore.getKey({
-    level: props.level,
-    store: formStore[props.category],
-  })
-})
 
 // Enhanced validation tracking
 const validationState = ref({})

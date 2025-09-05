@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="text-h6 d-flex align-center justify-space-between">
-      <template v-if="args.label">
-        {{ $t(args.label, 2) }}
-      </template>
-    </div>
+    <FormAtomsBlockTitle
+      v-if="showLabel(level)"
+      :i18nKey="args.key"
+      :label="$t(args.label, 2)"
+    />
     <v-select
       v-model="selector"
       variant="outlined"
@@ -51,6 +51,7 @@ import { useFormStore } from "../../../stores/form"
 import {
   getComponentName,
   computeInputVisibility,
+  showLabel,
 } from "../../../composables/useFormDisplay"
 import generateInputRules from "../../../composables/useFormValidation"
 const formStore = useFormStore()

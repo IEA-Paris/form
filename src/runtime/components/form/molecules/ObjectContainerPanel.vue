@@ -1,8 +1,10 @@
 <template>
   <v-card>
-    <div v-if="args.label && isArray" class="text-h6 d-flex align-center">
-      {{ $t(args.label, 2) }}
-    </div>
+    <FormAtomsBlockTitle
+      v-if="showLabel(level)"
+      :i18nKey="args.key"
+      :label="$t(args.label, 2)"
+    />
     <div :class="valid ? 'text-green' : 'text-red'">
       THIS OBJECT FORM IS {{ valid ? "VALID" : "INVALID" }}
     </div>
@@ -28,6 +30,7 @@
 import {
   getComponentName,
   computeInputVisibility,
+  showLabel,
 } from "../../../composables/useFormDisplay"
 import generateInputRules from "../../../composables/useFormValidation"
 const props = defineProps({
@@ -54,9 +57,6 @@ const props = defineProps({
     default: false,
   },
 })
-const isArray =
-  props.level.length > 1 &&
-  Number.isInteger(props.level[props.level.length - 1])
 
 const valid = ref(false)
 </script>

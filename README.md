@@ -235,7 +235,10 @@ MIT License - see LICENSE file for details.
 
 ## personal notes/ way forward/plan
 
-- Add a disabled set of rules (same as visibility)
-- Add a transform set of functions (to be executed on primitives on blur, e.g. trim space, captialize...)
-- Add an "admin" flag to allow only admins to access and edit some fields.
 - rework default values
+- Fix the ObjectKeypariContainer validation
+- Fix object in array (e.g. people videos)
+- disable tooltip when collectionContainer addBtn is enabled
+- Add a proper AGPL licences to packages
+- BAck office navigation
+- get github auth provider from sleipnir

@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="text-h6 d-flex align-center justify-between">
-      <template v-if="args.label && isArray">
-        {{ $t(args.label, 2) }}
-      </template>
+      <FormAtomsBlockTitle
+        v-if="showLabel(level)"
+        :i18nKey="args.key"
+        :label="$t(args.label, 2)"
+      />
       <!-- Show expand/collapse button only if there are facultative fields -->
       <div
         v-if="
@@ -49,6 +51,7 @@
 import {
   getComponentName,
   computeInputVisibility,
+  showLabel,
 } from "../../../composables/useFormDisplay"
 
 const props = defineProps({

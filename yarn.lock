@@ -2386,10 +2386,10 @@
     "@parcel/watcher-win32-ia32" "2.5.1"
     "@parcel/watcher-win32-x64" "2.5.1"
 
-"@paris-ias/data@1.8.47":
-  version "1.8.47"
-  resolved "https://registry.yarnpkg.com/@paris-ias/data/-/data-1.8.47.tgz#eea782fefcef5db4c72ad5ad29d570e2bfe3ced0"
-  integrity sha512-5Jcwzra/hj7/Ngg3XBFtp9STPzd1MRAeez15yCAOMm+e8h4LM4r9iuuPASfMqakrdrM7tyG7CyGbKoeTG8n+aA==
+"@paris-ias/data@1.8.49":
+  version "1.8.49"
+  resolved "https://registry.yarnpkg.com/@paris-ias/data/-/data-1.8.49.tgz#08eca12bbb1a12caee2d0334171dcccf75fdca27"
+  integrity sha512-eNleCehkXy+p5G19kCyS/mup9vs8ol7A4PqW6K7ZOHUdcPSYZSoEKgDync3x9r1lP0IK9OsEiNaS0Kn8ojeiaw==
   dependencies:
     ts-node "^10.9.2"
 

@@ -30,7 +30,7 @@
         :is="getComponentName(input.component)"
         v-if="computeInputVisibility(input)"
         :args="{ ...input, key: level[level.length - 1] }"
-        :level="[...level, level[level.length - 1]]"
+        :level="[...level]"
         :category
       />
     </template>
