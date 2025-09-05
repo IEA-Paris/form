@@ -90,6 +90,7 @@ const props = defineProps({
   category: { type: String, required: true },
 })
 
+console.log("CollectionContainerPanel props", props.args)
 const addItem = () => {
   formStore.addFormItem({
     category: props.category,
