@@ -240,5 +240,8 @@ MIT License - see LICENSE file for details.
 - Fix object in array (e.g. people videos)
 - disable tooltip when collectionContainer addBtn is enabled
 - Add a proper AGPL licences to packages
+- implement group control in form display (could match with a dedicated admin export)
+
+...
 - BAck office navigation
-- get github auth provider from sleipnir
+- Add github auth provider similar to sleipnir

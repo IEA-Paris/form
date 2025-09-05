@@ -1,10 +1,18 @@
 <template>
-  <div>
+  <v-form
+    v-model="valid"
+    fast-fail
+    @submit.prevent
+    @update:modelValue="$emit('update:valid', valid)"
+  >
     <FormAtomsBlockTitle
       v-if="showLabel(level)"
       :i18nKey="args.key"
       :label="$t(args.label, 2)"
     />
+    <div :class="valid ? 'text-green' : 'text-red'">
+      THIS OBJECT FORM IS {{ valid ? "VALID" : "INVALID" }}
+    </div>
     <v-select
       v-model="selector"
       variant="outlined"
@@ -44,7 +52,7 @@
         >
       </template>
     </div>
-  </div>
+  </v-form>
 </template>
 <script setup>
 import { useFormStore } from "../../../stores/form"
@@ -72,6 +80,7 @@ const props = defineProps({
     required: true,
   },
 })
+const valid = ref(false)
 const selected = ref([])
 const selector = ref()
 
