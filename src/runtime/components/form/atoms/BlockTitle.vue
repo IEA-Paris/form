@@ -4,7 +4,7 @@
       {{ $t(label, 2) }}
     </template>
     <v-tooltip bottom :disabled="!disabled" :text="$t('disabled-btn-tooltip')">
-      <template v-slot:activator="{ props }">
+      <template #activator="{ props }">
         <div v-bind="props" class="d-inline-block">
           <v-btn
             v-if="addBtn"
@@ -12,8 +12,8 @@
             color="primary"
             variant="outlined"
             class="mt-2"
-            @click="$emit('add')"
             :disabled
+            @click="$emit('add')"
           >
             {{ $t("add." + i18nKey) || "Add Item" }}
           </v-btn>
@@ -23,8 +23,6 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from "vue"
-
 const props = defineProps({
   disabled: {
     type: Boolean,

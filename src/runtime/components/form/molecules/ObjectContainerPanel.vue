@@ -2,7 +2,7 @@
   <v-card>
     <FormAtomsBlockTitle
       v-if="showLabel(level)"
-      :i18nKey="args.key"
+      :i18n-key="args.key"
       :label="$t(args.label, 2)"
     />
     <div :class="valid ? 'text-green' : 'text-red'">
@@ -12,12 +12,14 @@
       v-model="valid"
       fast-fail
       @submit.prevent
-      @update:modelValue="$emit('update:valid', valid)"
+      @update:model-value="$emit('update:valid', valid)"
     >
       <template v-for="key in Object.keys(args.items)" :key="key">
         <component
-          :is="getComponentName(args.items[key].component)"
-          v-if="computeInputVisibility(args.items[key])"
+          :is="
+            getComponentName(args.items[key].component, args.items[key].i18n)
+          "
+          v-if="computeConditional(args.items[key])"
           :rules="generateInputRules(args.items[key])"
           :args="{ ...args.items[key], key }"
           :level="[...level, key]"
@@ -29,7 +31,7 @@
 <script setup>
 import {
   getComponentName,
-  computeInputVisibility,
+  computeConditional,
   showLabel,
 } from "../../../composables/useFormDisplay"
 import generateInputRules from "../../../composables/useFormValidation"

@@ -3,8 +3,8 @@
     <!-- PRIMITIVE -->
     <template v-if="input.type === 'PRIMITIVE'">
       <component
-        :is="getComponentName(input.component)"
-        v-if="computeInputVisibility(input)"
+        :is="getComponentName(input.component, input.i18n)"
+        v-if="computeConditional(input)"
         :args="{ ...input, key: level[level.length - 1] }"
         :level
         :category
@@ -16,7 +16,7 @@
       <div class="collection-container">
         <component
           :is="getComponentName(input.component)"
-          v-if="computeInputVisibility(input)"
+          v-if="computeConditional(input)"
           :args="{ ...input, key: level[level.length - 1] }"
           :level
           :category
@@ -28,7 +28,7 @@
     <template v-else-if="input.type === 'OBJECT'">
       <component
         :is="getComponentName(input.component)"
-        v-if="computeInputVisibility(input)"
+        v-if="computeConditional(input)"
         :args="{ ...input, key: level[level.length - 1] }"
         :level="[...level]"
         :category
@@ -39,7 +39,7 @@
     <template v-else-if="input.type === 'DOCUMENT'">
       <component
         :is="getComponentName(input.component)"
-        v-if="computeInputVisibility(input)"
+        v-if="computeConditional(input)"
         :args="{ ...input, key: level[level.length - 1] }"
         :level
         :category
@@ -50,10 +50,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue"
 import {
   getComponentName,
-  computeInputVisibility,
+  computeConditional,
 } from "../../../composables/useFormDisplay"
 
 const props = defineProps({

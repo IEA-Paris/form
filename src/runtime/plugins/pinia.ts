@@ -63,7 +63,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const defaults: Record<string, any> = {}
 
   const formStore = useFormStore()
-
+  const options = {}
   await Promise.all(
     appConfig.form.modules.map(async (type) => {
       try {
@@ -73,6 +73,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         if (model && model.schema) {
           schemas[type] = model.schema
           forms[type] = model._defaults
+          options[type] = []
           formStore.$patch({
             [type]: structuredClone(model._defaults),
           })
@@ -84,7 +85,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       }
     })
   )
-
+  // add the form options objects to the store
+  formStore.$patch({
+    options: options,
+  })
   nuxtApp.provide("forms", forms)
   nuxtApp.provide("schemas", schemas)
   nuxtApp.provide("formStore", formStore)

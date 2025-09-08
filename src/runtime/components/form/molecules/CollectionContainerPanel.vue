@@ -5,10 +5,10 @@
     variant="outlined"
   >
     <FormAtomsBlockTitle
-      :i18nKey="args.key"
+      :i18n-key="args.key"
       :label="$t(args.label, 2)"
-      :addBtn="true"
-      :disabled="!isCollectionValid"
+      :add-btn="true"
+      :disabled="!valid"
       @add="addItem" />
 
     <div v-if="args.description" class="text-h4 mb-2">
@@ -29,9 +29,9 @@
           @click="deleteItem(index)"
         />
       </div>
-      <div :class="isCollectionValid ? 'text-green' : 'text-red'">
+      <div :class="valid ? 'text-green' : 'text-red'">
         THIS COLLECTION FORM IS
-        {{ isCollectionValid ? "VALID" : "INVALID" }}
+        {{ valid ? "VALID" : "INVALID" }}
       </div>
       <!-- then use the schema to render the proper component for each item -->
       <template
@@ -39,12 +39,12 @@
         :key="keyIndex"
       >
         <component
-          @update:valid="updateChildValidation(index, key, $event)"
           :is="getComponentName(args.items[key].component)"
           :category
           :args="{ ...args.items[key], index }"
           :level="[...level, index, key]"
           :saving
+          @update:valid="updateChildValidation(index, key, $event)"
         />
       </template> </template
   ></v-card>
@@ -56,9 +56,9 @@
 import { useFormStore } from "../../../stores/form"
 import {
   getComponentName,
-  computeInputVisibility,
+  computeConditional,
 } from "../../../composables/useFormDisplay"
-import { ref, computed, watch, nextTick } from "vue"
+import { ref, computed, nextTick } from "vue"
 const formStore = useFormStore()
 const props = defineProps({
   args: {
@@ -97,20 +97,22 @@ const val = computed(() => {
 })
 
 const deleteItem = (index) => {
-  // Clean up validation state for the deleted item
-  delete validationState.value[index]
-
-  // Reindex remaining items
-  const newValidationState = {}
-  Object.keys(validationState.value).forEach((key) => {
-    const itemIndex = parseInt(key)
-    if (itemIndex > index) {
-      newValidationState[itemIndex - 1] = validationState.value[key]
-    } else if (itemIndex < index) {
-      newValidationState[itemIndex] = validationState.value[key]
+  // Clean up validation flags for the deleted item and reindex
+  const newFlags = {}
+  Object.keys(fieldValidationFlags.value).forEach((key) => {
+    const [itemIndex, fieldKey] = key.split("-", 2)
+    const currentIndex = parseInt(itemIndex)
+    if (currentIndex > index) {
+      // Reindex items after the deleted one
+      newFlags[`${currentIndex - 1}-${fieldKey}`] =
+        fieldValidationFlags.value[key]
+    } else if (currentIndex < index) {
+      // Keep items before the deleted one
+      newFlags[key] = fieldValidationFlags.value[key]
     }
+    // Skip items at the deleted index (effectively deleting them)
   })
-  validationState.value = newValidationState
+  fieldValidationFlags.value = newFlags
 
   formStore.deleteFormItem({
     category: props.category,
@@ -118,61 +120,33 @@ const deleteItem = (index) => {
   })
 }
 
-// Enhanced validation tracking
-const validationState = ref({})
-
-// Initialize validation state when items change
-watch(
-  val,
-  (newVal) => {
-    if (newVal && Array.isArray(newVal)) {
-      // Initialize validation state for new items
-      newVal.forEach((_, index) => {
-        if (!(index in validationState.value)) {
-          validationState.value[index] = {}
-        }
-      })
-
-      // Clean up validation state for removed items
-      Object.keys(validationState.value).forEach((key) => {
-        const index = parseInt(key)
-        if (index >= newVal.length) {
-          delete validationState.value[key]
-        }
-      })
-    }
-  },
-  { immediate: true, deep: true }
-)
+// Store individual field validation flags using a flat structure
+const fieldValidationFlags = ref({})
 
 // Track individual child form validation
 const updateChildValidation = (itemIndex, fieldKey, isValid) => {
-  if (!validationState.value[itemIndex]) {
-    validationState.value[itemIndex] = {}
-  }
-
-  validationState.value[itemIndex][fieldKey] = isValid
+  const flagKey = `${itemIndex}-${fieldKey}`
+  fieldValidationFlags.value[flagKey] = isValid
 
   // Emit the global validation state
   nextTick(() => {
-    emit("update:valid", isCollectionValid.value)
+    emit("update:valid", valid.value)
   })
 }
 
 // Computed property for global validation state
-const isCollectionValid = computed(() => {
+const valid = computed(() => {
   if (!val.value || !Array.isArray(val.value) || val.value.length === 0) {
     return true // Empty collection is considered valid
   }
 
   // Check if all items have validation state and all fields are valid
   return val.value.every((_, itemIndex) => {
-    const itemValidation = validationState.value[itemIndex]
-    if (!itemValidation) return false
-
-    // Check if all fields in this item are valid
     const fieldKeys = Object.keys(props.args.items || {})
-    return fieldKeys.every((fieldKey) => itemValidation[fieldKey] === true)
+    return fieldKeys.every((fieldKey) => {
+      const flagKey = `${itemIndex}-${fieldKey}`
+      return fieldValidationFlags.value[flagKey] === true
+    })
   })
 })
 

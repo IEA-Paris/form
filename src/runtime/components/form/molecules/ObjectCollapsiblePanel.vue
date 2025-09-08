@@ -1,59 +1,40 @@
 <template>
-  <div>
-    <div class="text-h6 d-flex align-center justify-between">
-      <FormAtomsBlockTitle
-        v-if="showLabel(level)"
-        :i18nKey="args.key"
-        :label="$t(args.label, 2)"
-      />
-      <!-- Show expand/collapse button only if there are facultative fields -->
-      <div
-        v-if="
-          Object.keys(args.items || {}).some(
-            (key) => !args.items[key]?.rules?.required
-          )
-        "
-        class="mb-3"
-      >
-        <v-btn
-          :prepend-icon="
-            showFacultativeFields ? 'mdi-chevron-up' : 'mdi-chevron-down'
-          "
-          variant="text"
-          size="small"
-          @click="showFacultativeFields = !showFacultativeFields"
-        >
-          {{
-            showFacultativeFields
-              ? "Hide optional fields"
-              : "Show optional fields"
-          }}
-        </v-btn>
-      </div>
+  <v-card>
+    <FormAtomsBlockTitle
+      v-if="showLabel(level)"
+      :i18n-key="args.key"
+      :label="$t(args.label, 2)"
+    />
+    <div :class="valid ? 'text-green' : 'text-red'">
+      THIS OBJECT FORM IS {{ valid ? "VALID" : "INVALID" }}
     </div>
-
-    <!-- Render form components -->
-    <template v-for="key in Object.keys(args.items || {})" :key="key">
-      <component
-        :is="getComponentName(args.items[key].component)"
-        v-if="
-          computeInputVisibility(args.items[key]) &&
-          (showFacultativeFields || args.items[key]?.rules?.required)
-        "
-        :args="{ ...args.items[key], key }"
-        :level="[...level, key]"
-        :category="category"
-      />
-    </template>
-  </div>
+    <v-form
+      v-model="valid"
+      fast-fail
+      @submit.prevent
+      @update:model-value="$emit('update:valid', valid)"
+    >
+      <template v-for="key in Object.keys(args.items)" :key="key">
+        <component
+          :is="
+            getComponentName(args.items[key].component, args.items[key].i18n)
+          "
+          v-if="computeConditional(args.items[key])"
+          :rules="generateInputRules(args.items[key])"
+          :args="{ ...args.items[key], key }"
+          :level="[...level, key]"
+          :category
+        /> </template
+    ></v-form>
+  </v-card>
 </template>
 <script setup>
 import {
   getComponentName,
-  computeInputVisibility,
+  computeConditional,
   showLabel,
 } from "../../../composables/useFormDisplay"
-
+import generateInputRules from "../../../composables/useFormValidation"
 const props = defineProps({
   args: {
     type: Object,
@@ -79,7 +60,6 @@ const props = defineProps({
   },
 })
 
-// Reactive state for showing/hiding facultative fields
-const showFacultativeFields = ref(false)
+const valid = ref(false)
 </script>
 <style lang="scss"></style>

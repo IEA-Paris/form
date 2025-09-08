@@ -3,11 +3,11 @@
     v-model="valid"
     fast-fail
     @submit.prevent
-    @update:modelValue="$emit('update:valid', valid)"
+    @update:model-value="$emit('update:valid', valid)"
   >
     <FormAtomsBlockTitle
       v-if="showLabel(level)"
-      :i18nKey="args.key"
+      :i18n-key="args.key"
       :label="$t(args.label, 2)"
     />
     <div :class="valid ? 'text-green' : 'text-red'">
@@ -34,8 +34,10 @@
     <div v-for="item in selected" :key="item" class="key-pair-container">
       <template v-if="args.items[item]">
         <component
-          :is="getComponentName(args.items[item].component)"
-          v-if="computeInputVisibility(args.items[item])"
+          :is="
+            getComponentName(args.items[item].component, args.items[item].i18n)
+          "
+          v-if="computeConditional(args.items[item])"
           class="key-pair-item"
           :args="{ ...args.items[item], key: item }"
           :level="[...props.level, item]"
@@ -58,7 +60,7 @@
 import { useFormStore } from "../../../stores/form"
 import {
   getComponentName,
-  computeInputVisibility,
+  computeConditional,
   showLabel,
 } from "../../../composables/useFormDisplay"
 import generateInputRules from "../../../composables/useFormValidation"
