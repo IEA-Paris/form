@@ -73,7 +73,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         if (model && model.schema) {
           schemas[type] = model.schema
           forms[type] = model._defaults
-          options[type] = []
+          options[type] = {
+            local: [],
+            orcid: [],
+            wikipedia: [],
+            hal: [],
+          }
           formStore.$patch({
             [type]: structuredClone(model._defaults),
           })

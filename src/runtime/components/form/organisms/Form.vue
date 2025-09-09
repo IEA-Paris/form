@@ -1,7 +1,16 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
-      <v-col cols="12">
+      <v-col :cols="showOptions ? 9 : 12">
+        <div class="d-flex align-items-right">
+          <v-btn
+            icon
+            :color="showOptions ? 'primary' : ''"
+            @click="showOptions = !showOptions"
+          >
+            <v-icon>{{ showOptions ? "mdi-eye-off" : "mdi-eye" }}</v-icon>
+          </v-btn>
+        </div>
         <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
           <div :class="valid ? 'text-green' : 'text-red'">
             THE WHOLE FORM IS {{ valid ? "VALID" : "INVALID" }}
@@ -32,12 +41,12 @@
           </div>
         </v-form>
       </v-col>
+      <v-col :cols="showOptions ? 3 : 0"> OPTIONS SELECTOR </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
 const { $schemas } = useNuxtApp()
@@ -55,7 +64,7 @@ const props = defineProps({
     default: "Save",
   },
 })
-
+const showOptions = ref(false)
 const emit = defineEmits(["save", "validate"])
 const form = computed(() => $schemas?.[props.category] || {})
 const formStore = useFormStore()

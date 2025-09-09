@@ -109,7 +109,7 @@
     "consent": "Add a user consent",
     "related": "Add a related item"
   },
-  "experiences": "Career",
+  "experiences": "Experience | Work history",
   "disciplines": "Disciplines",
   "video": "Video",
   "related": "Related items",
@@ -120,5 +120,16 @@
   "mendeley": "Mendeley",
   "bluesky": "BlueSky",
   "positions": "Position | Positions",
-  "add-a-media": "Add a social media channel"
+  "add-a-media": "Add a social media channel",
+  "english-version": "English version",
+  "french-version": "French version",
+  "relatedEvent": "Related event|Related events",
+  "relatedFellowships": "Related fellowship|Related fellowships",
+  "relatedProject": "Related project|Related projects",
+  "relatedPublication": "Related publication|Related publications",
+  "relatedNews": "Related news|Related news",
+  "relatedPeople": "Related people|Related people",
+  "funders": "Funders",
+  "partners": "Partners",
+  "sponsors": "Sponsors"
 }

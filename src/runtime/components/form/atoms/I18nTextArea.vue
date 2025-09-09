@@ -1,42 +1,21 @@
 <template>
-  <v-textarea
-    v-model="val"
-    v-bind="$attrs"
-    :label="args.label"
-    :placeholder="args.placeholder"
-    :hint="args.hint"
-    :persistent-hint="!!args.hint"
-    :required="args.rules.required"
-    :disabled="args.disabled"
-    :readonly="args.readonly"
-    :clearable="args.clearable"
-    :counter="args.rules && args.rules.max"
-    :rows="args.rows || 3"
-    :auto-grow="args.autoGrow"
-    :no-resize="args.noResize"
-    :rules="generateInputRules(args)"
-  >
-    <template #label>
-      <span>{{ $t(args.label) }}</span>
-      <sup
-        ><v-icon
-          v-if="args.rules && args.rules.required"
-          color="red"
-          size="small"
-          class="ml-1"
-        >
-          mdi-asterisk
-        </v-icon></sup
-      >
-    </template>
-  </v-textarea>
+  <v-row>
+    <v-col cols="6">
+      <div class="text-overline">
+        {{ $t("french-version") }}
+      </div>
+      <FormAtomsTextArea :args :level="[...level, 'fr']" :category />
+    </v-col>
+    <v-col cols="6">
+      <div class="text-overline">
+        {{ $t("english-version") }}
+      </div>
+      <FormAtomsTextArea :args :level="[...level, 'en']" :category
+    /></v-col>
+  </v-row>
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue"
-import { useFormStore } from "../../../stores/form"
-import generateInputRules from "../../../composables/useFormValidation"
-
 const props = defineProps({
   args: {
     type: Object,
@@ -52,29 +31,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-const formStore = useFormStore()
-
-const val = computed({
-  get() {
-    return formStore.getKey({
-      key: props.args.key,
-      level: props.level,
-      store: formStore[props.category],
-    })
-  },
-  set(value) {
-    formStore.setKey({
-      key: props.args.key,
-      value,
-      category: props.category,
-      level: props.level,
-      store: formStore[props.category],
-    })
-  },
-})
-
-onMounted(() => {})
 </script>
 
 <style lang="scss" scoped></style>

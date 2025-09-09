@@ -297,6 +297,7 @@ watch(
 
 <style lang="scss" scoped>
 .document-picker {
+  margin-top: 16px;
   .new-item-button {
     border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
     background-color: rgba(var(--v-theme-primary), 0.1);

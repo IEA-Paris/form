@@ -2,7 +2,8 @@
   <v-checkbox
     v-model="val"
     v-bind="$attrs"
-    :label="args.label"
+    :label="$t(args.label)"
+    :hide-details="!args.hint"
     :hint="args.hint"
     :persistent-hint="!!args.hint"
     :required="args.required"

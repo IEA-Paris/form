@@ -7,7 +7,6 @@ export const computeConditional = (input) => {
   return true
 }
 export const showLabel = (level: any[]) => {
-  console.log("level: ", level)
   return (
     (level.length > 1 && Number.isInteger(level[level.length - 1])) ||
     (level.length === 1 && !Number.isInteger(level[0]))

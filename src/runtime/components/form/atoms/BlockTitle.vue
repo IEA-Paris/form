@@ -1,5 +1,5 @@
 <template>
-  <div class="text-h6 d-flex align-center justify-space-between mt-3">
+  <div class="text-overline d-flex align-center justify-space-between mt-3">
     <template v-if="label">
       {{ $t(label, 2) }}
     </template>

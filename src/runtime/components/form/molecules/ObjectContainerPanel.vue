@@ -20,7 +20,6 @@
             getComponentName(args.items[key].component, args.items[key].i18n)
           "
           v-if="computeConditional(args.items[key])"
-          :rules="generateInputRules(args.items[key])"
           :args="{ ...args.items[key], key }"
           :level="[...level, key]"
           :category
@@ -34,7 +33,6 @@ import {
   computeConditional,
   showLabel,
 } from "../../../composables/useFormDisplay"
-import generateInputRules from "../../../composables/useFormValidation"
 const props = defineProps({
   args: {
     type: Object,

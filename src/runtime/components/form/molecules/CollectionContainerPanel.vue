@@ -2,7 +2,6 @@
   <v-card
     :key="`col-${level.join('-')}-${level[level.length - 1]}`"
     class="mb-3 pa-3"
-    variant="outlined"
   >
     <FormAtomsBlockTitle
       :i18n-key="args.key"
@@ -39,11 +38,15 @@
         :key="keyIndex"
       >
         <component
-          :is="getComponentName(args.items[key].component)"
+          :is="
+            getComponentName(args.items[key].component, args.items[key].i18n)
+          "
           :category
           :args="{ ...args.items[key], index }"
           :level="[...level, index, key]"
           :saving
+          @submit.prevent
+          @update:model-value="$emit('update:valid', valid)"
           @update:valid="updateChildValidation(index, key, $event)"
         />
       </template> </template

@@ -14,13 +14,17 @@
       @submit.prevent
       @update:model-value="$emit('update:valid', valid)"
     >
-      <template v-for="key in Object.keys(args.items)" :key="key">
+      <template
+        v-for="key in Object.keys(args.items).filter(
+          (key) => !args.items[key].rules.required
+        )"
+        :key="key"
+      >
         <component
           :is="
             getComponentName(args.items[key].component, args.items[key].i18n)
           "
           v-if="computeConditional(args.items[key])"
-          :rules="generateInputRules(args.items[key])"
           :args="{ ...args.items[key], key }"
           :level="[...level, key]"
           :category
@@ -34,7 +38,6 @@ import {
   computeConditional,
   showLabel,
 } from "../../../composables/useFormDisplay"
-import generateInputRules from "../../../composables/useFormValidation"
 const props = defineProps({
   args: {
     type: Object,
