@@ -1,10 +1,15 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col cols="6">
       <div class="text-overline">
         {{ $t("french-version") }}
       </div>
-      <FormAtomsTextArea :args :level="[...level, 'fr']" :category />
+      <FormAtomsTextArea
+        :args
+        :level="[...level, 'fr']"
+        :category
+        class="mr-2"
+      />
     </v-col>
     <v-col cols="6">
       <div class="text-overline">

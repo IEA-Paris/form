@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col :cols="showOptions ? 9 : 12">
+      <v-col cols="12">
         <div class="d-flex align-items-right">
           <v-btn
             icon
@@ -41,7 +41,6 @@
           </div>
         </v-form>
       </v-col>
-      <v-col :cols="showOptions ? 3 : 0"> OPTIONS SELECTOR </v-col>
     </v-row>
   </v-container>
 </template>

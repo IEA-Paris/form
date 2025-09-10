@@ -26,7 +26,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     addPlugin(resolver.resolve("./runtime/plugins/pinia"))
-    addPlugin(resolver.resolve("./runtime/plugins/vuetify"))
+    /*  addPlugin(resolver.resolve("./runtime/plugins/vuetify")) */
     // Add components
     addComponentsDir({
       path: resolver.resolve("./runtime/components"),

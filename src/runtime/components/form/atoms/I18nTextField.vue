@@ -1,18 +1,21 @@
 <template>
-  <v-row>
-    <v-col cols="6">
-      <div class="text-overline">
-        {{ $t("french-version") }}
-      </div>
-      <FormAtomsTextField :args :level="[...level, 'fr']" :category />
-    </v-col>
-    <v-col cols="6">
-      <div class="text-overline">
-        {{ $t("english-version") }}
-      </div>
-      <FormAtomsTextField :args :level="[...level, 'en']" :category />
-    </v-col>
-  </v-row>
+  <v-col cols="6">
+    <div class="text-overline">
+      {{ $t("french-version") }}
+    </div>
+    <FormAtomsTextField
+      :args
+      :level="[...level, 'fr']"
+      :category
+      class="mr-2"
+    />
+  </v-col>
+  <v-col cols="6">
+    <div class="text-overline">
+      {{ $t("english-version") }}
+    </div>
+    <FormAtomsTextField :args :level="[...level, 'en']" :category />
+  </v-col>
 </template>
 
 <script setup>
