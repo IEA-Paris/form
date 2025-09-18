@@ -28,9 +28,8 @@
           @click="deleteItem(index)"
         />
       </div>
-      <div :class="valid ? 'text-green' : 'text-red'">
-        THIS COLLECTION FORM IS
-        {{ valid ? "VALID" : "INVALID" }}
+      <div v-if="!valid" class="text-red mb-2">
+        {{ validationRules.length > 0 ? "Collection validation failed" : "" }}
       </div>
       <!-- then use the schema to render the proper component for each item -->
       <template
@@ -50,23 +49,18 @@
   ></v-card>
 </template>
 <script setup>
-// import { useDisplay } from "vuetify"
-// const { smAndUp } = useDisplay()
-// const localePath = useLocalePath()
 import { useFormStore } from "../../../stores/form"
-import {
-  getComponentName,
-  computeConditional,
-} from "../../../composables/useFormDisplay"
-import { ref, computed, nextTick } from "vue"
-import RecursiveFormblock from "../organisms/RecursiveFormblock.vue"
+import useFormValidation from "../../../composables/useFormValidation"
+import { ref, computed, watch } from "vue"
+
+// Define emits first
+const emit = defineEmits(["update:valid"])
+
 const formStore = useFormStore()
 const props = defineProps({
   args: {
     type: Object,
-    default: () => {
-      return {}
-    },
+    default: () => ({}),
   },
   category: {
     type: String,
@@ -80,7 +74,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  category: { type: String, required: true },
 })
 
 const addItem = () => {
@@ -97,23 +90,23 @@ const val = computed(() => {
   })
 })
 
+// Store child validation flags
+const childValidationFlags = ref({})
+
 const deleteItem = (index) => {
   // Clean up validation flags for the deleted item and reindex
   const newFlags = {}
-  Object.keys(fieldValidationFlags.value).forEach((key) => {
+  Object.keys(childValidationFlags.value).forEach((key) => {
     const [itemIndex, fieldKey] = key.split("-", 2)
     const currentIndex = parseInt(itemIndex)
     if (currentIndex > index) {
-      // Reindex items after the deleted one
       newFlags[`${currentIndex - 1}-${fieldKey}`] =
-        fieldValidationFlags.value[key]
+        childValidationFlags.value[key]
     } else if (currentIndex < index) {
-      // Keep items before the deleted one
-      newFlags[key] = fieldValidationFlags.value[key]
+      newFlags[key] = childValidationFlags.value[key]
     }
-    // Skip items at the deleted index (effectively deleting them)
   })
-  fieldValidationFlags.value = newFlags
+  childValidationFlags.value = newFlags
 
   formStore.deleteFormItem({
     category: props.category,
@@ -121,37 +114,55 @@ const deleteItem = (index) => {
   })
 }
 
-// Store individual field validation flags using a flat structure
-const fieldValidationFlags = ref({})
-
-// Track individual child form validation
 const updateChildValidation = (itemIndex, fieldKey, isValid) => {
   const flagKey = `${itemIndex}-${fieldKey}`
-  fieldValidationFlags.value[flagKey] = isValid
-
-  // Emit the global validation state
-  nextTick(() => {
-    emit("update:valid", valid.value)
-  })
+  childValidationFlags.value[flagKey] = isValid
 }
 
-// Computed property for global validation state
-const valid = computed(() => {
+// Count of valid child items
+const validChildCount = computed(() => {
   if (!val.value || !Array.isArray(val.value) || val.value.length === 0) {
-    return true // Empty collection is considered valid
+    return 0
   }
 
-  // Check if all items have validation state and all fields are valid
-  return val.value.every((_, itemIndex) => {
+  return val.value.filter((_, itemIndex) => {
     const fieldKeys = Object.keys(props.args.items || {})
     return fieldKeys.every((fieldKey) => {
       const flagKey = `${itemIndex}-${fieldKey}`
-      return fieldValidationFlags.value[flagKey] === true
+      return childValidationFlags.value[flagKey] === true
     })
-  })
+  }).length
 })
 
-// Define emits
-const emit = defineEmits(["update:valid"])
+// Apply validation rules using the composable
+const validationRules = useFormValidation(props.args)
+
+const valid = computed(() => {
+  const count = validChildCount.value
+
+  // If no rules, it's valid
+  if (!validationRules || validationRules.length === 0) {
+    return true
+  }
+
+  // Apply all validation rules to the count
+  for (const rule of validationRules) {
+    const result = rule(count)
+    if (result !== true) {
+      return false
+    }
+  }
+
+  return true
+})
+
+// Watch valid state and emit changes
+watch(
+  valid,
+  (newValid) => {
+    emit("update:valid", newValid)
+  },
+  { immediate: true }
+)
 </script>
 <style lang="scss"></style>

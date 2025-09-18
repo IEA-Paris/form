@@ -1,7 +1,7 @@
 <template>
   <div class="recursive-form-block">
     <component
-      :is="getComponentName(input.component)"
+      :is="getComponentName(input.component, input.i18n)"
       v-if="computeConditional(input)"
       :args="{ ...input, key: level[level.length - 1] }"
       :level
