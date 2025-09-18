@@ -1,51 +1,14 @@
 <template>
   <div class="recursive-form-block">
-    <!-- PRIMITIVE -->
-    <template v-if="input.type === 'PRIMITIVE'">
-      <component
-        :is="getComponentName(input.component, input.i18n)"
-        v-if="computeConditional(input)"
-        :args="{ ...input, key: level[level.length - 1] }"
-        :level
-        :category
-      />
-    </template>
-
-    <!-- ARRAY -->
-    <template v-else-if="input.type === 'ARRAY'">
-      <div class="collection-container">
-        <component
-          :is="getComponentName(input.component)"
-          v-if="computeConditional(input)"
-          :args="{ ...input, key: level[level.length - 1] }"
-          :level
-          :category
-        />
-      </div>
-    </template>
-
-    <!-- OBJECT -->
-    <template v-else-if="input.type === 'OBJECT'">
-      <component
-        :is="getComponentName(input.component)"
-        v-if="computeConditional(input)"
-        :args="{ ...input, key: level[level.length - 1] }"
-        :level="[...level]"
-        :category
-      />
-    </template>
-
-    <!-- DOCUMENT -->
-    <template v-else-if="input.type === 'DOCUMENT'">
-      <component
-        :is="getComponentName(input.component)"
-        v-if="computeConditional(input)"
-        :args="{ ...input, key: level[level.length - 1] }"
-        :level
-        :category
-        :type="input.type"
-      />
-    </template>
+    <component
+      :is="getComponentName(input.component)"
+      v-if="computeConditional(input)"
+      :args="{ ...input, key: level[level.length - 1] }"
+      :level
+      :category
+      :type="input.type"
+      @update:model-value="$emit('update:valid', valid)"
+    />
   </div>
 </template>
 

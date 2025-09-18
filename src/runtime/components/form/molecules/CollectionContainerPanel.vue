@@ -37,12 +37,9 @@
         v-for="(key, keyIndex) in Object.keys(args.items)"
         :key="keyIndex"
       >
-        <component
-          :is="
-            getComponentName(args.items[key].component, args.items[key].i18n)
-          "
+        <FormOrganismsRecursiveFormblock
           :category
-          :args="{ ...args.items[key], index }"
+          :input="args.items[key]"
           :level="[...level, index, key]"
           :saving
           @submit.prevent
@@ -62,6 +59,7 @@ import {
   computeConditional,
 } from "../../../composables/useFormDisplay"
 import { ref, computed, nextTick } from "vue"
+import RecursiveFormblock from "../organisms/RecursiveFormblock.vue"
 const formStore = useFormStore()
 const props = defineProps({
   args: {
