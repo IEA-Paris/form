@@ -32,8 +32,15 @@ const props = defineProps({
   .object-container {
     margin-bottom: 16px;
   }
-  .v-card {
-    border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  .v-card.valid/* .required */,
+  .v-form.valid/* .required */ {
+    padding-left: 5px;
+    border-left: solid green 3px !important;
+  }
+  .v-card.invalid/* .required */,
+  .v-form.invalid/* .required */ {
+    padding-left: 5px;
+    border-left: solid red 3px !important;
   }
 }
 </style>

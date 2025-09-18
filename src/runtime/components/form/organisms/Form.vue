@@ -2,23 +2,28 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <div class="d-flex align-items-right">
+        <div v-if="showActions" class="d-flex justify-end mt-4">
           <v-btn
-            icon
-            :color="showOptions ? 'primary' : ''"
-            @click="showOptions = !showOptions"
+            :disabled="!valid || saving"
+            :loading="saving"
+            color="success"
+            prepend-icon="mdi-content-save"
+            @click.stop="save"
           >
-            <v-icon>{{ showOptions ? "mdi-eye-off" : "mdi-eye" }}</v-icon>
+            {{ saveText || "Save" }}
           </v-btn>
         </div>
+
+        <div class="d-flex align-center">
+          <v-icon large :color="valid ? 'green' : 'red'" class="mb-6">
+            mdi-circle
+          </v-icon>
+          <p :class="valid ? 'text-green' : 'text-red'">
+            {{ valid ? "Form is valid" : "Form is invalid" }}
+          </p>
+        </div>
         <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
-          <div :class="valid ? 'text-green' : 'text-red'">
-            THE WHOLE FORM IS {{ valid ? "VALID" : "INVALID" }}
-          </div>
           <template v-for="(input, key, index) in form" :key="key">
-            <!-- {{ input }}
-              {{ key }}
-              {{ index }} -->
             <FormOrganismsRecursiveFormblock
               :input
               :category

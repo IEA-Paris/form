@@ -2,7 +2,15 @@
   <v-card
     :key="`col-${level.join('-')}-${level[level.length - 1]}`"
     class="mb-3 pa-3"
+    :class="{
+      required: args.rules && args.rules.required,
+      valid: valid,
+      invalid: !valid,
+    }"
   >
+    <div :class="valid ? 'text-green' : 'text-red'">
+      THIS ARRAY FORM IS {{ valid ? "VALID" : "INVALID" }}
+    </div>
     <FormAtomsBlockTitle
       :i18n-key="args.key"
       :label="$t(args.label, 2)"

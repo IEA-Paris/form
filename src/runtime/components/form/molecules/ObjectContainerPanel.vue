@@ -1,5 +1,11 @@
 <template>
-  <v-card>
+  <v-card
+    :class="{
+      required: args.rules && args.rules.required,
+      valid: valid,
+      invalid: !valid,
+    }"
+  >
     <FormAtomsBlockTitle
       v-if="showLabel(level)"
       :i18n-key="args.key"

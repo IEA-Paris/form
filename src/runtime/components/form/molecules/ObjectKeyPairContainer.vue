@@ -2,6 +2,11 @@
   <v-form
     v-model="valid"
     fast-fail
+    :class="{
+      required: args.rules && args.rules.required,
+      valid: valid,
+      invalid: !valid,
+    }"
     @submit.prevent
     @update:model-value="$emit('update:valid', valid)"
   >
