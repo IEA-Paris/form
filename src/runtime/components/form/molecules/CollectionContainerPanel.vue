@@ -8,9 +8,9 @@
       invalid: !valid,
     }"
   >
-    <div :class="valid ? 'text-green' : 'text-red'">
+    <!--     <div :class="valid ? 'text-green' : 'text-red'">
       THIS ARRAY FORM IS {{ valid ? "VALID" : "INVALID" }}
-    </div>
+    </div> -->
     <FormAtomsBlockTitle
       :i18n-key="args.key"
       :label="$t(args.label, 2)"

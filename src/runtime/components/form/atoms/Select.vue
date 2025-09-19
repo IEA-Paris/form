@@ -22,6 +22,7 @@
 <script setup>
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
+const { $i18n } = useNuxtApp()
 
 const props = defineProps({
   args: {
@@ -65,9 +66,15 @@ const val = computed({
 
 const computedItems = computed(() => {
   if (props.args.items) {
-    return props.args.items
+    return Object.keys(props.args.items).map((key) => {
+      return {
+        ...props.args.items[key],
+        value: props.args.items[key] ?? key,
+        title: $i18n.t(props.args.items[key]) ?? key,
+      }
+    })
   }
-  return props.items || []
+  return props.args.items || []
 })
 
 const rules = computed(() => {

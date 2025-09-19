@@ -11,9 +11,9 @@
       :i18n-key="args.key"
       :label="$t(args.label, 2)"
     />
-    <div :class="valid ? 'text-green' : 'text-red'">
+    <!--     <div :class="valid ? 'text-green' : 'text-red'">
       THIS OBJECT FORM IS {{ valid ? "VALID" : "INVALID" }}
-    </div>
+    </div> -->
     <v-form
       v-model="valid"
       fast-fail

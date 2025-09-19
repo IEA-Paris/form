@@ -32,6 +32,7 @@ const props = defineProps({
   .object-container {
     margin-bottom: 16px;
   }
+  //!\ TODO: uncomment required once validation is 100%  working
   .v-card.valid/* .required */,
   .v-form.valid/* .required */ {
     padding-left: 5px;
