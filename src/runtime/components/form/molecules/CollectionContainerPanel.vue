@@ -59,7 +59,7 @@
 <script setup>
 import { useFormStore } from "../../../stores/form"
 import useFormValidation from "../../../composables/useFormValidation"
-import { ref, computed, watch } from "vue"
+import { ref, computed, watch } from "#imports"
 
 // Define emits first
 const emit = defineEmits(["update:valid"])
