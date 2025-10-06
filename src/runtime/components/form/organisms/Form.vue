@@ -53,6 +53,7 @@
 <script setup>
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
+import { ref, computed } from "#imports"
 const { $schemas } = useNuxtApp()
 const props = defineProps({
   category: {
