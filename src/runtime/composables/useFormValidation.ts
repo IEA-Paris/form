@@ -1,4 +1,5 @@
 import type { FormValidationRule } from "../types"
+import { useNuxtApp } from "#imports"
 
 // Built-in regex patterns
 const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
@@ -10,9 +11,9 @@ const rorRegex = /^https:\/\/ror\.org\/[0-9a-z]+$/
 const doiRegex = /^10\.\d{4,}\/[-._;()\/:a-zA-Z0-9]+$/
 const dateRegex = /^(\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/(\d{4}|\d{2}))$/
 const orcidRegex = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/
+const { $i18n } = useNuxtApp()
 
 export default (input) => {
-  const { $i18n } = useNuxtApp()
   const t = $i18n?.t || ((key: string, params?: any[]) => key)
 
   const requiredRules = (value: any): boolean => {
