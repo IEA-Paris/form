@@ -27,8 +27,6 @@
 <script setup>
 import { computed, onMounted, ref } from "vue"
 import { useFormStore } from "../../../stores/form"
-import { useNuxtApp } from "#app"
-const { $form } = useNuxtApp()
 const props = defineProps({
   args: {
     type: Object,

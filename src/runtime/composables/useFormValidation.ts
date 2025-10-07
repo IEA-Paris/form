@@ -1,5 +1,5 @@
 import type { FormValidationRule } from "../types"
-import { useNuxtApp } from "#imports"
+import { useNuxtApp } from "#app"
 
 // Built-in regex patterns
 const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i

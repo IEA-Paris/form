@@ -20,8 +20,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue"
+import { computed, onMounted } from "#imports"
 import { useFormStore } from "../../../stores/form"
+import { useNuxtApp } from "#app"
 const { $i18n } = useNuxtApp()
 
 const props = defineProps({
