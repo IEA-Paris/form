@@ -92,10 +92,10 @@
   dependencies:
     "@paris-ias/data" "^1.8.52"
 
-"@paris-ias/trees@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@paris-ias/trees/-/trees-2.0.0.tgz#1cf7359a053c8bf40b9cf9703d8f45d95c8c0863"
-  integrity sha512-PYP4pkzpjskotnNHsQIW6IJZb2+HgPwexKhBzhDxrG3wlW2n950M8nsXiC6+Qr/8I+FgCgq+KpNLw0NzTkNfrQ==
+"@paris-ias/trees@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@paris-ias/trees/-/trees-2.0.2.tgz#ba0eb2b93581536ce5c78e10237727d39b6a1216"
+  integrity sha512-x06e3MSJtnCEtDxARcllngaxa3FTIYDtlgQ7kKG9zy77+rhZL1UbxeLefb5F502QV5Mel3xzVVPC2gaSF9i37g==
   dependencies:
     "@graphql-tools/load-files" "^7"
     "@graphql-tools/merge" "^8"
