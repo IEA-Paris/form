@@ -9,58 +9,57 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   const moduleImports = {
     events: () => ({
-      model: import("@paris-ias/trees/dist/form/events.js"),
+      model: import("@paris-ias/trees/form/events"),
     }),
     news: () => ({
-      model: import("@paris-ias/trees/dist/form/news.js"),
+      model: import("@paris-ias/trees/form/news"),
     }),
     people: () => ({
-      model: import("@paris-ias/trees/dist/form/people.js"),
+      model: import("@paris-ias/trees/form/people"),
     }),
     projects: () => ({
-      model: import("@paris-ias/trees/dist/form/projects.js"),
+      model: import("@paris-ias/trees/form/projects"),
     }),
     fellowships: () => ({
-      model: import("@paris-ias/trees/dist/form/fellowships.js"),
+      model: import("@paris-ias/trees/form/fellowships"),
     }),
     publications: () => ({
-      model: import("@paris-ias/trees/dist/form/publications.js"),
+      model: import("@paris-ias/trees/form/publications"),
     }),
 
     actions: () => ({
-      model: import("@paris-ias/trees/dist/form/action.js"),
+      model: import("@paris-ias/trees/form/actions"),
     }),
 
-    affiliation: () => ({
-      model: import("@paris-ias/trees/dist/form/affiliation.js"),
+    affiliations: () => ({
+      model: import("@paris-ias/trees/form/affiliations"),
     }),
     disciplines: () => ({
-      model: import("@paris-ias/trees/dist/form/disciplines.js"),
+      model: import("@paris-ias/trees/form/disciplines"),
     }),
     files: () => ({
-      model: import("@paris-ias/trees/dist/form/files.js"),
+      model: import("@paris-ias/trees/form/files"),
     }),
 
     mailing: () => ({
-      model: import("@paris-ias/trees/dist/form/mailing.js"),
+      model: import("@paris-ias/trees/form/mailing"),
     }),
 
     tags: () => ({
-      model: import("@paris-ias/trees/dist/form/tags.js"),
+      model: import("@paris-ias/trees/form/tags"),
     }),
 
     apps: () => ({
-      model: import("@paris-ias/trees/dist/form/apps.js"),
+      model: import("@paris-ias/trees/form/apps"),
     }),
 
     users: () => ({
-      model: import("@paris-ias/trees/dist/form/users.js"),
+      model: import("@paris-ias/trees/form/users"),
     }),
   } as const
 
   const schemas: Record<string, any> = {}
   const forms: Record<string, any> = {}
-  const defaults: Record<string, any> = {}
 
   const formStore = useFormStore()
   const options = {}
