@@ -1,6 +1,6 @@
-# @paris-ias/form - Canopy Form Module
+# @paris-ias/form - Isomorphic Forest Form Module
 
-The `@paris-ias/form` module is a sophisticated Nuxt 3 module that generates dynamic, recursive forms from data models defined in `@paris-ias/data`. It implements the **local atomic rules, global behavior** and **data-driven declarative UI** principles of the Canopy architecture, providing a complete form generation system with deep nesting, validation, and internationalization.
+The `@paris-ias/form` module is a sophisticated Nuxt 3 module that generates dynamic, recursive forms from data models defined in `@paris-ias/data`. It implements the **local atomic rules, global behavior** and **data-driven declarative UI** principles of the Isomorphic Forest architecture, providing a complete form generation system with deep nesting, validation, and internationalization.
 
 ## 🏗️ Architecture Overview
 
@@ -8,32 +8,32 @@ The form module transforms form trees from the types module into fully functiona
 
 ```mermaid
 graph TD
-    A[@paris-ias/data Form Trees] --> B[RecursiveFormblock Engine]
+    A[paris-ias/data Form Trees] --> B[RecursiveFormblock Engine]
     B --> C[Component Resolution]
-    B --> D[State Management]  
+    B --> D[State Management]
     B --> E[Validation System]
-    
+
     C --> F[Atomic Components]
     C --> G[Molecular Containers]
     C --> H[I18n Components]
-    
+
     D --> I[Pinia Form Store]
     D --> J[Deep Nesting Support]
     D --> K[Reactive Updates]
-    
+
     E --> L[Field Validation]
     E --> M[Form Validation]
     E --> N[Error Handling]
-    
+
     F --> O[TextField]
     F --> P[Select]
     F --> Q[DatePicker]
     F --> R[FileInput]
-    
+
     G --> S[CollectionContainer]
     G --> T[ObjectContainer]
     G --> U[DocumentPicker]
-    
+
     style A fill:#e1f5fe
     style B fill:#f3e5f5
     style C fill:#e8f5e8
@@ -48,31 +48,31 @@ The form module follows a recursive, atomic design pattern optimized for infinit
 ```mermaid
 graph TD
     A[RecursiveFormblock] --> B{Field Type?}
-    
+
     B -->|PRIMITIVE| C[Atomic Components]
     B -->|OBJECT| D[Object Container]
-    B -->|ARRAY| E[Collection Container]  
+    B -->|ARRAY| E[Collection Container]
     B -->|DOCUMENT| F[Document Picker]
-    
+
     C --> G{I18n Flag?}
     G -->|true| H[I18n Components]
     G -->|false| I[Standard Components]
-    
+
     H --> J[I18nTextField]
     H --> K[I18nTextArea]
-    
+
     I --> L[TextField]
     I --> M[Select]
     I --> N[DatePicker]
     I --> O[ColorPicker]
-    
+
     D --> P[ObjectContainerPanel]
     D --> Q[Nested RecursiveFormblock]
-    
+
     E --> R[CollectionContainerPanel]
     E --> S[Array Management]
     E --> T[Item CRUD Operations]
-    
+
     style A fill:#ff6b6b
     style C fill:#45b7d1
     style D fill:#4ecdc4
@@ -84,33 +84,33 @@ graph TD
 
 ### Core Module Files
 
-| File | Purpose | Key Features |
-|------|---------|--------------|
-| [`src/module.ts`](/home/bob/Projects/Apex/frontend/modules/form/src/module.ts) | Nuxt module definition | Component registration, plugin setup, i18n integration |
-| [`src/runtime/stores/form.ts`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/stores/form.ts) | Form state management | Deep nested operations, reactive updates |
-| [`src/runtime/components/form/organisms/RecursiveFormblock.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/organisms/RecursiveFormblock.vue) | Main form recursion engine | Handles all form types, infinite nesting |
-| [`src/runtime/composables/useFormDisplay.ts`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/composables/useFormDisplay.ts) | Component resolution logic | Dynamic component mapping |
+| File                                                                                                                                                                         | Purpose                    | Key Features                                           |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------ |
+| [`src/module.ts`](/home/bob/Projects/Apex/frontend/modules/form/src/module.ts)                                                                                               | Nuxt module definition     | Component registration, plugin setup, i18n integration |
+| [`src/runtime/stores/form.ts`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/stores/form.ts)                                                                     | Form state management      | Deep nested operations, reactive updates               |
+| [`src/runtime/components/form/organisms/RecursiveFormblock.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/organisms/RecursiveFormblock.vue) | Main form recursion engine | Handles all form types, infinite nesting               |
+| [`src/runtime/composables/useFormDisplay.ts`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/composables/useFormDisplay.ts)                                       | Component resolution logic | Dynamic component mapping                              |
 
 ### Atomic Components (Field Types)
 
-| Component | Purpose | Features |
-|-----------|---------|----------|
-| [`TextField.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/TextField.vue) | Text input with validation | Rules, required indicators, reactive binding |
-| [`I18nTextField.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/I18nTextField.vue) | Internationalized text input | Side-by-side EN/FR inputs |
-| [`Select.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/Select.vue) | Dropdown selection | Single/multi-select, options from data |
-| [`DatePicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/DatePicker.vue) | Date selection | Calendar picker with validation |
-| [`ColorPicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/ColorPicker.vue) | Color selection | Visual color picker |
-| [`FileInput.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/FileInput.vue) | File upload | Progress, validation, preview |
-| [`BooleanSwitch.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/BooleanSwitch.vue) | Toggle switch | Boolean values with styling |
+| Component                                                                                                                | Purpose                      | Features                                     |
+| ------------------------------------------------------------------------------------------------------------------------ | ---------------------------- | -------------------------------------------- |
+| [`TextField.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/TextField.vue)         | Text input with validation   | Rules, required indicators, reactive binding |
+| [`I18nTextField.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/I18nTextField.vue) | Internationalized text input | Side-by-side EN/FR inputs                    |
+| [`Select.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/Select.vue)               | Dropdown selection           | Single/multi-select, options from data       |
+| [`DatePicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/DatePicker.vue)       | Date selection               | Calendar picker with validation              |
+| [`ColorPicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/ColorPicker.vue)     | Color selection              | Visual color picker                          |
+| [`FileInput.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/FileInput.vue)         | File upload                  | Progress, validation, preview                |
+| [`BooleanSwitch.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/atoms/BooleanSwitch.vue) | Toggle switch                | Boolean values with styling                  |
 
 ### Molecular Components (Containers)
 
-| Component | Purpose | Features |
-|-----------|---------|----------|
-| [`CollectionContainerPanel.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/CollectionContainerPanel.vue) | Array field wrapper | Add/remove items, iteration management |
-| [`ObjectContainerPanel.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/ObjectContainerPanel.vue) | Object field wrapper | Visual container for nested objects |
-| [`DocumentPicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/DocumentPicker.vue) | Document selection | Reference existing database documents |
-| [`ImagePicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/ImagePicker.vue) | Image selection | Image browsing and selection |
+| Component                                                                                                                                          | Purpose              | Features                               |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | -------------------------------------- |
+| [`CollectionContainerPanel.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/CollectionContainerPanel.vue) | Array field wrapper  | Add/remove items, iteration management |
+| [`ObjectContainerPanel.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/ObjectContainerPanel.vue)         | Object field wrapper | Visual container for nested objects    |
+| [`DocumentPicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/DocumentPicker.vue)                     | Document selection   | Reference existing database documents  |
+| [`ImagePicker.vue`](/home/bob/Projects/Apex/frontend/modules/form/src/runtime/components/form/molecules/ImagePicker.vue)                           | Image selection      | Image browsing and selection           |
 
 ## 🔄 Recursive Form Generation
 
@@ -119,20 +119,20 @@ The core innovation is the recursive form generation system that handles infinit
 ```mermaid
 sequenceDiagram
     participant Schema as Form Schema
-    participant RFC as RecursiveFormblock  
+    participant RFC as RecursiveFormblock
     participant CR as Component Resolver
     participant Store as Form Store
     participant UI as UI Component
-    
+
     Schema->>RFC: Process field definition
     RFC->>CR: Resolve component type
     CR-->>RFC: Return component name
-    
+
     alt Primitive Field
         RFC->>UI: Render atomic component
         UI->>Store: Update field value
         Store-->>UI: Reactive state update
-    else Object Field  
+    else Object Field
         RFC->>RFC: Create nested recursion
         Note over RFC: Infinite nesting capability
     else Array Field
@@ -156,7 +156,7 @@ const getComponentName = (name: string, i18n = false) => {
     DatePicker: "FormAtomsDatePicker",
     ColorPicker: "FormAtomsColorPicker",
     CollectionContainerPanel: "FormMoleculesCollectionContainerPanel",
-    ObjectContainerPanel: "FormMoleculesObjectContainerPanel"
+    ObjectContainerPanel: "FormMoleculesObjectContainerPanel",
   };
   return componentMap[name] || "FormAtomsTextField";
 };
@@ -171,23 +171,23 @@ graph TD
     A[Form Store] --> B[State Structure]
     A --> C[Deep Navigation]
     A --> D[CRUD Operations]
-    
+
     B --> E[Dynamic Modules]
     B --> F[Nested Objects]
     B --> G[Array Collections]
-    
+
     C --> H[Level-based Access]
     C --> I[Recursive getKey]
     C --> J[Recursive setKey]
-    
+
     D --> K[Add Items]
     D --> L[Delete Items]
     D --> M[Update Values]
-    
+
     H --> N["level: ['affiliations', 0, 'title']"]
     I --> O[Navigate to nested value]
     J --> P[Update nested value]
-    
+
     style A fill:#e1f5fe
     style C fill:#f3e5f5
     style D fill:#e8f5e8
@@ -203,7 +203,7 @@ getKey({ level, store }): any {
     const isArrayIndex = typeof currentKey === "number";
     return isArrayIndex ? store.at(currentKey) : store[currentKey];
   }
-  
+
   return this.getKey({
     level: level.slice(1),
     store: store[level[0]]
@@ -216,15 +216,15 @@ setKey({ value, category, level, store }): any {
     store[level[0]] = value;
     return;
   }
-  
+
   const isArrayIndex = typeof level[0] === "number";
   if (store[level[0]] === undefined) {
     store[level[0]] = isArrayIndex ? [] : {};
   }
-  
+
   return this.setKey({
     value,
-    level: level.slice(1), 
+    level: level.slice(1),
     category,
     store: store[level[0]]
   });
@@ -233,7 +233,7 @@ setKey({ value, category, level, store }): any {
 
 ## 🎯 Field Type System
 
-The form module supports all Canopy field types with automatic component resolution:
+The form module supports all Isomorphic Forest field types with automatic component resolution:
 
 ```mermaid
 graph TD
@@ -241,22 +241,22 @@ graph TD
     A --> C[OBJECT]
     A --> D[ARRAY]
     A --> E[DOCUMENT]
-    
+
     B --> F{Component Type}
     F --> G[TextField]
     F --> H[Select]
     F --> I[DatePicker]
     F --> J[ColorPicker]
     F --> K[BooleanSwitch]
-    
+
     B --> L{I18n Flag?}
     L -->|true| M[I18n Wrapper]
     L -->|false| N[Standard Component]
-    
+
     C --> O[ObjectContainer]
     D --> P[CollectionContainer]
     E --> Q[DocumentPicker]
-    
+
     style B fill:#e8f5e8
     style C fill:#fff3e0
     style D fill:#f3e5f5
@@ -279,7 +279,7 @@ graph TD
         :category
       />
     </template>
-    
+
     <!-- ARRAY -->
     <template v-else-if="input.type === 'ARRAY'">
       <component
@@ -302,21 +302,21 @@ graph TD
     A[I18n Field Configuration] --> B{i18n Flag}
     B -->|true| C[I18n Component]
     B -->|false| D[Standard Component]
-    
+
     C --> E[I18nTextField]
     C --> F[I18nTextArea]
-    
+
     E --> G[French Input]
     E --> H[English Input]
-    
+
     G --> I[Field Value Structure]
     H --> I
-    
+
     I --> J["{fr: 'valeur', en: 'value'}"]
-    
+
     D --> K[Single Language Input]
     K --> L["'single value'"]
-    
+
     style C fill:#e8f5e8
     style D fill:#fff3e0
     style I fill:#f3e5f5
@@ -354,21 +354,21 @@ graph TD
     A[Field Configuration] --> B[Validation Rules]
     B --> C[Rule Generation]
     C --> D[Real-time Validation]
-    
+
     B --> E[Required Rules]
     B --> F[Format Rules]
     B --> G[Length Rules]
     B --> H[Custom Rules]
-    
+
     D --> I[Field-level Feedback]
     D --> J[Form-level State]
-    
+
     I --> K[Error Messages]
     I --> L[Visual Indicators]
-    
+
     J --> M[Submit Enablement]
     J --> N[Global Validation]
-    
+
     style B fill:#e8f5e8
     style D fill:#fff3e0
     style J fill:#f3e5f5
@@ -407,21 +407,21 @@ graph TD
     A[Collection Container] --> B[Item Management]
     A --> C[Validation]
     A --> D[UI Controls]
-    
+
     B --> E[Add Items]
     B --> F[Delete Items]
     B --> G[Reorder Items]
-    
+
     C --> H[Individual Item Validation]
     C --> I[Collection-level Rules]
-    
+
     D --> J[Add Button]
     D --> K[Delete Buttons]
     D --> L[Item Counter]
-    
+
     E --> M[Clone Default Structure]
     F --> N[Array Splice Operations]
-    
+
     style A fill:#e1f5fe
     style B fill:#f3e5f5
     style C fill:#e8f5e8
@@ -439,11 +439,11 @@ graph TD
       :disabled="!valid"
       @add="addItem"
     />
-    
+
     <!-- Iterate through collection items -->
     <template v-for="(item, index) in val" :key="index">
       <v-divider class="my-2" />
-      
+
       <!-- Item header with delete button -->
       <div class="text-overline d-flex align-center justify-space-between">
         {{ $t(args.label, 1) + " " + (index + 1) }}
@@ -453,11 +453,13 @@ graph TD
           @click="deleteItem(index)"
         />
       </div>
-      
+
       <!-- Recursive form fields for each item -->
       <template v-for="(key, keyIndex) in Object.keys(args.items)">
         <component
-          :is="getComponentName(args.items[key].component, args.items[key].i18n)"
+          :is="
+            getComponentName(args.items[key].component, args.items[key].i18n)
+          "
           :args="{ ...args.items[key] }"
           :level="[...level, index, key]"
           :category
@@ -475,14 +477,15 @@ graph TD
 ```typescript
 // DocumentPicker for referencing existing database documents
 const documentTypes = {
-  'people': 'FormAtomsPickerPeopleItem',
-  'events': 'FormAtomsPickerEventsItem',
-  'publications': 'FormAtomsPickerPublicationsItem'
+  people: "FormAtomsPickerPeopleItem",
+  events: "FormAtomsPickerEventsItem",
+  publications: "FormAtomsPickerPublicationsItem",
 };
 
 // Automatic component resolution for different document types
 const getPickerItemComponentName = (category: string) => {
-  const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+  const capitalizedCategory =
+    category.charAt(0).toUpperCase() + category.slice(1);
   return `FormAtomsPicker${capitalizedCategory}Item`;
 };
 ```
@@ -490,7 +493,7 @@ const getPickerItemComponentName = (category: string) => {
 ### File Upload System
 
 - **Multiple File Types**: Images, documents, videos
-- **Progress Indicators**: Upload progress with visual feedback  
+- **Progress Indicators**: Upload progress with visual feedback
 - **Validation**: File type, size, format validation
 - **Preview**: Image and document previews
 - **Error Handling**: Graceful error recovery
@@ -524,11 +527,11 @@ const getPickerItemComponentName = (category: string) => {
 
 <script setup>
 const fieldDefinition = {
-  type: 'PRIMITIVE',
-  component: 'TextField',
-  label: 'Event Title',
+  type: "PRIMITIVE",
+  component: "TextField",
+  label: "Event Title",
   i18n: true,
-  rules: { required: true }
+  rules: { required: true },
 };
 </script>
 ```
@@ -540,22 +543,22 @@ const formStore = useFormStore();
 
 // Get nested field value
 const affiliationTitle = formStore.getKey({
-  level: ['affiliations', 0, 'organization', 'name'],
-  store: formStore.people
+  level: ["affiliations", 0, "organization", "name"],
+  store: formStore.people,
 });
 
 // Update nested field
 formStore.setKey({
-  value: 'New Organization',
-  level: ['affiliations', 0, 'organization', 'name'],
-  category: 'people',
-  store: formStore.people
+  value: "New Organization",
+  level: ["affiliations", 0, "organization", "name"],
+  category: "people",
+  store: formStore.people,
 });
 
 // Add new collection item
 formStore.addFormItem({
-  category: 'people',
-  level: ['affiliations']
+  category: "people",
+  level: ["affiliations"],
 });
 ```
 
@@ -566,12 +569,12 @@ formStore.addFormItem({
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@paris-ias/form'],
+  modules: ["@paris-ias/form"],
   form: {
-    modules: ['people', 'events', 'publications'],
+    modules: ["people", "events", "publications"],
     enableGraphQL: true,
-    componentPrefix: 'Form'
-  }
+    componentPrefix: "Form",
+  },
 });
 ```
 
@@ -582,9 +585,9 @@ export default defineNuxtConfig({
 - **Component Themes**: Vuetify theme integration
 - **Translation Support**: Multi-language form labels
 
-## 🤝 Integration with Canopy Ecosystem
+## 🤝 Integration with Isomorphic Forest Ecosystem
 
-The form module seamlessly integrates with other Canopy components:
+The form module seamlessly integrates with other Isomorphic Forest components:
 
 - **[@paris-ias/data](../types)**: Consumes form trees and validation configurations
 - **[@paris-ias/list](../list)**: Shares state management patterns and component structure
