@@ -3,11 +3,18 @@
     <!-- Display selected items -->
     <div v-if="val && val.length > 0" class="selected-items mb-4">
       <div
+        class="text-overline d-flex align-center justify-space-between mt-3 ml-3"
+      >
+        <template v-if="args.key">
+          {{ $t(args.key, 2) }}
+        </template>
+      </div>
+      <div
         v-for="(item, index) in val"
         :key="item.id || index"
         class="selected-item mb-2"
       >
-        <component :is="getDenseItemComponent" :item="item" />
+        <component :is="getDenseItemComponent" :item />
         <v-btn
           icon="mdi-close"
           size="x-small"
@@ -186,15 +193,16 @@ const val = computed({
   get() {
     return formStore.getKey({
       level: props.level,
-      store: formStore[props.args.key],
+      store: formStore[props.category],
     })
   },
   set(value) {
+    console.log("value: ", value)
     formStore.setKey({
-      value: value.map((el) => el.slug.en || el.slug),
-      category: props.args.key,
+      value: value.map((el) => el.slug),
+      category: props.category,
       level: props.level,
-      store: formStore[props.args.key],
+      store: formStore[props.category],
     })
   },
 })
