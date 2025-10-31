@@ -1,10 +1,8 @@
 <template>
   <div class="document-picker">
     <!-- Display selected items -->
-    <div v-if="val && val.length > 0" class="selected-items mb-4">
-      <div
-        class="text-overline d-flex align-center justify-space-between mt-3 ml-3"
-      >
+    <div v-if="val && val.length > 0" class="selected-items mb-4 ml-3">
+      <div class="text-overline d-flex align-center justify-space-between mt-3">
         <template v-if="args.key">
           {{ $t(args.key, 2) }}
         </template>
@@ -12,7 +10,7 @@
       <div
         v-for="(item, index) in val"
         :key="item.id || index"
-        class="selected-item mb-2"
+        class="selected-item mb-2 ml-3"
       >
         <component :is="getDenseItemComponent" :item />
         <v-btn
@@ -130,7 +128,6 @@ const getDenseItemComponent = computed(() =>
     }DenseItem`
   )
 )
-
 // Dynamically import and resolve the GraphQL query
 const getGraphQLQuery = async () => {
   // Use explicit imports for Vite to analyze properly
@@ -198,8 +195,20 @@ const val = computed({
   },
   set(value) {
     console.log("value: ", value)
+    //!\ TODO import mappings from trees
+    // Define which fields to keep for each document type
+
+    const fieldMappings = {
+      people: ["slug", "firstname", "lastname", "image"],
+      default: ["slug", "name", "description", "image", "url", "category"],
+    }
+
+    const fieldsToKeep = fieldMappings[props.args.key] || fieldMappings.default
+
     formStore.setKey({
-      value: value.map((el) => el.slug),
+      value: value.map((el) =>
+        Object.fromEntries(fieldsToKeep.map((field) => [field, el[field]]))
+      ),
       category: props.category,
       level: props.level,
       store: formStore[props.category],
