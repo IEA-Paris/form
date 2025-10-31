@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@paris-ias/trees": "^2.0.8",
-    "@paris-ias/list": "^1.0.131"
+    "@paris-ias/trees": "^2.0.18",
+    "@paris-ias/list": "^1.0.158"
   },
   "description": "A comprehensive Nuxt form module with components, composables, stores and GraphQL mutations",
   "peerDependencies": {
