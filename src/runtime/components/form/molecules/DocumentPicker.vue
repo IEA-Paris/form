@@ -72,18 +72,18 @@
         :key="item.slug || index"
         class="selected-item mb-2 ml-3"
         draggable="true"
+        :class="{ 'drag-over': dragOverIndex === index }"
         @dragstart="onDragStart(index, $event)"
         @dragover="onDragOver($event)"
         @drop="onDrop(index, $event)"
         @dragenter="onDragEnter(index, $event)"
         @dragleave="onDragLeave($event)"
-        :class="{ 'drag-over': dragOverIndex === index }"
       >
         <v-icon class="drag-handle" icon="mdi-drag-vertical" size="large" />
         <component :is="getDenseItemComponent" :item class="flex-grow-1" />
         <div class="item-actions">
           <v-tooltip :text="$t('move-up')">
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn
                 icon="mdi-chevron-up"
                 size="small"
@@ -91,22 +91,22 @@
                 variant="tonal"
                 :disabled="index === 0"
                 @click="moveItem(index, index - 1)"
-              ></v-btn>
+              />
             </template>
           </v-tooltip>
           <v-tooltip :text="$t('remove-item')">
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn
                 icon="mdi-close"
                 size="small"
                 v-bind="props"
                 variant="tonal"
                 @click="removeItem(index)"
-              ></v-btn>
+              />
             </template>
           </v-tooltip>
           <v-tooltip :text="$t('move-down')">
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn
                 icon="mdi-chevron-down"
                 size="small"
@@ -114,7 +114,7 @@
                 variant="tonal"
                 :disabled="index === val.length - 1"
                 @click="moveItem(index, index + 1)"
-              ></v-btn>
+              />
             </template>
           </v-tooltip>
         </div>
@@ -128,6 +128,22 @@ import { ref, computed, watch } from "vue"
 import { useFormStore } from "../../../stores/form"
 
 const formStore = useFormStore()
+
+const categoryMappings = {
+  events: "events",
+  organizer: "affiliations",
+  speakers: "people",
+  discussants: "people",
+  authors: "people",
+  editors: "people",
+  people: "people",
+  news: "news",
+  publications: "publications",
+  affiliations: "affiliations",
+  fellowships: "fellowships",
+  tags: "tags",
+  projects: "projects",
+}
 
 const props = defineProps({
   args: {
@@ -155,24 +171,20 @@ const searchResults = ref([])
 const menuOpen = ref(false)
 const draggedIndex = ref(null)
 const dragOverIndex = ref(null)
-
+const resolvedType = categoryMappings[props.args.key] || props.args.key
 console.log(
-  `List${
-    props.args.key.charAt(0).toUpperCase() + props.args.key.slice(1)
-  }DenseItem`
+  `List${resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)}DenseItem`
 )
 // Dynamically resolve the dense item component name
 const getDenseItemComponent = computed(() =>
   resolveComponent(
-    `${
-      props.args.key.charAt(0).toUpperCase() + props.args.key.slice(1)
-    }DenseItem`
+    `${resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)}DenseItem`
   )
 )
 // Dynamically import and resolve the GraphQL query
 const getGraphQLQuery = async () => {
   // Use explicit imports for Vite to analyze properly
-  switch (props.args.key) {
+  switch (resolvedType) {
     case "events":
       return (
         await import(
@@ -222,7 +234,7 @@ const getGraphQLQuery = async () => {
         )
       ).default
     default:
-      throw new Error(`Unsupported category: ${props.args.key}`)
+      throw new Error(`Unsupported category: ${resolvedType}`)
   }
 }
 
@@ -242,7 +254,7 @@ const val = computed({
       people: ["slug", "firstname", "lastname", "image"],
       default: ["slug", "name", "description", "image", "url", "category"],
     }
-    const fieldsToKeep = fieldMappings[props.args.key] || fieldMappings.default
+    const fieldsToKeep = fieldMappings[resolvedType] || fieldMappings.default
 
     // Get current value from store
     const currentValue =
@@ -295,7 +307,7 @@ const performSearch = async (query) => {
 
     // Extract the data for the current type
     const queryName = `list${
-      props.args.key.charAt(0).toUpperCase() + props.args.key.slice(1)
+      resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)
     }`
     const data = result.data[queryName]
     console.log("data: ", data)

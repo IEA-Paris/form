@@ -39,7 +39,7 @@
                 cover
                 class="image-thumbnail"
               >
-                <template v-slot:placeholder>
+                <template #placeholder>
                   <div class="d-flex align-center justify-center fill-height">
                     <v-progress-circular indeterminate />
                   </div>
@@ -86,12 +86,12 @@
           :key="item.slug || index"
           class="selected-image-item"
           draggable="true"
+          :class="{ 'drag-over': dragOverIndex === index }"
           @dragstart="onDragStart(index, $event)"
           @dragover="onDragOver($event)"
           @drop="onDrop(index, $event)"
           @dragenter="onDragEnter(index, $event)"
           @dragleave="onDragLeave($event)"
-          :class="{ 'drag-over': dragOverIndex === index }"
         >
           <v-img
             :src="item.thumb || item.url"
@@ -106,7 +106,7 @@
           </div>
           <div class="image-actions">
             <v-tooltip :text="$t('move-left')">
-              <template v-slot:activator="{ props }">
+              <template #activator="{ props }">
                 <v-btn
                   icon="mdi-chevron-left"
                   size="x-small"
@@ -114,22 +114,22 @@
                   variant="tonal"
                   :disabled="index === 0"
                   @click="moveItem(index, index - 1)"
-                ></v-btn>
+                />
               </template>
             </v-tooltip>
             <v-tooltip :text="$t('remove-item')">
-              <template v-slot:activator="{ props }">
+              <template #activator="{ props }">
                 <v-btn
                   icon="mdi-close"
                   size="x-small"
                   v-bind="props"
                   variant="tonal"
                   @click="removeItem(index)"
-                ></v-btn>
+                />
               </template>
             </v-tooltip>
             <v-tooltip :text="$t('move-right')">
-              <template v-slot:activator="{ props }">
+              <template #activator="{ props }">
                 <v-btn
                   icon="mdi-chevron-right"
                   size="x-small"
@@ -137,7 +137,7 @@
                   variant="tonal"
                   :disabled="index === val.length - 1"
                   @click="moveItem(index, index + 1)"
-                ></v-btn>
+                />
               </template>
             </v-tooltip>
           </div>
@@ -199,7 +199,7 @@ const val = computed({
   },
   set(value) {
     console.log("value: ", value)
-    
+
     // Define which fields to keep for image files
     const fieldsToKeep = [
       "slug",
