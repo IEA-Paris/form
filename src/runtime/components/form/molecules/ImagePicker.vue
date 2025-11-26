@@ -23,11 +23,84 @@
         />
       </template>
 
-      <v-card v-if="searchQuery && searchQuery.length >= 2">
-        <v-card-text v-if="searchResults.length > 0" class="pa-2">
+      <!-- Menu content with upload button and recent images -->
+      <v-card>
+        <!-- Upload Button Section -->
+        <v-card-text class="pa-3">
+          <ImageUploader
+            v-model="uploadDialogOpen"
+            @upload-complete="onUploadComplete"
+          >
+            <template #activator="{ props: uploaderProps }">
+              <v-btn
+                v-bind="uploaderProps"
+                color="primary"
+                variant="flat"
+                prepend-icon="mdi-upload"
+                block
+                class="mb-2"
+              >
+                {{ $t("upload-new-image") }}
+              </v-btn>
+            </template>
+          </ImageUploader>
+        </v-card-text>
+
+        <v-divider />
+
+        <!-- Search Results or Recent Images -->
+        <v-card-text v-if="searchQuery && searchQuery.length >= 2" class="pa-2">
+          <div v-if="searchResults.length > 0">
+            <div class="text-overline px-2 mb-2">
+              {{ $t("search-results") }}
+            </div>
+            <div class="image-grid">
+              <div
+                v-for="item in searchResults"
+                :key="item.slug"
+                class="image-grid-item"
+                @click="onItemSelect(item)"
+              >
+                <v-img
+                  :src="item.thumb || item.url"
+                  :alt="item.alt || item.name"
+                  aspect-ratio="1"
+                  cover
+                  class="image-thumbnail"
+                >
+                  <template #placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular indeterminate />
+                    </div>
+                  </template>
+                </v-img>
+                <div class="image-name">{{ item.name }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div v-else-if="!loading">
+            <v-alert type="info" variant="tonal">
+              {{ $t("image-picker-no-results") }}
+            </v-alert>
+          </div>
+
+          <div v-else>
+            <div class="d-flex align-center justify-center pa-4">
+              <v-progress-circular indeterminate />
+              <span class="ml-3">{{ $t("image-picker-searching") }}</span>
+            </div>
+          </div>
+        </v-card-text>
+
+        <!-- Recent Images when no search query -->
+        <v-card-text v-else-if="recentImages.length > 0" class="pa-2">
+          <div class="text-overline px-2 mb-2">
+            {{ $t("recent-images") }}
+          </div>
           <div class="image-grid">
             <div
-              v-for="item in searchResults"
+              v-for="item in recentImages"
               :key="item.slug"
               class="image-grid-item"
               @click="onItemSelect(item)"
@@ -50,24 +123,16 @@
           </div>
         </v-card-text>
 
-        <v-card-text v-else-if="!loading">
-          <v-alert type="info" variant="tonal">
-            {{ $t("image-picker-no-results") }}
-          </v-alert>
-        </v-card-text>
-
-        <v-card-text v-else>
-          <div class="d-flex align-center justify-center pa-4">
+        <v-card-text v-else-if="loadingRecent" class="pa-4">
+          <div class="d-flex align-center justify-center">
             <v-progress-circular indeterminate />
-            <span class="ml-3">{{ $t("image-picker-searching") }}</span>
+            <span class="ml-3">{{ $t("loading-images") }}</span>
           </div>
         </v-card-text>
-      </v-card>
 
-      <v-card v-else-if="searchQuery && searchQuery.length < 2">
-        <v-card-text>
+        <v-card-text v-else class="pa-4">
           <v-alert type="info" variant="tonal">
-            {{ $t("image-picker-type-more") }}
+            {{ $t("no-recent-images") }}
           </v-alert>
         </v-card-text>
       </v-card>
@@ -106,11 +171,11 @@
           </div>
           <div class="image-actions">
             <v-tooltip :text="$t('move-left')">
-              <template #activator="{ props }">
+              <template #activator="{ props: tooltipProps }">
                 <v-btn
                   icon="mdi-chevron-left"
                   size="x-small"
-                  v-bind="props"
+                  v-bind="tooltipProps"
                   variant="tonal"
                   :disabled="index === 0"
                   @click="moveItem(index, index - 1)"
@@ -118,22 +183,22 @@
               </template>
             </v-tooltip>
             <v-tooltip :text="$t('remove-item')">
-              <template #activator="{ props }">
+              <template #activator="{ props: tooltipProps }">
                 <v-btn
                   icon="mdi-close"
                   size="x-small"
-                  v-bind="props"
+                  v-bind="tooltipProps"
                   variant="tonal"
                   @click="removeItem(index)"
                 />
               </template>
             </v-tooltip>
             <v-tooltip :text="$t('move-right')">
-              <template #activator="{ props }">
+              <template #activator="{ props: tooltipProps }">
                 <v-btn
                   icon="mdi-chevron-right"
                   size="x-small"
-                  v-bind="props"
+                  v-bind="tooltipProps"
                   variant="tonal"
                   :disabled="index === val.length - 1"
                   @click="moveItem(index, index + 1)"
@@ -150,6 +215,7 @@
 <script setup>
 import { ref, computed, watch } from "vue"
 import { useFormStore } from "../../../stores/form"
+import ImageUploader from "./ImageUploader.vue"
 
 const formStore = useFormStore()
 
@@ -176,7 +242,10 @@ const props = defineProps({
 const searchQuery = ref("")
 const loading = ref(false)
 const searchResults = ref([])
+const recentImages = ref([])
+const loadingRecent = ref(false)
 const menuOpen = ref(false)
+const uploadDialogOpen = ref(false)
 const draggedIndex = ref(null)
 const dragOverIndex = ref(null)
 
@@ -292,9 +361,49 @@ const onSearchInput = () => {
   }, 300) // 300ms debounce
 }
 
-// Handle focus - open menu
+// Load recent images
+const loadRecentImages = async () => {
+  loadingRecent.value = true
+
+  try {
+    const { $apollo } = useNuxtApp()
+    const graphqlQuery = await getGraphQLQuery()
+
+    const result = await $apollo.defaultClient.query({
+      query: graphqlQuery,
+      variables: {
+        options: {
+          limit: 12,
+          skip: 0,
+          sortBy: ["createdAt"],
+          sortDesc: [true],
+          filters: JSON.stringify({ category: ["IMAGE"] }),
+        },
+        lang: "en",
+      },
+    })
+
+    const data = result.data.listFiles
+
+    if (data && data.items) {
+      recentImages.value = data.items
+    } else {
+      recentImages.value = []
+    }
+  } catch (error) {
+    console.error("Error loading recent images:", error)
+    recentImages.value = []
+  } finally {
+    loadingRecent.value = false
+  }
+}
+
+// Handle focus - open menu and load recent images
 const onFocus = () => {
   menuOpen.value = true
+  if (recentImages.value.length === 0 && !loadingRecent.value) {
+    loadRecentImages()
+  }
 }
 
 // Handle blur - close menu
@@ -303,6 +412,22 @@ const onBlur = () => {
   setTimeout(() => {
     menuOpen.value = false
   }, 200)
+}
+
+// Handle upload complete
+const onUploadComplete = (uploadedFile) => {
+  console.log("Upload complete:", uploadedFile)
+
+  // Add to search results if visible
+  if (uploadedFile) {
+    onItemSelect(uploadedFile)
+
+    // Refresh recent images
+    loadRecentImages()
+  }
+
+  // Close upload dialog
+  uploadDialogOpen.value = false
 }
 
 // Handle item selection
@@ -400,6 +525,7 @@ watch(menuOpen, (isOpen) => {
 <style lang="scss" scoped>
 .image-picker {
   margin-top: 16px;
+  margin-bottom: 16px;
 
   .image-grid {
     display: grid;

@@ -1,6 +1,7 @@
 <template>
   <v-form
     v-model="valid"
+    class="my-4"
     fast-fail
     :class="{
       required: args.rules && args.rules.required,

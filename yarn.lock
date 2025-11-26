@@ -69,10 +69,10 @@
     "@graphql-tools/merge" "^8"
     graphql "^16"
 
-"@paris-ias/trees@^2.0.19":
-  version "2.0.19"
-  resolved "https://registry.yarnpkg.com/@paris-ias/trees/-/trees-2.0.19.tgz#16ea40cc18b1d4e1c4eddf3cd4e91bbca18af95a"
-  integrity sha512-zxkQVcy8ANiWjFNxOIPloQbOKGnahahVzvZWBLymw3tn8Y5mUaiJGbvcN2QLpdNUwwub9sW542bU6IX1pnux8g==
+"@paris-ias/trees@^2.0.26":
+  version "2.0.26"
+  resolved "https://registry.yarnpkg.com/@paris-ias/trees/-/trees-2.0.26.tgz#d1be7632d281a27645ffc82cfc5cad6b69f4189e"
+  integrity sha512-dp3kjKjPkXqemSm+Wj+1QfUswJTUrPUhgq0pBKJhvboULEmgdiZZBrB+hWS1rNYN+w/496aGjfzkigBGEjgZ7Q==
   dependencies:
     "@graphql-tools/load-files" "^7"
     "@graphql-tools/merge" "^8"
