@@ -53,17 +53,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@paris-ias/list@^1.0.163":
-  version "1.0.163"
-  resolved "https://registry.yarnpkg.com/@paris-ias/list/-/list-1.0.163.tgz#2ba6fb58d40084c6c1dbffb8856789195e9a5e04"
-  integrity sha512-Nq2+1UiZZ08XBkBVVVk15DAeFnYZrM+wFgDfhr1csBbdas4jLSalVagWBVTYOdyfNOrpqr6Sb1dg+GfAy2n67g==
+"@paris-ias/list@^1.0.194":
+  version "1.0.194"
+  resolved "https://registry.yarnpkg.com/@paris-ias/list/-/list-1.0.194.tgz#c0c0a0a4a8d7af5fdf7b86fd9733f0ed7d4b2e25"
+  integrity sha512-DMopCXg+iVf9rd4sJwW+CIEy7WeXKso2aLehRJ8z9Olv3fp3MIhHhuXVNwFQA5+8DoNVyBTGYC7cSvOxN2MKgQ==
   dependencies:
-    "@paris-ias/trees" "^2.0.31"
+    "@paris-ias/trees" "^2.0.49"
 
-"@paris-ias/trees@^2.0.31":
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/@paris-ias/trees/-/trees-2.0.31.tgz#e6725ed7be0b51f4f40c22eab3ffc899a8cd8a4c"
-  integrity sha512-0zNZ/6vXPokJBLtgxLfPbv1PGJ55idfoXoNcOsQuFC1CnXBbFpd1f+kcLuQCpuhVT7rI01YoAAR1MlbHOKvGRA==
+"@paris-ias/trees@^2.0.49":
+  version "2.0.49"
+  resolved "https://registry.yarnpkg.com/@paris-ias/trees/-/trees-2.0.49.tgz#9bf11ea6aaaddace0fb949cca73e1c3d387340f5"
+  integrity sha512-crP3XvkdAxkPhDcb1j0WkgSiYdDytE6VnaesMOOLRcQDxnsqDFO51p5fzDCwy28JOIg7ja1Fj9mXQh0h9x/3UQ==
   dependencies:
     "@graphql-tools/load-files" "^7"
     "@graphql-tools/merge" "^8"
