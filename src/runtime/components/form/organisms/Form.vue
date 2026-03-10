@@ -14,13 +14,20 @@
           </v-btn>
         </v-col>
 
-        <v-col cols="12" class="d-flex align-center">
-          <v-icon large :color="valid ? 'green' : 'red'" class="mb-6">
-            mdi-circle
-          </v-icon>
-          <p :class="valid ? 'text-green' : 'text-red'">
-            {{ valid ? "Form is valid" : "Form is invalid" }}
-          </p>
+        <v-col
+          v-if="errors.length"
+          cols="12"
+          class="d-flex align-center justify-center"
+        >
+          <v-alert
+            :icon="valid ? 'mdi-check' : 'mdi-alert'"
+            :type="valid ? 'success' : 'warning'"
+            :title="
+              valid
+                ? 'This form is valid'
+                : `This form is invalid (${errors.length} errors)`
+            "
+          />
         </v-col>
         <template v-for="(input, key, index) in form" :key="key">
           <FormOrganismsRecursiveFormblock
@@ -78,6 +85,8 @@ const formRef = ref(null)
   console.log("Adding module to form store:", props.category)
   formStore.addModule(props.category, $forms[props.category])
 } */
+const errors = computed(() => formRef?.value?.errors || [])
+
 const save = async () => {
   if (valid.value) {
     saving.value = true
@@ -96,6 +105,7 @@ const validate = async () => {
   if (formRef.value) {
     const result = await formRef.value.validate()
     emit("validate", result)
+    console.log("result: ", result)
     return result
   }
   return { valid: false }

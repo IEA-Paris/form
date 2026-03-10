@@ -47,12 +47,12 @@
             <input
               ref="fileInput"
               type="file"
-              accept="image/png,image/jpeg,image/jpg"
+              accept="image/png,image/jpeg,image/jpg,image/webm,image/gif,image/svg+xml"
               style="display: none"
               @change="onFileSelect"
             />
             <div class="text-caption text-medium-emphasis mt-4">
-              {{ $t("supported-formats") }}: PNG, JPEG, JPG
+              {{ $t("supported-formats") }}: PNG, JPEG, JPG, WEBM, GIF, SVG
             </div>
           </div>
         </div>
@@ -240,7 +240,14 @@ const onDrop = (event) => {
 
 const handleFileSelection = (file) => {
   // Validate file type
-  const validTypes = ["image/png", "image/jpeg", "image/jpg"]
+  const validTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/webm",
+    "image/gif",
+    "image/svg+xml",
+  ]
   if (!validTypes.includes(file.type)) {
     errorMessage.value = "Invalid file type. Please select a PNG or JPEG image."
     return
@@ -402,9 +409,10 @@ const fetchUploadedFileMetadata = async () => {
     const { $apollo } = useNuxtApp()
 
     // Use the listFiles query to get the file metadata
-    const graphqlQuery = await import(
-      "@paris-ias/trees/dist/graphql/client/files/query.list.files.gql"
-    ).then((m) => m.default)
+    const graphqlQuery =
+      await import("@paris-ias/trees/dist/graphql/client/files/query.list.files.gql").then(
+        (m) => m.default,
+      )
 
     const result = await $apollo.defaultClient.query({
       query: graphqlQuery,
