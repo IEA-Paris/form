@@ -183,7 +183,6 @@
 <script setup>
 import { ref, computed, watch } from "vue"
 import { useFormStore } from "../../../stores/form"
-import { capitalize } from "../../../../../../../../../seed/modules/list/src/runtime/composables/useUtils"
 
 const formStore = useFormStore()
 

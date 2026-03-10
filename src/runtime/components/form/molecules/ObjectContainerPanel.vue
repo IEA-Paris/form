@@ -41,12 +41,10 @@ import {
   showLabel,
 } from "../../../composables/useFormDisplay"
 import { ref } from "#imports"
-const props = defineProps({
+defineProps({
   args: {
     type: Object,
-    default: () => {
-      return {}
-    },
+    required: true,
   },
   level: {
     type: Array,

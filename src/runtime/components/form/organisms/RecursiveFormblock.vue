@@ -16,7 +16,7 @@ import {
   computeConditional,
 } from "../../../composables/useFormDisplay"
 
-const props = defineProps({
+defineProps({
   input: { type: Object, required: true },
   category: { type: String, required: true },
   level: { type: Array, required: true },

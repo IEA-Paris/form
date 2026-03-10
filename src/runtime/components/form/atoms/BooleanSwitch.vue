@@ -20,11 +20,10 @@
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
 
-const props = defineProps({
+defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({}),
   },
   level: {
     type: Array,

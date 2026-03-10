@@ -32,11 +32,10 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({}),
   },
   level: {
     type: Array,

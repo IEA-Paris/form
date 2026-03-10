@@ -59,6 +59,11 @@
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
 import { ref, computed } from "#imports"
+
+defineOptions({
+  name: "FormOrganismForm",
+})
+
 const { $schemas } = useNuxtApp()
 const props = defineProps({
   category: {
@@ -74,7 +79,7 @@ const props = defineProps({
     default: "Save",
   },
 })
-const showOptions = ref(false)
+/* const showOptions = ref(false) */
 const emit = defineEmits(["save", "validate"])
 const form = computed(() => $schemas?.[props.category] || {})
 const formStore = useFormStore()

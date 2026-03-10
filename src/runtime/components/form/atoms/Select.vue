@@ -20,6 +20,7 @@
       :item-title="args.itemTitle || 'title'"
       :item-value="args.itemValue || 'value'"
       :return-object="args.returnObject"
+      :rules="generateInputRules(args)"
   /></v-col>
 </template>
 
@@ -27,13 +28,17 @@
 import { computed, onMounted } from "#imports"
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
+import generateInputRules from "../../../composables/useFormValidation"
 const { $i18n } = useNuxtApp()
+
+defineOptions({
+  name: "FormAtomsSelect",
+})
 
 const props = defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({}),
   },
   level: {
     type: Array,
@@ -80,26 +85,6 @@ const computedItems = computed(() => {
     })
   }
   return props.args.items || []
-})
-
-const rules = computed(() => {
-  const ruleArray = []
-
-  if (props.args.required) {
-    ruleArray.push((value) => {
-      if (
-        value === undefined ||
-        value === null ||
-        (Array.isArray(value) && value.length === 0) ||
-        value === ""
-      ) {
-        return "This field is required"
-      }
-      return true
-    })
-  }
-
-  return ruleArray
 })
 
 onMounted(() => {
