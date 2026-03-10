@@ -78,6 +78,12 @@ export default defineNuxtModule<ModuleOptions>({
       langDir: resolver.resolve("./runtime/translations"),
     }
 
+    // Expose SCSS flag mixins for consumers
+    nuxt.options.alias = nuxt.options.alias || {}
+    nuxt.options.alias["#form-flags"] = resolver.resolve(
+      "./runtime/assets/flags.scss",
+    )
+
     // Add store to imports
     nuxt.hook("nitro:config", async (nitroConfig) => {
       nitroConfig.alias = nitroConfig.alias || {}

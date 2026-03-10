@@ -1,32 +1,34 @@
 <template>
-  <v-text-field
-    v-model="val"
-    v-bind="$attrs"
-    :placeholder="args.placeholder"
-    :hint="args.hint"
-    :persistent-hint="!!args.hint"
-    :required="(args.rules && args.rules.required) || false"
-    :disabled="args.disabled"
-    :readonly="args.readonly"
-    :clearable="args.clearable"
-    :counter="args.counter"
-    :type="args.type"
-    :rules="generateInputRules(args)"
-  >
-    <template #label>
-      <span>{{ $t(args.label) }}</span>
-      <sup
-        ><v-icon
-          v-if="args.rules && args.rules.required"
-          color="red"
-          size="small"
-          class="ml-1"
+  <v-col cols="12" :class="noPadding ? 'pa-0' : ''">
+    <v-text-field
+      v-model="val"
+      v-bind="$attrs"
+      :placeholder="args.placeholder"
+      :hint="args.hint"
+      :persistent-hint="!!args.hint"
+      :required="(args.rules && args.rules.required) || false"
+      :disabled="args.disabled"
+      :readonly="args.readonly"
+      :clearable="args.clearable"
+      :counter="args.counter"
+      :type="args.type"
+      :rules="generateInputRules(args)"
+    >
+      <template #label>
+        <span>{{ $t(args.label) }}</span>
+        <sup
+          ><v-icon
+            v-if="args.rules && args.rules.required"
+            color="red"
+            size="small"
+            class="ml-1"
+          >
+            mdi-asterisk
+          </v-icon></sup
         >
-          mdi-asterisk
-        </v-icon></sup
-      >
-    </template>
-  </v-text-field>
+      </template>
+    </v-text-field></v-col
+  >
 </template>
 
 <script setup>
@@ -47,6 +49,10 @@ const props = defineProps({
   category: {
     type: String,
     required: true,
+  },
+  noPadding: {
+    type: Boolean,
+    default: false,
   },
 })
 

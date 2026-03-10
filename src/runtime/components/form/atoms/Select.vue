@@ -1,25 +1,26 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="6">
-      <v-select
-        v-model="val"
-        v-bind="$attrs"
-        :items="computedItems"
-        :label="args.label"
-        :placeholder="args.placeholder"
-        :hint="args.hint"
-        :persistent-hint="!!args.hint"
-        :required="args.required"
-        :disabled="args.disabled"
-        :readonly="args.readonly"
-        :clearable="args.clearable"
-        :multiple="args.multiple"
-        :chips="args.chips && args.multiple"
-        :item-title="args.itemTitle || 'title'"
-        :item-value="args.itemValue || 'value'"
-        :return-object="args.returnObject"
-    /></v-col>
-  </v-row>
+  <v-col v-if="args.key" cols="12" md="6" class="">
+    <div class="text-overline">
+      {{ $t(args.key, 2) }}
+    </div>
+    <v-select
+      v-model="val"
+      v-bind="$attrs"
+      :items="computedItems"
+      :label="args.label"
+      :placeholder="args.placeholder"
+      :hint="args.hint"
+      :persistent-hint="!!args.hint"
+      :required="args.required"
+      :disabled="args.disabled"
+      :readonly="args.readonly"
+      :clearable="args.clearable"
+      :multiple="args.multiple"
+      :chips="args.chips && args.multiple"
+      :item-title="args.itemTitle || 'title'"
+      :item-value="args.itemValue || 'value'"
+      :return-object="args.returnObject"
+  /></v-col>
 </template>
 
 <script setup>

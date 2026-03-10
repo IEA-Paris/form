@@ -1,5 +1,5 @@
 <template>
-  <div class="document-picker">
+  <v-col cols="12" class="document-picker">
     <!-- Search input with manual dropdown -->
     <v-menu
       v-model="menuOpen"
@@ -120,7 +120,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-col>
 </template>
 
 <script setup>
@@ -173,13 +173,13 @@ const draggedIndex = ref(null)
 const dragOverIndex = ref(null)
 const resolvedType = categoryMappings[props.args.key] || props.args.key
 console.log(
-  `List${resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)}DenseItem`
+  `List${resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)}DenseItem`,
 )
 // Dynamically resolve the dense item component name
 const getDenseItemComponent = computed(() =>
   resolveComponent(
-    `${resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)}DenseItem`
-  )
+    `${resolvedType.charAt(0).toUpperCase() + resolvedType.slice(1)}DenseItem`,
+  ),
 )
 // Dynamically import and resolve the GraphQL query
 const getGraphQLQuery = async () => {
@@ -187,51 +187,35 @@ const getGraphQLQuery = async () => {
   switch (resolvedType) {
     case "events":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/events/query.list.events.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/events/query.list.events.gql")
       ).default
     case "people":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/people/query.list.people.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/people/query.list.people.gql")
       ).default
     case "news":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/news/query.list.news.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/news/query.list.news.gql")
       ).default
     case "publications":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/publications/query.list.publications.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/publications/query.list.publications.gql")
       ).default
     case "affiliations":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/affiliations/query.list.affiliations.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/affiliations/query.list.affiliations.gql")
       ).default
     case "fellowships":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/fellowships/query.list.fellowships.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/fellowships/query.list.fellowships.gql")
       ).default
     case "tags":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/misc/query.list.tags.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/misc/query.list.tags.gql")
       ).default
     case "projects":
       return (
-        await import(
-          "@paris-ias/trees/dist/graphql/client/projects/query.list.projects.gql"
-        )
+        await import("@paris-ias/trees/dist/graphql/client/projects/query.list.projects.gql")
       ).default
     default:
       throw new Error(`Unsupported category: ${resolvedType}`)
@@ -266,7 +250,7 @@ const val = computed({
     // If value is an array, push new items into existing array
     const newItems = Array.isArray(value) ? value : [value]
     const mappedNewItems = newItems.map((el) =>
-      Object.fromEntries(fieldsToKeep.map((field) => [field, el[field]]))
+      Object.fromEntries(fieldsToKeep.map((field) => [field, el[field]])),
     )
 
     formStore.setKey({
@@ -315,7 +299,7 @@ const performSearch = async (query) => {
     if (data && data.items) {
       // Sort by score
       searchResults.value = [...data.items].sort(
-        (a, b) => (b.score || 0) - (a.score || 0)
+        (a, b) => (b.score || 0) - (a.score || 0),
       )
     } else {
       searchResults.value = []
@@ -362,7 +346,7 @@ const onItemSelect = (item) => {
 
   // Check if item is already selected (use slug as unique identifier)
   const isAlreadySelected = currentValue.some(
-    (selectedItem) => selectedItem.slug === item.slug
+    (selectedItem) => selectedItem.slug === item.slug,
   )
 
   if (!isAlreadySelected) {

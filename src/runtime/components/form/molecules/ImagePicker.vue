@@ -1,5 +1,10 @@
 <template>
-  <div class="image-picker">
+  <v-col class="image-picker" cols="12">
+    <div class="text-overline mb-2">
+      <template v-if="args.key">
+        {{ $t(args.key, 2) }}
+      </template>
+    </div>
     <!-- Search input with manual dropdown -->
     <v-menu
       v-model="menuOpen"
@@ -18,8 +23,6 @@
           clearable
           hide-details="auto"
           @input="onSearchInput"
-          @focus="onFocus"
-          @blur="onBlur"
         />
       </template>
 
@@ -27,7 +30,7 @@
       <v-card>
         <!-- Upload Button Section -->
         <v-card-text class="pa-3">
-          <ImageUploader
+          <FormMoleculesImageUploader
             v-model="uploadDialogOpen"
             @upload-complete="onUploadComplete"
           >
@@ -43,7 +46,7 @@
                 {{ $t("upload-new-image") }}
               </v-btn>
             </template>
-          </ImageUploader>
+          </FormMoleculesImageUploader>
         </v-card-text>
 
         <v-divider />
@@ -55,27 +58,12 @@
               {{ $t("search-results") }}
             </div>
             <div class="image-grid">
-              <div
+              <FormAtomsPickerImageItem
                 v-for="item in searchResults"
                 :key="item.slug"
-                class="image-grid-item"
+                :item="item"
                 @click="onItemSelect(item)"
-              >
-                <v-img
-                  :src="item.thumb || item.url"
-                  :alt="item.alt || item.name"
-                  aspect-ratio="1"
-                  cover
-                  class="image-thumbnail"
-                >
-                  <template #placeholder>
-                    <div class="d-flex align-center justify-center fill-height">
-                      <v-progress-circular indeterminate />
-                    </div>
-                  </template>
-                </v-img>
-                <div class="image-name">{{ item.name }}</div>
-              </div>
+              />
             </div>
           </div>
 
@@ -99,27 +87,12 @@
             {{ $t("recent-images") }}
           </div>
           <div class="image-grid">
-            <div
+            <FormAtomsPickerImageItem
               v-for="item in recentImages"
               :key="item.slug"
-              class="image-grid-item"
+              :item="item"
               @click="onItemSelect(item)"
-            >
-              <v-img
-                :src="item.thumb || item.url"
-                :alt="item.alt || item.name"
-                aspect-ratio="1"
-                cover
-                class="image-thumbnail"
-              >
-                <template #placeholder>
-                  <div class="d-flex align-center justify-center fill-height">
-                    <v-progress-circular indeterminate />
-                  </div>
-                </template>
-              </v-img>
-              <div class="image-name">{{ item.name }}</div>
-            </div>
+            />
           </div>
         </v-card-text>
 
@@ -140,11 +113,6 @@
 
     <!-- Display selected images -->
     <div v-if="val && val.length > 0" class="selected-images mt-4">
-      <div class="text-overline mb-2">
-        <template v-if="args.key">
-          {{ $t(args.key, 2) }}
-        </template>
-      </div>
       <div class="selected-images-grid">
         <div
           v-for="(item, index) in val"
@@ -209,13 +177,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-col>
 </template>
 
 <script setup>
 import { ref, computed, watch } from "vue"
 import { useFormStore } from "../../../stores/form"
-import ImageUploader from "./ImageUploader.vue"
+import { capitalize } from "../../../../../../../../../seed/modules/list/src/runtime/composables/useUtils"
 
 const formStore = useFormStore()
 
@@ -252,9 +220,7 @@ const dragOverIndex = ref(null)
 // Dynamically import the listFiles GraphQL query
 const getGraphQLQuery = async () => {
   return (
-    await import(
-      "@paris-ias/trees/dist/graphql/client/files/query.list.files.gql"
-    )
+    await import("@paris-ias/trees/dist/graphql/client/files/query.list.files.gql")
   ).default
 }
 
@@ -293,7 +259,7 @@ const val = computed({
     // If value is an array, push new items into existing array
     const newItems = Array.isArray(value) ? value : [value]
     const mappedNewItems = newItems.map((el) =>
-      Object.fromEntries(fieldsToKeep.map((field) => [field, el[field]]))
+      Object.fromEntries(fieldsToKeep.map((field) => [field, el[field]])),
     )
 
     formStore.setKey({
@@ -307,29 +273,39 @@ const val = computed({
 
 // Search function using GraphQL
 const performSearch = async (query) => {
-  if (!query || query.length < 2) {
+  /*   if (!query || query.length < 2) {
     searchResults.value = []
     return
-  }
+  } */
 
   loading.value = true
 
   try {
     const { $apollo } = useNuxtApp()
     const graphqlQuery = await getGraphQLQuery()
-
+    console.log("graphqlQuery: ", graphqlQuery)
+    console.log({
+      options: {
+        search: query || "",
+        limit: 24,
+        skip: 0,
+        sort: "datedesc",
+        filters: JSON.stringify({ category: ["IMAGE"] }),
+      },
+      lang: "en",
+    })
     const result = await $apollo.defaultClient.query({
       query: graphqlQuery,
       variables: {
         options: {
-          search: query,
+          search: query || "",
           limit: 24,
           skip: 0,
-          sortBy: ["createdAt"],
-          sortDesc: [true],
+          sort: "datedesc",
           filters: JSON.stringify({ category: ["IMAGE"] }),
         },
         lang: "en",
+        appId: "iea",
       },
     })
 
@@ -373,13 +349,14 @@ const loadRecentImages = async () => {
       query: graphqlQuery,
       variables: {
         options: {
-          limit: 12,
+          search: "",
+          limit: 24,
           skip: 0,
-          sortBy: ["createdAt"],
-          sortDesc: [true],
+          sort: "datedesc",
           filters: JSON.stringify({ category: ["IMAGE"] }),
         },
         lang: "en",
+        appId: "iea",
       },
     })
 
@@ -396,22 +373,6 @@ const loadRecentImages = async () => {
   } finally {
     loadingRecent.value = false
   }
-}
-
-// Handle focus - open menu and load recent images
-const onFocus = () => {
-  menuOpen.value = true
-  if (recentImages.value.length === 0 && !loadingRecent.value) {
-    loadRecentImages()
-  }
-}
-
-// Handle blur - close menu
-const onBlur = () => {
-  // Delay closing to allow click events on menu items to fire
-  setTimeout(() => {
-    menuOpen.value = false
-  }, 200)
 }
 
 // Handle upload complete
@@ -439,7 +400,7 @@ const onItemSelect = (item) => {
 
   // Check if item is already selected (use slug as unique identifier)
   const isAlreadySelected = currentValue.some(
-    (selectedItem) => selectedItem.slug === item.slug
+    (selectedItem) => selectedItem.slug === item.slug,
   )
 
   if (!isAlreadySelected) {
@@ -514,63 +475,29 @@ const moveItem = (fromIndex, toIndex) => {
   })
 }
 
-// Watch menu state to trigger search when opened
+// Watch menu state to load data when opened
 watch(menuOpen, (isOpen) => {
-  if (isOpen && searchQuery.value && searchQuery.value.length >= 2) {
-    performSearch(searchQuery.value)
+  if (isOpen) {
+    if (recentImages.value.length === 0 && !loadingRecent.value) {
+      loadRecentImages()
+    }
+    if (searchQuery.value && searchQuery.value.length >= 2) {
+      performSearch(searchQuery.value)
+    }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
 .image-picker {
   margin-top: 16px;
   margin-bottom: 16px;
-
-  .image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-
-    .image-grid-item {
-      position: relative;
-      cursor: pointer;
-      border-radius: 4px;
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-        .image-name {
-          opacity: 1;
-        }
-      }
-
-      .image-thumbnail {
-        border-radius: 4px;
-        border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
-      }
-
-      .image-name {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 4px;
-        font-size: 0.75rem;
-        text-align: center;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
 
   .selected-images {
     .selected-images-grid {

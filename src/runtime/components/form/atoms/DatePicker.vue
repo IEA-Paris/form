@@ -1,36 +1,40 @@
 <template>
-  <v-menu
-    v-model="menu"
-    :close-on-content-click="false"
-    transition="scale-transition"
-    offset-y
-    min-width="auto"
-  >
-    <template #activator="{ props: menuProps }">
-      <v-text-field
-        v-model="formattedDate"
-        v-bind="{ ...menuProps, ...$attrs }"
-        :label="args.label"
-        :placeholder="args.placeholder"
-        :hint="args.hint"
-        :persistent-hint="!!args.hint"
-        :required="(args.rules && args.rules.required) || false"
+  <v-col cols="12" md="6">
+    <div class="text-overline mb-2">
+      {{ $t(args.key, 2) }}
+    </div>
+    <v-menu
+      v-model="menu"
+      :close-on-content-click="false"
+      transition="scale-transition"
+      offset-y
+      min-width="auto"
+    >
+      <template #activator="{ props: menuProps }">
+        <v-text-field
+          v-model="formattedDate"
+          v-bind="{ ...menuProps, ...$attrs }"
+          :label="args.label"
+          :placeholder="args.placeholder"
+          :hint="args.hint"
+          :persistent-hint="!!args.hint"
+          :required="(args.rules && args.rules.required) || false"
+          :disabled="args.disabled"
+          :readonly="true"
+          :clearable="args.clearable"
+          :counter="args.counter"
+          prepend-inner-icon="mdi-calendar"
+          @click:clear="clearDate"
+        />
+      </template>
+      <v-date-picker
+        v-model="val"
         :disabled="args.disabled"
-        :readonly="true"
-        :clearable="args.clearable"
-        :counter="args.counter"
-        prepend-inner-icon="mdi-calendar"
-        @click:clear="clearDate"
-      />
-    </template>
-    <v-date-picker
-      v-model="val"
-      :disabled="args.disabled"
-      header-color="primary"
-      show-adjacent-months
-      @update:model-value="onDateSelect"
-    />
-  </v-menu>
+        header-color="primary"
+        show-adjacent-months
+        @update:model-value="onDateSelect"
+      /> </v-menu
+  ></v-col>
 </template>
 <script setup>
 import { computed, ref } from "vue"

@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <div v-if="showActions" class="d-flex justify-end mt-4">
+  <v-container>
+    <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
+      <v-row>
+        <v-col v-if="showActions" cols="12" class="d-flex justify-end mt-4">
           <v-btn
             :disabled="!valid || saving"
             :loading="saving"
@@ -12,41 +12,39 @@
           >
             {{ saveText || "Save" }}
           </v-btn>
-        </div>
+        </v-col>
 
-        <div class="d-flex align-center">
+        <v-col cols="12" class="d-flex align-center">
           <v-icon large :color="valid ? 'green' : 'red'" class="mb-6">
             mdi-circle
           </v-icon>
           <p :class="valid ? 'text-green' : 'text-red'">
             {{ valid ? "Form is valid" : "Form is invalid" }}
           </p>
-        </div>
-        <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
-          <template v-for="(input, key, index) in form" :key="key">
-            <FormOrganismsRecursiveFormblock
-              :input
-              :category
-              :level="[key]"
-              :saving
-              :root-index="index"
-            />
-          </template>
+        </v-col>
+        <template v-for="(input, key, index) in form" :key="key">
+          <FormOrganismsRecursiveFormblock
+            :input
+            :category
+            :level="[key]"
+            :saving
+            :root-index="index"
+          />
+        </template>
 
-          <div v-if="showActions" class="d-flex justify-end mt-4">
-            <v-btn
-              :disabled="!valid || saving"
-              :loading="saving"
-              color="success"
-              prepend-icon="mdi-content-save"
-              @click.stop="save"
-            >
-              {{ saveText || "Save" }}
-            </v-btn>
-          </div>
-        </v-form>
-      </v-col>
-    </v-row>
+        <v-col v-if="showActions" cols="12" class="d-flex justify-end mt-4">
+          <v-btn
+            :disabled="!valid || saving"
+            :loading="saving"
+            color="success"
+            prepend-icon="mdi-content-save"
+            @click.stop="save"
+          >
+            {{ saveText || "Save" }}
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-container>
 </template>
 

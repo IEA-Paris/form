@@ -1,0 +1,243 @@
+// Create an horizontal stripe
+// @args color: Color of the stripe
+// @args height: Height of the stripe
+// @args top: Distance from top
+@function h-stripe($color, $height, $top: 0) {
+  @return stripe(180deg, $color, $height, $top);
+}
+
+// Create a vertical stripe
+// @args color: Color of the stripe
+// @args width: Width of the stripe
+// @args left: Distance from left
+@function v-stripe($color, $width, $left: 0) {
+  @return stripe(90deg, $color, $width, $left);
+}
+
+// Create a colored stripe, using background gradients
+// @args angle: Angle (in deg) for the stripe
+// @args color: Color of the stripe
+// @args size: Width of the stripe
+// @args start: Distance from the border
+@function stripe($angle, $color, $size, $start: 0) {
+  $angle: round($angle);
+  $end: $start + $size;
+
+  @if ($start > 0) {
+    @return linear-gradient(
+      $angle,
+      transparent,
+      transparent $start,
+      $color $start,
+      $color $end,
+      transparent $end,
+      transparent 100%
+    );
+  }
+  @return linear-gradient($angle, $color $start, $color $end, transparent $end);
+}
+
+// Create several stripes of various size
+// @args angle: Angle of the stripes
+// @args[1]: Color of the first stripe
+// @args[2]: Height of the first stripe
+// @args[3]: Color of the second stripe
+// @args[4]: Height of the second stripe
+// ...
+// @args[n*2 - 1]: Color of the nth stripe
+// @args[n*2]: Width of the nth stripe
+@function stripes($angle, $args...) {
+  // Default values
+  $start: 0;
+  $end: 0;
+  $angle: round($angle);
+  $result: ();
+  @for $i from 1 to length($args) + 1 {
+    // Only interested in even numbers
+    @if ($i % 2 == 0) {
+      $color: nth($args, $i - 1);
+      $width: nth($args, $i);
+      $end: $start + $width;
+      $result: append($result, $color round($start), comma);
+      $result: append($result, $color round($end), comma);
+      $start: $end;
+    }
+  }
+  @return linear-gradient($angle, $result);
+}
+@mixin stripes($args...) {
+  background-image: stripes($args...);
+}
+
+// Create a colored stripe, with limited width and height
+// @args angle: Angle (in deg) for the stripe
+// @args color: Color of the stripe
+// @args size: Width of the stripe
+// @args distance: Distance from the border
+// @args max_width: Width of constraining rectangle
+// @args max_height: Height of constraining rectangle
+// @args left: Left offset of the stripe
+// @args top: Top offset of the stripe
+@function stripe-constrained(
+  $angle,
+  $color,
+  $size,
+  $distance: 0,
+  $max_width: 100%,
+  $max_height: 100%,
+  $left: 0,
+  $top: 0
+) {
+  @return linear-gradient(
+      $angle,
+      transparent,
+      transparent $distance,
+      $color $distance,
+      $color ($distance + $size),
+      transparent ($distance + $size),
+      transparent 100%
+    )
+    $left #{$top}/#{$max_width} $max_height no-repeat;
+}
+
+// Default flag dimensions used by union-jack defaults
+$width: 30px !default;
+$height: 15px !default;
+
+// Set the aspect ratio of an element
+@mixin ratio($r) {
+  aspect-ratio: $r;
+}
+
+// Create three equal vertical columns
+@mixin three-columns($c1, $c2, $c3) {
+  background: linear-gradient(
+    to right,
+    $c1 0 33.333%,
+    $c2 33.333% 66.666%,
+    $c3 66.666% 100%
+  );
+}
+
+// France
+// http://www.crwflags.com/fotw/flags/fr.html
+// https://en.wikipedia.org/wiki/Flag_of_France
+@mixin flag-fra() {
+  @include ratio(2 / 3);
+  $blue: #002395;
+  $white: #fff;
+  $red: #ed2939;
+
+  @include three-columns($blue, $white, $red);
+}
+// Generates the needed background to display a Union Jack
+// Note: Not all flags seems to be using the same shade of blue
+// @args width: Width of the Union-Jack
+// @args height: Height of the Union-Jack
+// @args blue: Shade of blue to use
+@function union-jack($_width: $width, $_height: $height, $blue: #012169) {
+  $unit: $_height / 30;
+  $half-width: $_width / 2;
+  $half-height: $_height / 2;
+  $red: #c8102e;
+  $white: #fff;
+
+  // England (red cross with white borders)
+  $eng-red-size: 6 * $unit;
+  $eng-red-left: 27 * $unit;
+  $eng-red-top: 12 * $unit;
+  $eng-white-size: 10 * $unit;
+  $eng-white-left: 25 * $unit;
+  $eng-white-top: 10 * $unit;
+
+  // Scotland (white diagonal stripes)
+  $sct-size: 6 * $unit;
+  $alpha: atan($_height / $_width);
+  $alpha-reverse: 90deg - $alpha;
+  $sct-padding-big: ($sct-size / 2) / sin($alpha);
+  $sct-padding-small: ($sct-size / 2) / sin($alpha-reverse);
+  $sct-blue-height: $_height - $sct-padding-small;
+  $sct-blue-width: $_width - $sct-padding-big;
+  $sct-blue-alpha: atan($sct-blue-width / $sct-blue-height);
+  $sct-distance: sin($sct-blue-alpha) * $sct-blue-height;
+
+  // Ireland (red diagonals)
+  $irl-size: 2 * $unit;
+  $irl-padding-big: $irl-size / sin($alpha);
+  $irl-padding-small: $irl-size / sin($alpha-reverse);
+  $irl-blue-height: $_height - $irl-padding-small;
+  $irl-blue-width: $_width - $irl-padding-big;
+  $irl-blue-alpha: atan($irl-blue-width / $irl-blue-height);
+  $irl-distance: sin($irl-blue-alpha) * $irl-blue-height;
+
+  @return // England
+    h-stripe($red, $eng-red-size, $eng-red-top),
+    v-stripe($red, $eng-red-size, $eng-red-left),
+    // England white stripes
+    h-stripe($white, $eng-white-size, $eng-white-top),
+    v-stripe($white, $eng-white-size, $eng-white-left),
+    // Ireland
+    stripe-constrained(
+        90deg - $irl-blue-alpha,
+        $red,
+        $irl-size,
+        $irl-distance,
+        $half-width
+      ),
+    stripe-constrained(
+      $irl-blue-alpha - 90deg,
+      $red,
+      $irl-size,
+      $irl-distance + $irl-size,
+      $half-width,
+      100%,
+      $half-width
+    ),
+    stripe-constrained(
+      90deg - $irl-blue-alpha,
+      $red,
+      $irl-size,
+      $irl-distance + $irl-size,
+      $half-width,
+      100%,
+      $half-width,
+      $half-height
+    ),
+    stripe-constrained(
+      $irl-blue-alpha - 90deg,
+      $red,
+      $irl-size,
+      $irl-distance,
+      $half-width,
+      100%,
+      0,
+      $half-height
+    ),
+    // Scotland
+    stripe(90deg - $sct-blue-alpha, $white, $sct-size, $sct-distance),
+    stripe(90deg + $sct-blue-alpha, $white, $sct-size, $sct-distance),
+    // Background
+    $blue;
+}
+@mixin union-jack($_width: $width, $_height: $height, $blue: #012169) {
+  background: union-jack($_width, $_height, $blue);
+}
+
+// Add the Union-Jack as a canton
+@mixin union-jack-canton($_width: $width, $_height: $height, $blue: #012169) {
+  content: "";
+  display: block;
+  position: absolute;
+  width: $_width;
+  height: $_height;
+  left: 0;
+  top: 0;
+  @include union-jack($_width, $_height, $blue);
+}
+
+// United Kingdom of Great Britain and Northern Ireland
+// http://www.crwflags.com/fotw/flags/gb.html
+@mixin flag-gbr() {
+  @include ratio(1 / 2);
+  @include union-jack();
+}

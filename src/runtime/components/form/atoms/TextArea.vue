@@ -1,35 +1,37 @@
 <template>
-  <v-textarea
-    v-model="val"
-    v-bind="$attrs"
-    :label="args.label"
-    :placeholder="args.placeholder"
-    :hint="args.hint"
-    :persistent-hint="!!args.hint"
-    :required="args.rules.required"
-    :disabled="args.disabled"
-    :readonly="args.readonly"
-    :clearable="args.clearable"
-    :counter="args.rules && args.rules.max"
-    :rows="args.rows || 3"
-    :auto-grow="args.autoGrow"
-    :no-resize="args.noResize"
-    :rules="generateInputRules(args)"
-  >
-    <template #label>
-      <span>{{ $t(args.label) }}</span>
-      <sup
-        ><v-icon
-          v-if="args.rules && args.rules.required"
-          color="red"
-          size="small"
-          class="ml-1"
+  <v-col cols="12" :class="noPadding ? 'pa-0' : ''">
+    <v-textarea
+      v-model="val"
+      v-bind="$attrs"
+      :label="args.label"
+      :placeholder="args.placeholder"
+      :hint="args.hint"
+      :persistent-hint="!!args.hint"
+      :required="args.rules.required"
+      :disabled="args.disabled"
+      :readonly="args.readonly"
+      :clearable="args.clearable"
+      :counter="args.rules && args.rules.max"
+      :rows="args.rows || 3"
+      :auto-grow="args.autoGrow"
+      :no-resize="args.noResize"
+      :rules="generateInputRules(args)"
+    >
+      <template #label>
+        <span>{{ $t(args.label) }}</span>
+        <sup
+          ><v-icon
+            v-if="args.rules && args.rules.required"
+            color="red"
+            size="small"
+            class="ml-1"
+          >
+            mdi-asterisk
+          </v-icon></sup
         >
-          mdi-asterisk
-        </v-icon></sup
-      >
-    </template>
-  </v-textarea>
+      </template>
+    </v-textarea></v-col
+  >
 </template>
 
 <script setup>
@@ -50,6 +52,10 @@ const props = defineProps({
   category: {
     type: String,
     required: true,
+  },
+  noPadding: {
+    type: Boolean,
+    default: false,
   },
 })
 

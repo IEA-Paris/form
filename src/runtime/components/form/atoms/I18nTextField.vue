@@ -1,22 +1,34 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="6">
-      <div class="text-overline">
+  <v-col v-if="args.key" cols="12" class="py-0 text-overline">
+    {{ $t(args.key, 2) }}
+  </v-col>
+  <v-col cols="12" md="6">
+    <div class="d-flex align-center">
+      <span class="flag flag-fra" />
+      <div class="text-caption">
         {{ $t("french-version") }}
       </div>
-      <FormAtomsTextField
-        :args
-        :level="[...level, 'fr']"
-        :category
-        class="mr-2"
-      />
-    </v-col>
-    <v-col cols="6">
-      <div class="text-overline">
+    </div>
+    <FormAtomsTextField
+      :args
+      :level="[...level, 'fr']"
+      :category
+      :no-padding="true"
+  /></v-col>
+  <v-col cols="12" md="6">
+    <div class="d-flex align-center">
+      <span class="flag flag-gbr" />
+      <div class="text-caption">
         {{ $t("english-version") }}
       </div>
-      <FormAtomsTextField :args :level="[...level, 'en']" :category /> </v-col
-  ></v-row>
+    </div>
+    <FormAtomsTextField
+      :args
+      :level="[...level, 'en']"
+      :category
+      :no-padding="true"
+    />
+  </v-col>
 </template>
 
 <script setup>
@@ -37,4 +49,25 @@ const props = defineProps({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../../../assets/flags" as * with (
+  $width: 30px,
+  $height: 15px
+);
+
+.flag {
+  display: inline-block;
+  width: 30px;
+  height: 15px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.flag-fra {
+  @include flag-fra();
+}
+
+.flag-gbr {
+  @include flag-gbr();
+}
+</style>
