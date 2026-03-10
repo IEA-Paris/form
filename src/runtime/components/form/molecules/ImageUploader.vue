@@ -249,7 +249,8 @@ const handleFileSelection = (file) => {
     "image/svg+xml",
   ]
   if (!validTypes.includes(file.type)) {
-    errorMessage.value = "Invalid file type. Please select a PNG or JPEG image."
+    errorMessage.value =
+      "Invalid file type. Please select a PNG, JPEG, JPG, WEBM, GIF, or SVG image."
     return
   }
 
