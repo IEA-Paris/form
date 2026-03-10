@@ -17,7 +17,7 @@
 import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
 // Update the import path below to the correct module where generateInputRules is exported
-defineProps({
+const props = defineProps({
   args: {
     type: Object,
     required: true,

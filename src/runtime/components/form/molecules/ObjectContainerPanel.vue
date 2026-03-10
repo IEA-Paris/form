@@ -41,7 +41,8 @@ import {
   showLabel,
 } from "../../../composables/useFormDisplay"
 import { ref } from "#imports"
-defineProps({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps({
   args: {
     type: Object,
     required: true,

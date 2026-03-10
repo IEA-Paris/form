@@ -39,7 +39,7 @@ import { computed, onMounted } from "vue"
 import { useFormStore } from "../../../stores/form"
 import generateInputRules from "../../../composables/useFormValidation"
 
-defineProps({
+const props = defineProps({
   args: {
     type: Object,
     required: true,

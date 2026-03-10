@@ -32,7 +32,8 @@
 </template>
 
 <script setup>
-defineProps({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps({
   args: {
     type: Object,
     required: true,

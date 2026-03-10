@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   item: {
     type: Object,
     required: true,

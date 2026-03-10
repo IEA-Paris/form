@@ -15,8 +15,8 @@ import {
   getComponentName,
   computeConditional,
 } from "../../../composables/useFormDisplay"
-
-defineProps({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps({
   input: { type: Object, required: true },
   category: { type: String, required: true },
   level: { type: Array, required: true },

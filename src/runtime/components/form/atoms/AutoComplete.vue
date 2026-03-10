@@ -27,7 +27,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue"
 import { useFormStore } from "../../../stores/form"
-defineProps({
+const props = defineProps({
   args: {
     type: Object,
     required: true,
