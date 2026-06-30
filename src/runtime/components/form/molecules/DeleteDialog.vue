@@ -41,6 +41,12 @@
 </template>
 
 <script setup>
+// Explicit imports: auto-imports aren't applied to this module's compiled
+// components in consumer apps during SSR, so bare `ref` threw
+// "ref is not defined" and 500'd every page embedding this dialog.
+import { ref } from "vue"
+import { useNuxtApp, useRoute, navigateTo } from "#imports"
+
 const props = defineProps({
   type: {
     type: String,
