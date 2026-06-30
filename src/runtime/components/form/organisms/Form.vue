@@ -1,53 +1,69 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <div class="d-flex align-items-right">
+  <v-container>
+    <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
+      <v-row>
+        <v-col v-if="showActions" cols="12" class="d-flex justify-end mt-4">
           <v-btn
-            icon
-            :color="showOptions ? 'primary' : ''"
-            @click="showOptions = !showOptions"
+            :disabled="!valid || saving"
+            :loading="saving"
+            color="success"
+            prepend-icon="mdi-content-save"
+            @click.stop="save"
           >
-            <v-icon>{{ showOptions ? "mdi-eye-off" : "mdi-eye" }}</v-icon>
+            {{ saveText || "Save" }}
           </v-btn>
-        </div>
-        <v-form ref="formRef" v-model="valid" fast-fail @submit.prevent>
-          <div :class="valid ? 'text-green' : 'text-red'">
-            THE WHOLE FORM IS {{ valid ? "VALID" : "INVALID" }}
-          </div>
-          <template v-for="(input, key, index) in form" :key="key">
-            <!-- {{ input }}
-              {{ key }}
-              {{ index }} -->
-            <FormOrganismsRecursiveFormblock
-              :input
-              :category
-              :level="[key]"
-              :saving
-              :root-index="index"
-            />
-          </template>
+        </v-col>
 
-          <div v-if="showActions" class="d-flex justify-end mt-4">
-            <v-btn
-              :disabled="!valid || saving"
-              :loading="saving"
-              color="success"
-              prepend-icon="mdi-content-save"
-              @click.stop="save"
-            >
-              {{ saveText || "Save" }}
-            </v-btn>
-          </div>
-        </v-form>
-      </v-col>
-    </v-row>
+        <v-col
+          v-if="errors.length"
+          cols="12"
+          class="d-flex align-center justify-center"
+        >
+          <v-alert
+            :icon="valid ? 'mdi-check' : 'mdi-alert'"
+            :type="valid ? 'success' : 'warning'"
+            :title="
+              valid
+                ? 'This form is valid'
+                : `This form is invalid (${errors.length} errors)`
+            "
+          />
+        </v-col>
+        <template v-for="(input, key, index) in form" :key="key">
+          <FormOrganismsRecursiveFormblock
+            :input
+            :category
+            :level="[key]"
+            :saving
+            :root-index="index"
+          />
+        </template>
+
+        <v-col v-if="showActions" cols="12" class="d-flex justify-end mt-4">
+          <v-btn
+            :disabled="!valid || saving"
+            :loading="saving"
+            color="success"
+            prepend-icon="mdi-content-save"
+            @click.stop="save"
+          >
+            {{ saveText || "Save" }}
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-container>
 </template>
 
 <script setup>
 import { useFormStore } from "../../../stores/form"
 import { useNuxtApp } from "#app"
+import { ref, computed } from "#imports"
+
+defineOptions({
+  name: "FormOrganismForm",
+})
+
 const { $schemas } = useNuxtApp()
 const props = defineProps({
   category: {
@@ -63,7 +79,7 @@ const props = defineProps({
     default: "Save",
   },
 })
-const showOptions = ref(false)
+/* const showOptions = ref(false) */
 const emit = defineEmits(["save", "validate"])
 const form = computed(() => $schemas?.[props.category] || {})
 const formStore = useFormStore()
@@ -74,6 +90,8 @@ const formRef = ref(null)
   console.log("Adding module to form store:", props.category)
   formStore.addModule(props.category, $forms[props.category])
 } */
+const errors = computed(() => formRef?.value?.errors || [])
+
 const save = async () => {
   if (valid.value) {
     saving.value = true
@@ -92,6 +110,7 @@ const validate = async () => {
   if (formRef.value) {
     const result = await formRef.value.validate()
     emit("validate", result)
+    console.log("result: ", result)
     return result
   }
   return { valid: false }

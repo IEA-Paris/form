@@ -1,7 +1,13 @@
 <template>
   <v-form
     v-model="valid"
+    class="my-4"
     fast-fail
+    :class="{
+      required: args.rules && args.rules.required,
+      valid: valid,
+      invalid: !valid,
+    }"
     @submit.prevent
     @update:model-value="$emit('update:valid', valid)"
   >
@@ -10,9 +16,9 @@
       :i18n-key="args.key"
       :label="$t(args.label, 2)"
     />
-    <div :class="valid ? 'text-green' : 'text-red'">
+    <!--     <div :class="valid ? 'text-green' : 'text-red'">
       THIS OBJECT FORM IS {{ valid ? "VALID" : "INVALID" }}
-    </div>
+    </div> -->
     <v-select
       v-model="selector"
       variant="outlined"
@@ -64,6 +70,7 @@ import {
   showLabel,
 } from "../../../composables/useFormDisplay"
 import generateInputRules from "../../../composables/useFormValidation"
+import { ref } from "#imports"
 const formStore = useFormStore()
 
 const props = defineProps({

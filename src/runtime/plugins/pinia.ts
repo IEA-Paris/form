@@ -58,9 +58,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }),
   } as const;
 
+<<<<<<< HEAD
   const schemas: Record<string, any> = {};
   const forms: Record<string, any> = {};
   const defaults: Record<string, any> = {};
+=======
+  const schemas: Record<string, any> = {}
+  const forms: Record<string, any> = {}
+>>>>>>> 2ec55ad8cb2b7691e864ea8bb404eea4f9d445e6
 
   const formStore = useFormStore();
   const options = {};

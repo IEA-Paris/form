@@ -21,7 +21,6 @@ const props = defineProps({
   args: {
     type: Object,
     required: true,
-    default: () => ({}),
   },
   level: {
     type: Array,

@@ -1,60 +1,66 @@
 <template>
-  <v-card
-    :key="`col-${level.join('-')}-${level[level.length - 1]}`"
-    class="mb-3 pa-3"
-  >
-    <FormAtomsBlockTitle
-      :i18n-key="args.key"
-      :label="$t(args.label, 2)"
-      :add-btn="true"
-      :disabled="!valid"
-      @add="addItem" />
+  <v-col cols="12">
+    <v-card
+      :key="`col-${level.join('-')}-${level[level.length - 1]}`"
+      class="mb-3 pa-3"
+      :class="{
+        required: args.rules && args.rules.required,
+        valid: valid,
+        invalid: !valid,
+      }"
+    >
+      <!--     <div :class="valid ? 'text-green' : 'text-red'">
+      THIS ARRAY FORM IS {{ valid ? "VALID" : "INVALID" }}
+    </div> -->
+      <FormAtomsBlockTitle
+        :i18n-key="args.key"
+        :label="$t(args.label, 2)"
+        :add-btn="true"
+        :disabled="!valid"
+        @add="addItem" />
 
-    <div v-if="args.description" class="text-h4 mb-2">
-      {{ args.description }}
-    </div>
-    <!-- start by iterating on the actual items in the array (cf pinia store)-->
-    <template v-for="(item, index) in val" :key="index">
-      <v-divider class="my-2" />
-      <div
-        v-if="val.length > 1"
-        class="text-overline d-flex align-center justify-space-between"
-      >
-        {{ $t(args.label, 1) + " " + (index + 1) }}
-        <v-btn
-          icon="mdi-delete"
-          variant="outlined"
-          class="mt-2"
-          @click="deleteItem(index)"
-        />
+      <div v-if="args.description" class="text-h4 mb-2">
+        {{ args.description }}
       </div>
-      <div v-if="!valid" class="text-red mb-2">
-        {{ validationRules.length > 0 ? "Collection validation failed" : "" }}
-      </div>
-      <!-- then use the schema to render the proper component for each item -->
-      <template
-        v-for="(key, keyIndex) in Object.keys(args.items)"
-        :key="keyIndex"
-      >
-        <component
-          :is="
-            getComponentName(args.items[key].component, args.items[key].i18n)
-          "
-          :category
-          :args="{ ...args.items[key], index }"
-          :level="[...level, index, key]"
-          :saving
-          @submit.prevent
-          @update:model-value="$emit('update:valid', valid)"
-          @update:valid="updateChildValidation(index, key, $event)"
-        />
-      </template> </template
-  ></v-card>
+      <!-- start by iterating on the actual items in the array (cf pinia store)-->
+      <template v-for="(item, index) in val" :key="index">
+        <v-divider class="my-2" />
+        <div
+          v-if="val.length > 1"
+          class="text-overline d-flex align-center justify-space-between"
+        >
+          {{ $t(args.label, 1) + " " + (index + 1) }}
+          <v-btn
+            icon="mdi-delete"
+            variant="outlined"
+            class="mt-2"
+            @click="deleteItem(index)"
+          />
+        </div>
+        <div v-if="!valid" class="text-red mb-2">
+          {{ validationRules.length > 0 ? "Collection validation failed" : "" }}
+        </div>
+        <!-- then use the schema to render the proper component for each item -->
+        <template
+          v-for="(key, keyIndex) in Object.keys(args.items)"
+          :key="keyIndex"
+        >
+          <FormOrganismsRecursiveFormblock
+            :category
+            :input="args.items[key]"
+            :level="[...level, index, key]"
+            :saving
+            @submit.prevent
+            @update:model-value="$emit('update:valid', valid)"
+            @update:valid="updateChildValidation(index, key, $event)"
+          />
+        </template> </template></v-card
+  ></v-col>
 </template>
 <script setup>
 import { useFormStore } from "../../../stores/form";
 import useFormValidation from "../../../composables/useFormValidation";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from "#imports";
 
 // Define emits first
 const emit = defineEmits(["update:valid"]);
@@ -92,6 +98,9 @@ const val = computed(() => {
     store: formStore[props.category],
   });
 });
+
+// Store child validation flags
+const childValidationFlags = ref({});
 
 // Store child validation flags
 const childValidationFlags = ref({});
@@ -165,7 +174,7 @@ watch(
   (newValid) => {
     emit("update:valid", newValid);
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 <style lang="scss"></style>
