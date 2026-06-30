@@ -102,9 +102,6 @@ const val = computed(() => {
 // Store child validation flags
 const childValidationFlags = ref({});
 
-// Store child validation flags
-const childValidationFlags = ref({});
-
 const deleteItem = (index) => {
   // Clean up validation flags for the deleted item and reindex
   const newFlags = {};
