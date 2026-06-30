@@ -12,6 +12,7 @@
     :counter="args.counter"
     :type="args.type"
     :rules="generateInputRules(args)"
+    :class="{ required: args.rules && args.rules.required }"
   >
     <template #label>
       <span>{{ $t(args.label) }}</span>
@@ -30,9 +31,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue"
-import { useFormStore } from "../../../stores/form"
-import generateInputRules from "../../../composables/useFormValidation"
+import { computed, onMounted } from "vue";
+import { useFormStore } from "../../../stores/form";
+import generateInputRules from "../../../composables/useFormValidation";
 
 const props = defineProps({
   args: {
@@ -48,16 +49,16 @@ const props = defineProps({
     type: String,
     required: true,
   },
-})
+});
 
-const formStore = useFormStore()
+const formStore = useFormStore();
 
 const val = computed({
   get() {
     return formStore.getKey({
       level: props.level,
       store: formStore[props.category],
-    })
+    });
   },
   set(value) {
     formStore.setKey({
@@ -65,11 +66,11 @@ const val = computed({
       category: props.category,
       level: props.level,
       store: formStore[props.category],
-    })
+    });
   },
-})
+});
 
-onMounted(() => {})
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,5 +1,12 @@
 <template>
-  <v-card>
+  <v-card
+    :class="{
+      valid: valid,
+      invalid: !valid,
+      required: args.rules && args.rules.required,
+    }"
+    class="pa-4 mb-4"
+  >
     <FormAtomsBlockTitle
       v-if="showLabel(level)"
       :i18n-key="args.key"
@@ -32,19 +39,19 @@ import {
   getComponentName,
   computeConditional,
   showLabel,
-} from "../../../composables/useFormDisplay"
+} from "../../../composables/useFormDisplay";
 const props = defineProps({
   args: {
     type: Object,
     default: () => {
-      return {}
+      return {};
     },
   },
   level: {
     type: Array,
     required: false,
     default: () => {
-      return []
+      return [];
     },
   },
   category: {
@@ -56,8 +63,18 @@ const props = defineProps({
     required: false,
     default: false,
   },
-})
+});
 
-const valid = ref(false)
+const valid = ref(false);
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.valid.required {
+  border-left: solid var(success) 5px !important;
+}
+.valid:not(.required) {
+  border-left: solid grey 5px !important;
+}
+.invalid.required {
+  border-left: solid var(danger) 5px !important;
+}
+</style>
