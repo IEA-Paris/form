@@ -85,3 +85,4 @@ dist
 # Generated types
 *.d.ts
 !src/**/*.d.ts
+.claude
